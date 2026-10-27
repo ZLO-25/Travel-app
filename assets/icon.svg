@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Travel">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4a261"/>
+      <stop offset="100%" stop-color="#e76f51"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <path fill="#fffef8" d="M128 320c40-96 96-160 160-192 8 48 24 96 56 144-56 16-112 32-152 64-24 20-48 48-64 80-8-32-8-64 0-96z"/>
+  <circle cx="336" cy="160" r="36" fill="#fffef8" opacity=".9"/>
+  <path fill="#fffef8" opacity=".85" d="M96 384h288c-24-32-64-56-112-72-48 24-112 48-176 72z"/>
+</svg>
