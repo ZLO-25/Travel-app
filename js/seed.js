@@ -35,6 +35,13 @@
         { id: uid('pk'), category: '藥品與個人', items: [] }
       ],
       expenses: [],
+      journal: [],
+      memories: {
+        highlights: [],
+        wouldReturn: null,
+        overallRating: null,
+        postTripNote: ''
+      },
       notes: '',
       archived: false,
       createdAt: now,
@@ -47,7 +54,7 @@
     const now = new Date().toISOString();
     const trip = {
   "id": "trip_danang_2026",
-  "title": "2026 峴港",
+  "title": "2026 11/5-11/10 峴港",
   "destination": "越南 · 峴港（Da Nang）",
   "startDate": "2026-11-05",
   "endDate": "2026-11-10",
@@ -1442,6 +1449,13 @@
           "time": "40–55 分"
         }
       ]
+    };
+    trip.journal = Array.isArray(trip.journal) ? trip.journal : [];
+    trip.memories = trip.memories || {
+      highlights: [],
+      wouldReturn: null,
+      overallRating: null,
+      postTripNote: ''
     };
     trip.updatedAt = now;
     trip.createdAt = trip.createdAt || now;

@@ -19,15 +19,54 @@
     }
   }
 
-  function save(state) {
+  function prepareForSave(state) {
     const copy = JSON.parse(JSON.stringify(state));
     copy.updatedAt = new Date().toISOString();
-    localStorage.setItem(KEY, JSON.stringify(copy));
+    if (global.TravelPhotos && TravelPhotos.stripDataUrlsFromState) {
+      TravelPhotos.stripDataUrlsFromState(copy);
+    }
+    return copy;
+  }
+
+  function save(state) {
+    const copy = prepareForSave(state);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(copy));
+    } catch (e) {
+      console.warn('save failed (quota?)', e);
+      // Retry after stripping any remaining dataUrls aggressively
+      try {
+        if (copy.trips) {
+          copy.trips.forEach(function (t) {
+            (t.journal || []).forEach(function (j) {
+              if (j && j.photos) {
+                j.photos = j.photos.map(function (p) {
+                  return p ? { id: p.id, name: p.name || '' } : p;
+                });
+              }
+            });
+          });
+        }
+        localStorage.setItem(KEY, JSON.stringify(copy));
+      } catch (e2) {
+        console.error('save failed after strip', e2);
+        throw e2;
+      }
+    }
     return copy;
   }
 
   function exportJson(state) {
     return JSON.stringify(state, null, 2);
+  }
+
+  function exportJsonAsync(state) {
+    if (global.TravelPhotos && TravelPhotos.embedPhotosInState) {
+      return TravelPhotos.embedPhotosInState(state).then(function (embedded) {
+        return JSON.stringify(embedded, null, 2);
+      });
+    }
+    return Promise.resolve(exportJson(state));
   }
 
   function importJson(text) {
@@ -57,6 +96,7 @@
     load: load,
     save: save,
     exportJson: exportJson,
+    exportJsonAsync: exportJsonAsync,
     importJson: importJson,
     download: download
   };

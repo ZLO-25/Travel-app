@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v5';
+const CACHE = 'ryan-travel-v6';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   './js/auth.js',
   './js/seed.js',
   './js/storage.js',
+  './js/photos.js',
   './js/sync.js',
   './js/app.js',
   './manifest.webmanifest',

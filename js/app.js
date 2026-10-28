@@ -10,6 +10,7 @@
     { id: 'todos', label: '待辦', ico: '✅' },
     { id: 'bookings', label: '訂單', ico: '🎫' },
     { id: 'itinerary', label: '行程', ico: '🗓️' },
+    { id: 'journal', label: '紀錄', ico: '📔' },
     { id: 'places', label: '地點', ico: '📍' },
     { id: 'shopping', label: '購物', ico: '🛍️' },
     { id: 'packing', label: '打包', ico: '🎒' },
@@ -17,7 +18,16 @@
     { id: 'notes', label: '筆記', ico: '📝' }
   ];
   const PRIMARY_NAV = ['overview', 'todos', 'bookings', 'itinerary'];
-  const MORE_NAV = ['places', 'shopping', 'packing', 'expenses', 'notes'];
+  const MORE_NAV = ['journal', 'places', 'shopping', 'packing', 'expenses', 'notes'];
+  const MOODS = [
+    { id: 'great', label: '超棒', emoji: '🤩' },
+    { id: 'good', label: '不錯', emoji: '😊' },
+    { id: 'ok', label: '普通', emoji: '😐' },
+    { id: 'tired', label: '累', emoji: '😫' },
+    { id: 'bad', label: '糟糕', emoji: '😞' }
+  ];
+  const NEW_DANANG_TITLE = '2026 11/5-11/10 峴港';
+  const OLD_DANANG_TITLES = { '2026 峴港': true, '2026峴港': true };
 
   const BOOKING_TYPES = [
     { value: 'flight', label: '航班', ico: '✈️' },
@@ -126,16 +136,56 @@
   }
 
   /* ---------- Render shell ---------- */
+  function defaultMemories() {
+    return { highlights: [], wouldReturn: null, overallRating: null, postTripNote: '' };
+  }
+
+  function ensureTripShape(trip) {
+    if (!trip) return trip;
+    if (!Array.isArray(trip.journal)) trip.journal = [];
+    if (!trip.memories || typeof trip.memories !== 'object') trip.memories = defaultMemories();
+    if (!Array.isArray(trip.memories.highlights)) trip.memories.highlights = [];
+    if (trip.id === 'trip_danang_2026' && OLD_DANANG_TITLES[String(trip.title || '').trim()]) {
+      trip.title = NEW_DANANG_TITLE;
+    }
+    return trip;
+  }
+
   function ensureValidState(recoveredOnce) {
     if (!state || !Array.isArray(state.trips) || !state.trips.length) {
       console.warn('empty trips — recovering from seed');
       state = TravelSeed.defaultState();
+      (state.trips || []).forEach(ensureTripShape);
       return true;
     }
+    state.trips.forEach(ensureTripShape);
     if (!state.trips.some(function (t) { return t && t.id === state.activeTripId; })) {
       state.activeTripId = state.trips[0].id;
     }
     return !!recoveredOnce;
+  }
+
+  function tripPhase(trip) {
+    const start = parseDate(trip.startDate);
+    const end = parseDate(trip.endDate);
+    const now = new Date();
+    now.setHours(12, 0, 0, 0);
+    if (start && now < start) return { id: 'before', label: '出發前', cls: 'phase-before' };
+    if (end && now > end) return { id: 'after', label: '旅後', cls: 'phase-after' };
+    if (start && end && now >= start && now <= end) return { id: 'during', label: '旅途中', cls: 'phase-during' };
+    if (start && !end && now >= start) return { id: 'during', label: '旅途中', cls: 'phase-during' };
+    return { id: 'before', label: '出發前', cls: 'phase-before' };
+  }
+
+  function moodMeta(id) {
+    return MOODS.find(function (m) { return m.id === id; }) || null;
+  }
+
+  function starsHtml(n) {
+    n = Number(n) || 0;
+    let s = '';
+    for (let i = 1; i <= 5; i++) s += i <= n ? '★' : '☆';
+    return s;
   }
 
   function syncTripSelectLabel() {
@@ -264,6 +314,7 @@
       todos: renderTodos,
       bookings: renderBookings,
       itinerary: renderItinerary,
+      journal: renderJournal,
       places: renderPlaces,
       shopping: renderShopping,
       packing: renderPacking,
@@ -339,6 +390,7 @@
             '<button type="button" class="icon-btn" data-action="del-deadline" data-id="' + d.id + '" aria-label="刪除">🗑️</button></div></div>';
         }).join('') : '<p class="muted">尚無期限</p>') +
       '</div>' +
+      journalOverviewTeaser(trip) +
       '<div class="card">' +
         '<h3>旅程管理</h3>' +
         '<div class="row">' +
@@ -741,6 +793,309 @@
     el.innerHTML = html;
   }
 
+  function journalOverviewTeaser(trip) {
+    ensureTripShape(trip);
+    const phase = tripPhase(trip);
+    const count = (trip.journal || []).length;
+    if (!count && phase.id !== 'after') return '';
+    return '<div class="card journal-teaser">' +
+      '<div class="row" style="justify-content:space-between;align-items:center">' +
+      '<div><h3 style="margin:0">📔 旅後紀錄</h3>' +
+      '<div class="faint">' + (count ? ('已有 ' + count + ' 則紀錄') : '旅程已結束，開始寫下回憶吧') + '</div></div>' +
+      '<button type="button" class="btn btn-secondary btn-sm" data-action="nav" data-view="journal">打開紀錄</button>' +
+      '</div></div>';
+  }
+
+  function journalStats(trip) {
+    const entries = trip.journal || [];
+    let photos = 0;
+    let ratingSum = 0;
+    let ratingN = 0;
+    entries.forEach(function (e) {
+      photos += (e.photos || []).length;
+      if (e.rating != null && e.rating !== '') {
+        ratingSum += Number(e.rating) || 0;
+        ratingN += 1;
+      }
+    });
+    let paid = 0;
+    (trip.expenses || []).forEach(function (ex) {
+      if (ex.status === 'paid') paid += Number(ex.twd) || 0;
+    });
+    return {
+      count: entries.length,
+      photos: photos,
+      avgRating: ratingN ? (ratingSum / ratingN) : null,
+      paid: paid
+    };
+  }
+
+  function renderJournal(trip) {
+    ensureTripShape(trip);
+    const el = $('#view-journal');
+    const phase = tripPhase(trip);
+    const stats = journalStats(trip);
+    const mem = trip.memories || defaultMemories();
+    const entries = (trip.journal || []).slice().sort(function (a, b) {
+      const d = String(b.date || '').localeCompare(String(a.date || ''));
+      if (d) return d;
+      return String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''));
+    });
+
+    let html = '<div class="card">' +
+      '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
+      '<div><h2 style="margin:0">📔 紀錄</h2>' +
+      '<div class="faint">旅途中與旅後的日記、心情與照片</div></div>' +
+      '<span class="phase-badge ' + phase.cls + '">' + escapeHtml(phase.label) + '</span>' +
+      '</div>' +
+      '<div class="journal-stats">' +
+      '<div class="jstat"><div class="jstat-n">' + stats.count + '</div><div class="jstat-l">則紀錄</div></div>' +
+      '<div class="jstat"><div class="jstat-n">' + stats.photos + '</div><div class="jstat-l">張照片</div></div>' +
+      '<div class="jstat"><div class="jstat-n">' + (stats.avgRating != null ? stats.avgRating.toFixed(1) : '—') + '</div><div class="jstat-l">平均星等</div></div>' +
+      '<div class="jstat"><div class="jstat-n">' + stats.paid.toLocaleString('zh-TW') + '</div><div class="jstat-l">已付 TWD</div></div>' +
+      '</div>' +
+      '<div class="row" style="margin-top:12px">' +
+      '<button type="button" class="btn btn-primary btn-sm" data-action="add-journal">＋ 新增紀錄</button>' +
+      '</div></div>';
+
+    html += '<div class="card">' +
+      '<div class="row" style="justify-content:space-between"><h3 style="margin:0">旅後總結</h3>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-action="edit-memories">編輯</button></div>' +
+      '<div class="row" style="margin-top:8px;gap:8px;flex-wrap:wrap">' +
+      '<span class="pill">' + (mem.overallRating ? ('整體 ' + starsHtml(mem.overallRating)) : '尚未評分') + '</span>' +
+      '<span class="pill">' + (mem.wouldReturn === true ? '會再來 ✓' : (mem.wouldReturn === false ? '暫時不想再來' : '是否再訪：未填')) + '</span>' +
+      '</div>';
+    if (mem.highlights && mem.highlights.length) {
+      html += '<ul class="journal-highlights">' + mem.highlights.map(function (h) {
+        return '<li>' + escapeHtml(h) + '</li>';
+      }).join('') + '</ul>';
+    } else {
+      html += '<p class="muted" style="margin-top:8px">尚無亮點摘要</p>';
+    }
+    if (mem.postTripNote) {
+      html += '<p class="journal-wrapup">' + escapeHtml(mem.postTripNote) + '</p>';
+    }
+    html += '</div>';
+
+    if (!entries.length) {
+      html += '<div class="card"><p class="muted">還沒有紀錄。旅途中就能寫；結束後當旅遊回憶冊繼續用。</p></div>';
+    } else {
+      entries.forEach(function (entry) {
+        const mood = moodMeta(entry.mood);
+        html += '<div class="card journal-entry" data-action="edit-journal" data-id="' + escapeHtml(entry.id) + '" role="button" tabindex="0">' +
+          '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
+          '<div><div class="journal-date">' + escapeHtml(fmtDate(entry.date)) +
+          (mood ? (' <span class="mood-chip" title="' + escapeHtml(mood.label) + '">' + mood.emoji + '</span>') : '') +
+          '</div>' +
+          '<strong class="journal-title">' + escapeHtml(entry.title || '（無標題）') + '</strong></div>' +
+          (entry.rating ? '<span class="journal-stars" aria-label="評分">' + starsHtml(entry.rating) + '</span>' : '') +
+          '</div>';
+        if (entry.placeName) html += '<div class="faint" style="margin-top:4px">📍 ' + escapeHtml(entry.placeName) + '</div>';
+        if (entry.body) {
+          const preview = String(entry.body).trim().slice(0, 120);
+          html += '<p class="journal-preview">' + escapeHtml(preview) + (entry.body.length > 120 ? '…' : '') + '</p>';
+        }
+        if (entry.tags && entry.tags.length) {
+          html += '<div class="tag-row">' + entry.tags.map(function (tg) {
+            return '<span class="tag-pill">' + escapeHtml(tg) + '</span>';
+          }).join('') + '</div>';
+        }
+        if (entry.photos && entry.photos.length) {
+          html += '<div class="photo-strip" data-photo-entry="' + escapeHtml(entry.id) + '">';
+          entry.photos.forEach(function (ph) {
+            html += '<div class="photo-thumb" data-photo-id="' + escapeHtml(ph.id) + '" data-entry-id="' + escapeHtml(entry.id) + '">' +
+              (ph.dataUrl ? '<img src="' + ph.dataUrl + '" alt="">' : '<span class="photo-ph">📷</span>') +
+              '</div>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+    }
+    el.innerHTML = html;
+    hydrateJournalThumbs(trip);
+  }
+
+  function hydrateJournalThumbs(trip) {
+    if (!window.TravelPhotos) return;
+    const nodes = $$('.photo-thumb[data-photo-id]');
+    nodes.forEach(function (node) {
+      if (node.querySelector('img')) return;
+      const entryId = node.getAttribute('data-entry-id');
+      const photoId = node.getAttribute('data-photo-id');
+      TravelPhotos.get(trip.id, entryId, photoId).then(function (row) {
+        if (!row || !row.dataUrl) return;
+        if (!node.isConnected) return;
+        node.innerHTML = '<img src="' + row.dataUrl + '" alt="">';
+      }).catch(function () {});
+    });
+  }
+
+  function openJournalModal(trip, existing) {
+    ensureTripShape(trip);
+    const entry = existing || null;
+    const moodOpts = '<option value="">（不選）</option>' + MOODS.map(function (m) {
+      return '<option value="' + m.id + '"' + ((entry && entry.mood) === m.id ? ' selected' : '') + '>' + m.emoji + ' ' + m.label + '</option>';
+    }).join('');
+    const ratingOpts = '<option value="">（不評）</option>' + [1, 2, 3, 4, 5].map(function (n) {
+      return '<option value="' + n + '"' + (String(entry && entry.rating) === String(n) ? ' selected' : '') + '>' + starsHtml(n) + ' ' + n + '</option>';
+    }).join('');
+    const today = new Date();
+    const ymd = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    const draftPhotos = (entry && entry.photos) ? entry.photos.map(function (p) {
+      return { id: p.id, name: p.name || '', dataUrl: p.dataUrl || null, _pending: false };
+    }) : [];
+
+    openModal(entry ? '編輯紀錄' : '新增紀錄',
+      field('日期', 'date', entry ? entry.date : ymd, 'date') +
+      field('標題', 'title', entry ? entry.title : '') +
+      field('內文', 'body', entry ? entry.body : '', 'textarea') +
+      field('心情', 'mood', moodOpts, 'select') +
+      field('標籤（逗號分隔）', 'tags', entry && entry.tags ? entry.tags.join(', ') : '') +
+      field('地點', 'placeName', entry ? entry.placeName : '') +
+      field('評分', 'rating', ratingOpts, 'select') +
+      '<div class="field"><label>照片</label>' +
+      '<div id="journalPhotoPreview" class="photo-strip edit"></div>' +
+      '<input type="file" id="f_photos" accept="image/*" multiple class="input">' +
+      '<p class="faint" id="journalPhotoHint">會壓縮後存到本機（IndexedDB）；匯出 JSON 時一併帶出。</p></div>',
+      function () {
+        const title = val('title').trim();
+        const body = val('body');
+        if (!title && !body && !draftPhotos.length) { toast('請至少填標題、內文或照片'); return false; }
+        const tags = val('tags').split(/[,，]/).map(function (s) { return s.trim(); }).filter(Boolean);
+        const ratingRaw = val('rating');
+        const data = {
+          date: val('date') || ymd,
+          title: title || (val('date') || ymd) + ' 紀錄',
+          body: body,
+          mood: val('mood') || null,
+          tags: tags,
+          placeName: val('placeName').trim(),
+          rating: ratingRaw ? Number(ratingRaw) : null
+        };
+        // Persist photos asynchronously then finish
+        const targetId = entry ? entry.id : uid('jn');
+        const savePhotos = Promise.all(draftPhotos.map(function (ph) {
+          if (!ph) return null;
+          if (ph.dataUrl && window.TravelPhotos) {
+            return TravelPhotos.savePhoto(trip.id, targetId, ph);
+          }
+          return Promise.resolve({ id: ph.id, name: ph.name || '' });
+        })).then(function (saved) {
+          data.photos = (saved || []).filter(Boolean);
+          data.updatedAt = new Date().toISOString();
+          data.userEdited = true;
+          if (entry) {
+            Object.assign(entry, data);
+            touchItem(entry);
+          } else {
+            data.id = targetId;
+            data.createdAt = data.updatedAt;
+            trip.journal = trip.journal || [];
+            trip.journal.push(data);
+            touchItem(data);
+          }
+          touchTrip(trip);
+          persist(true);
+          renderView();
+          toast(entry ? '紀錄已更新' : '紀錄已新增');
+        }).catch(function (err) {
+          console.warn(err);
+          toast('照片儲存失敗，仍會存文字');
+          data.photos = draftPhotos.map(function (ph) { return { id: ph.id, name: ph.name || '', dataUrl: ph.dataUrl, _inline: !!ph.dataUrl }; });
+          data.updatedAt = new Date().toISOString();
+          data.userEdited = true;
+          if (entry) Object.assign(entry, data);
+          else { data.id = targetId; data.createdAt = data.updatedAt; trip.journal.push(data); }
+          touchTrip(trip); persist(true); renderView();
+        });
+        // Keep modal open until async done — return false and close manually after
+        savePhotos.finally(function () {
+          const backdrop = $('#modalBackdrop');
+          if (backdrop) backdrop.classList.remove('open');
+          const ms = $('#modalSave');
+          const mc = $('#modalCancel');
+          const md = $('#modalDelete');
+          if (ms) ms.onclick = null;
+          if (mc) mc.onclick = null;
+          if (md) { md.onclick = null; md.hidden = true; }
+          renderTripSelect();
+        });
+        return false;
+      },
+      entry ? {
+        onDelete: function () {
+          const id = entry.id;
+          trip.journal = (trip.journal || []).filter(function (j) { return j.id !== id; });
+          if (window.TravelPhotos) TravelPhotos.removeEntry(trip.id, id);
+          touchTrip(trip);
+          toast('已刪除紀錄');
+        }
+      } : null
+    );
+
+    function paintPreview() {
+      const box = $('#journalPhotoPreview');
+      if (!box) return;
+      box.innerHTML = draftPhotos.map(function (ph, idx) {
+        const src = ph.dataUrl ? '<img src="' + ph.dataUrl + '" alt="">' : '<span class="photo-ph">📷</span>';
+        return '<div class="photo-thumb">' + src +
+          '<button type="button" class="photo-x" data-rm-photo="' + idx + '" aria-label="移除">×</button></div>';
+      }).join('');
+      // hydrate missing
+      draftPhotos.forEach(function (ph, idx) {
+        if (ph.dataUrl || !entry) return;
+        if (!window.TravelPhotos) return;
+        TravelPhotos.get(trip.id, entry.id, ph.id).then(function (row) {
+          if (row && row.dataUrl) {
+            ph.dataUrl = row.dataUrl;
+            paintPreview();
+          }
+        }).catch(function () {});
+      });
+    }
+    paintPreview();
+
+    const fileInput = $('#f_photos');
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        const files = Array.from(fileInput.files || []);
+        if (!files.length) return;
+        const hint = $('#journalPhotoHint');
+        if (hint) hint.textContent = '壓縮中…';
+        Promise.all(files.map(function (f) {
+          return TravelPhotos.compressBlob(f);
+        })).then(function (compressed) {
+          compressed.forEach(function (c) { draftPhotos.push(c); });
+          paintPreview();
+          if (hint) {
+            const inline = !(TravelPhotos.isIdbAvailable && TravelPhotos.isIdbAvailable());
+            hint.textContent = inline
+              ? '此裝置無 IndexedDB，照片會壓縮後內嵌（請少放幾張）。'
+              : '已壓縮；儲存後寫入 IndexedDB。';
+          }
+          fileInput.value = '';
+        }).catch(function (err) {
+          toast('照片處理失敗：' + (err.message || err));
+          if (hint) hint.textContent = '照片處理失敗';
+        });
+      });
+    }
+    const previewHost = $('#journalPhotoPreview');
+    if (previewHost) {
+      previewHost.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-rm-photo]');
+        if (!btn) return;
+        const idx = Number(btn.getAttribute('data-rm-photo'));
+        const removed = draftPhotos.splice(idx, 1)[0];
+        if (removed && entry && window.TravelPhotos) {
+          TravelPhotos.remove(trip.id, entry.id, removed.id);
+        }
+        paintPreview();
+      });
+    }
+  }
+
   /* ---------- Notes ---------- */
   function renderNotes(trip) {
     const el = $('#view-notes');
@@ -907,8 +1262,18 @@
     }
     if (action === 'export') {
       const name = 'travel-backup-' + new Date().toISOString().slice(0, 10) + '.json';
-      TravelStorage.download(name, TravelStorage.exportJson(state));
-      toast('已匯出');
+      toast('準備匯出…');
+      const done = function (json) {
+        TravelStorage.download(name, json);
+        toast('已匯出');
+      };
+      if (TravelStorage.exportJsonAsync) {
+        TravelStorage.exportJsonAsync(state).then(done).catch(function () {
+          done(TravelStorage.exportJson(state));
+        });
+      } else {
+        done(TravelStorage.exportJson(state));
+      }
       return;
     }
     if (action === 'lock') {
@@ -919,6 +1284,50 @@
       const imp = $('#importFile');
       if (imp) imp.click();
       else toast('找不到匯入元件');
+      return;
+    }
+
+    /* journal / memories */
+    if (action === 'add-journal') {
+      openJournalModal(trip, null);
+      return;
+    }
+    if (action === 'edit-journal') {
+      const jn = (trip.journal || []).find(function (x) { return x.id === t.dataset.id; });
+      if (!jn) return;
+      openJournalModal(trip, jn);
+      return;
+    }
+    if (action === 'edit-memories') {
+      ensureTripShape(trip);
+      const mem = trip.memories || defaultMemories();
+      const wrOpts = [
+        '<option value=""' + (mem.wouldReturn == null ? ' selected' : '') + '>未填</option>',
+        '<option value="yes"' + (mem.wouldReturn === true ? ' selected' : '') + '>會再來</option>',
+        '<option value="no"' + (mem.wouldReturn === false ? ' selected' : '') + '>暫時不想</option>'
+      ].join('');
+      const ratingOpts = '<option value="">（不評）</option>' + [1, 2, 3, 4, 5].map(function (n) {
+        return '<option value="' + n + '"' + (String(mem.overallRating) === String(n) ? ' selected' : '') + '>' + starsHtml(n) + ' ' + n + '</option>';
+      }).join('');
+      openModal('旅後總結',
+        field('整體評分', 'overallRating', ratingOpts, 'select') +
+        field('還會再來嗎', 'wouldReturn', wrOpts, 'select') +
+        field('亮點（一行一個）', 'highlights', (mem.highlights || []).join('\n'), 'textarea') +
+        field('總結短語', 'postTripNote', mem.postTripNote || '', 'textarea'),
+        function () {
+          const wr = val('wouldReturn');
+          trip.memories = {
+            highlights: val('highlights').split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+            wouldReturn: wr === 'yes' ? true : (wr === 'no' ? false : null),
+            overallRating: val('overallRating') ? Number(val('overallRating')) : null,
+            postTripNote: val('postTripNote').trim(),
+            updatedAt: new Date().toISOString(),
+            userEdited: true
+          };
+          touchTrip(trip);
+          toast('旅後總結已更新');
+        }
+      );
       return;
     }
 
@@ -1249,10 +1658,32 @@
             if (!confirm('匯入會覆蓋目前本機所有旅程資料，確定？')) return;
             state = data;
             ensureValidState(false);
-            TravelStorage.save(state);
-            renderTripSelect();
-            setView('overview');
-            toast('匯入成功');
+            const restore = (window.TravelPhotos && TravelPhotos.savePhoto)
+              ? Promise.all((state.trips || []).map(function (trip) {
+                  return Promise.all((trip.journal || []).map(function (entry) {
+                    return Promise.all((entry.photos || []).map(function (ph) {
+                      if (!ph || !ph.dataUrl) return null;
+                      return TravelPhotos.savePhoto(trip.id, entry.id, ph).then(function (meta) {
+                        // replace with meta (no dataUrl in state)
+                        Object.keys(ph).forEach(function (k) { delete ph[k]; });
+                        Object.assign(ph, meta);
+                      });
+                    }));
+                  }));
+                }))
+              : Promise.resolve();
+            restore.then(function () {
+              TravelStorage.save(state);
+              renderTripSelect();
+              setView('overview');
+              toast('匯入成功');
+            }).catch(function (err) {
+              console.warn(err);
+              TravelStorage.save(state);
+              renderTripSelect();
+              setView('overview');
+              toast('匯入成功（部分照片未寫入）');
+            });
           } catch (err) {
             toast('匯入失敗：' + (err.message || err));
           }

@@ -52,6 +52,8 @@
         return 'expense:' + String(item.item || '').trim().toLowerCase() + '|' + String(item.merchant || '').trim().toLowerCase();
       case 'todoGroup':
         return 'todoGroup:' + String(item.name || '').trim().toLowerCase();
+      case 'journal':
+        return 'journal:' + String(item.date || '') + '|' + String(item.title || '').trim().toLowerCase();
       default:
         return '';
     }
@@ -168,6 +170,40 @@
     });
   }
 
+  var OLD_DANANG_TITLES = { '2026 峴港': true, '2026峴港': true };
+  var NEW_DANANG_TITLE = '2026 11/5-11/10 峴港';
+
+  function isOldDanangTitle(title) {
+    return !!OLD_DANANG_TITLES[String(title || '').trim()];
+  }
+
+  function defaultMemories() {
+    return {
+      highlights: [],
+      wouldReturn: null,
+      overallRating: null,
+      postTripNote: ''
+    };
+  }
+
+  function mergeMemories(localMem, remoteMem) {
+    localMem = localMem || defaultMemories();
+    remoteMem = remoteMem || defaultMemories();
+    // Trip-level memories: treat as a scalar blob with localWins via synthetic item
+    var loc = {
+      userEdited: !!(localMem && (localMem.userEdited || localMem._userEdited)),
+      updatedAt: localMem.updatedAt,
+      value: localMem
+    };
+    var rem = {
+      userEdited: !!(remoteMem && (remoteMem.userEdited || remoteMem._userEdited)),
+      updatedAt: remoteMem.updatedAt,
+      value: remoteMem
+    };
+    if (localWins(loc, rem)) return clone(localMem);
+    return clone(remoteMem);
+  }
+
   function mergeTripScalars(localTrip, remoteTrip, out) {
     var fields = ['title', 'destination', 'startDate', 'endDate', 'notes', 'archived', 'goals'];
     var preferLocal = localWins(localTrip, remoteTrip);
@@ -180,6 +216,21 @@
         else if (localTrip[f] !== undefined) out[f] = clone(localTrip[f]);
       }
     });
+    // One-time title migrate: old seed title without a custom rename → prefer remote new title
+    var tripId = localTrip.id || remoteTrip.id;
+    if (tripId === 'trip_danang_2026') {
+      if (isOldDanangTitle(out.title)) {
+        if (remoteTrip.title && !isOldDanangTitle(remoteTrip.title)) {
+          out.title = remoteTrip.title;
+        } else {
+          out.title = NEW_DANANG_TITLE;
+        }
+      } else if (!localTrip.userEdited && remoteTrip.title && isOldDanangTitle(localTrip.title)) {
+        out.title = remoteTrip.title;
+      }
+    }
+    // memories: local wins
+    out.memories = mergeMemories(localTrip.memories, remoteTrip.memories);
     // updatedAt: newer wins; tie → local
     var lu = ts(localTrip.updatedAt);
     var ru = ts(remoteTrip.updatedAt);
@@ -203,6 +254,17 @@
     out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop');
     out.packing = mergePacking(localTrip.packing, remoteTrip.packing);
     out.expenses = mergeList(localTrip.expenses, remoteTrip.expenses, 'expense');
+    out.journal = mergeList(localTrip.journal, remoteTrip.journal, 'journal', function (merged, loc, rem) {
+      // Photos: keep local photo list if local wins / has photos; never drop local photo refs
+      if (localWins(loc, rem)) {
+        merged.photos = clone((loc && loc.photos) || merged.photos || []);
+      } else {
+        var remPhotos = (rem && rem.photos) || [];
+        var locPhotos = (loc && loc.photos) || [];
+        merged.photos = remPhotos.length ? clone(remPhotos) : clone(locPhotos);
+      }
+      return merged;
+    });
     // Structural routeMap: keep local if userEdited trip, else prefer remote if present, else local
     if (localTrip.userEdited && localTrip.routeMap) {
       out.routeMap = clone(localTrip.routeMap);

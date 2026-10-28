@@ -4,7 +4,7 @@
   "trips": [
     {
       "id": "trip_danang_2026",
-      "title": "2026 峴港",
+      "title": "2026 11/5-11/10 峴港",
       "destination": "越南 · 峴港（Da Nang）",
       "startDate": "2026-11-05",
       "endDate": "2026-11-10",
@@ -1398,6 +1398,13 @@
             "time": "40–55 分"
           }
         ]
+      },
+      "journal": [],
+      "memories": {
+        "highlights": [],
+        "wouldReturn": null,
+        "overallRating": null,
+        "postTripNote": ""
       }
     }
   ],
