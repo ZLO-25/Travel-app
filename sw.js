@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v14';
+const CACHE = 'ryan-travel-v15';
 const ASSETS = [
   './',
   './index.html',
@@ -27,6 +27,16 @@ const ASSETS = [
   './assets/details/thumbs/id-badge-vertical-red-stitch.webp',
   './assets/details/thumbs/id-badge-horizontal-red-bar.webp',
   './assets/details/thumbs/id-badge-bifold-minimal.webp',
+  './assets/details/id-badge-d-black-red-topbar.webp',
+  './assets/details/id-badge-e-black-red-edgepaint.webp',
+  './assets/details/id-badge-f-black-horizontal-red-stitch.webp',
+  './assets/details/id-badge-g-black-bifold-red-lining.webp',
+  './assets/details/id-badge-h-black-side-red-stripe.webp',
+  './assets/details/thumbs/id-badge-d-black-red-topbar.webp',
+  './assets/details/thumbs/id-badge-e-black-red-edgepaint.webp',
+  './assets/details/thumbs/id-badge-f-black-horizontal-red-stitch.webp',
+  './assets/details/thumbs/id-badge-g-black-bifold-red-lining.webp',
+  './assets/details/thumbs/id-badge-h-black-side-red-stripe.webp',
   './assets/details/loafer-penny-brown-side.webp',
   './assets/details/loafer-penny-brown-top.webp',
   './assets/details/loafer-penny-brown-threequarter.webp',

@@ -189,21 +189,26 @@
 
   function detailIdBadge() {
     return {
-  "title": "訂做識別證皮套（深色牛皮＋台積電配色）",
-  "summary": "台積電官方主色是紅 #E60012＋黑（不是藍）。用深色牛皮本體＋紅色車線／邊條點綴。熱門三款見圖。建議一次訂 2–3 個（日常＋備用）。",
+  "title": "訂做識別證皮套（台積電紅黑配色）",
+  "summary": "官方主色只有紅 #E60012＋黑 #000000（不是藍）。配色致敬即可，勿做未授權 Logo。兩大皮料方向：①真黑／近黑牛皮＋紅點綴（最貼標準配色，見款式 D–H）②深巧克力棕＋紅（較休閒、好配樂福鞋，見款式 A–C）。建議一次訂 2–3 個。",
   "tips": [
-    "款式A 直式雙面（最熱門）：正面透明窗放員工證，背面 2–3 卡槽放門禁／悠遊卡；頸繩 D環",
-    "款式B 橫式：員工證若是橫式用這款；頂部紅皮條＋槍色夾",
-    "款式C 對開皮夾式：證件窗＋多卡槽，可拆掛繩；較厚但實用",
-    "皮料：深巧克力／近黑全粒面牛皮，與樂福鞋同店同皮料較好配",
-    "配色：紅線或紅邊條用接近 #E60012；金屬五金槍色或黑色",
+    "【皮料方向① 標準配色】真黑／近黑全粒面牛皮＋紅 #E60012 點綴；金屬五金建議槍色或黑色",
+    "款式D 真黑直式＋頂部粗紅條＋槍色 D環（示意）",
+    "款式E 真黑直式＋全周紅邊油、黑車線（示意）",
+    "款式F 真黑橫式＋窗框紅對比車線（示意）",
+    "款式G 黑對開外皮＋開合可見紅 #E60012 內裡（示意）",
+    "款式H 真黑直式＋左側細紅直條（示意）",
+    "【皮料方向② 休閒向】深巧克力棕＋紅：較好配樂福鞋；見款式 A–C",
+    "款式A 直式雙面（最熱門）：深棕＋紅車線；正面透明窗、背面卡槽；頸繩 D環",
+    "款式B 橫式：頂部紅皮條＋槍色夾",
+    "款式C 對開皮夾式：近黑／深棕＋紅線＋掛繩；較厚但實用",
     "壓印：建議只壓姓名縮寫（如 OU），不要擅自做未授權的公司商標",
-    "尺寸：先量自己員工證實際長寬（常見 CR80 約 85.6×54mm）；直式／橫式對應證件方向",
+    "尺寸：先量員工證實際長寬（常見 CR80 約 85.6×54mm）；直式／橫式對應證件方向",
     "會安詢問：跟 Friendly Shoe Shop 訂樂福鞋時順便問小皮件；若不做可回台找 Pinkoi 手工皮件",
     "數量：建議 2 個同款直式＋可選 1 個橫式備援"
   ],
   "warnings": [
-    "勿在皮套上仿製未授權的台積電 Logo／字樣（商標風險）；用配色致敬即可",
+    "勿在皮套上仿製未授權的台積電 Logo／字樣（商標風險）；僅用紅 #E60012＋黑 #000000 配色致敬",
     "透明窗用耐磨 PVC／TPU，避免軟質易霧化材質",
     "門禁卡若有特殊厚度／感應，確認背面槽位不會擋感應"
   ],
@@ -222,6 +227,31 @@
       "src": "assets/details/id-badge-bifold-minimal.webp",
       "alt": "款式C 對開皮夾式識別證皮套示意",
       "caption": "款式C｜對開皮夾式：近黑＋紅線＋掛繩（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-d-black-red-topbar.webp",
+      "alt": "款式D 真黑直式頂部紅條示意",
+      "caption": "款式D｜標準配色：真黑＋頂部粗紅 #E60012＋槍色 D環（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-e-black-red-edgepaint.webp",
+      "alt": "款式E 真黑全周紅邊油示意",
+      "caption": "款式E｜標準配色：真黑＋全周紅邊油、黑車線（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-f-black-horizontal-red-stitch.webp",
+      "alt": "款式F 真黑橫式紅窗線示意",
+      "caption": "款式F｜標準配色：真黑橫式＋窗框紅對比車線（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-g-black-bifold-red-lining.webp",
+      "alt": "款式G 黑對開紅內裡示意",
+      "caption": "款式G｜標準配色：黑對開外皮＋紅 #E60012 內裡外露（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-h-black-side-red-stripe.webp",
+      "alt": "款式H 真黑側紅細條示意",
+      "caption": "款式H｜標準配色：真黑＋左側細紅直條（示意圖）"
     }
   ],
   "links": [
@@ -250,7 +280,7 @@
   /** Attach expandable detail panels to high-value Da Nang items (offline seed). */
   function enrichDanangDetails(trip) {
     if (!trip || trip.id !== 'trip_danang_2026') return trip;
-    var ts = '2026-10-28T18:30:00+08:00';
+    var ts = '2026-10-28T23:20:00+08:00';
     var scar = detailScarCream();
     var five = detailFiveFinger();
     var loafer = detailLoafer();
@@ -1057,9 +1087,9 @@
       "id": "sh_id_badge",
       "updatedAt": "2026-10-28T18:30:00+08:00",
       "userEdited": false,
-      "text": "訂做識別證皮套（台積電紅＋深色牛皮）",
+      "text": "訂做識別證皮套（多款紅黑示意）",
       "done": false,
-      "note": "建議直式雙面；跟樂福鞋同店詢問能否做"
+      "note": "標準配色紅#E60012＋黑；跟樂福鞋同店詢問能否做"
     },
     {
       "id": "sh_snacks",
