@@ -382,6 +382,9 @@
     if (trip.id === 'trip_danang_2026' && OLD_DANANG_TITLES[String(trip.title || '').trim()]) {
       trip.title = NEW_DANANG_TITLE;
     }
+    if (window.TravelSync && typeof TravelSync.sanitizeExpenses === 'function') {
+      trip.expenses = TravelSync.sanitizeExpenses(trip.expenses);
+    }
     (trip.expenses || []).forEach(function (e) {
       if (!e) return;
       if (e.estimateTwd == null || e.estimateTwd === '') e.estimateTwd = Number(e.twd) || 0;
@@ -2471,6 +2474,9 @@
     ensureValidState(false);
     if (!state.trips || !state.trips.length) {
       state = TravelSeed.defaultState();
+      TravelStorage.save(state);
+    } else if (hadLocal) {
+      // Persist one-time cleanup (drop leftover「金額請自行補上」placeholders)
       TravelStorage.save(state);
     }
     startUi();

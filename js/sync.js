@@ -330,6 +330,136 @@
     out.createdAt = localTrip.createdAt || remoteTrip.createdAt;
   }
 
+
+  var PLACEHOLDER_NOTE = '金額請自行補上';
+
+  function expenseMoneyEmpty(e) {
+    if (!e) return true;
+    return (Number(e.twd) || 0) === 0 && (Number(e.amount) || 0) === 0;
+  }
+
+  function isPlaceholderNote(e) {
+    return !!(e && String(e.note || '').indexOf(PLACEHOLDER_NOTE) >= 0);
+  }
+
+  function isJunkPlaceholderExpense(e) {
+    return isPlaceholderNote(e);
+  }
+
+  function remoteHasPositiveTwd(rem) {
+    return !!(rem && (Number(rem.twd) || 0) > 0);
+  }
+
+  function copyRemoteMoneyFields(merged, rem) {
+    if (!merged || !rem) return;
+    if (rem.twd != null) merged.twd = rem.twd;
+    if (rem.amount != null) merged.amount = rem.amount;
+    if (rem.currency != null) merged.currency = rem.currency;
+    var estEmpty = merged.estimateTwd == null || merged.estimateTwd === '' || Number(merged.estimateTwd) === 0;
+    if (estEmpty) {
+      if (rem.estimateTwd != null && Number(rem.estimateTwd) > 0) merged.estimateTwd = rem.estimateTwd;
+      else if ((Number(rem.twd) || 0) > 0) merged.estimateTwd = rem.twd;
+    }
+    if (isPlaceholderNote(merged)) {
+      if (rem.note != null && String(rem.note).indexOf(PLACEHOLDER_NOTE) < 0) merged.note = rem.note;
+      else merged.note = rem.note || '';
+      if (rem.merchant) merged.merchant = rem.merchant;
+      if (rem.date) merged.date = rem.date;
+      if (rem.item) merged.item = rem.item;
+    }
+  }
+
+  /** When localWins (e.g. eye toggle) but money is empty / placeholder, take remote money. */
+  function repairMergedExpenseMoney(merged, loc, rem) {
+    if (!merged || !remoteHasPositiveTwd(rem)) return merged;
+    if (!(isPlaceholderNote(merged) || expenseMoneyEmpty(merged))) return merged;
+    copyRemoteMoneyFields(merged, rem);
+    return merged;
+  }
+
+  function normalizeExpenseItem(item) {
+    return String(item || '').replace(/\s+/g, '').toLowerCase();
+  }
+
+  function expenseNearDedupeKey(e) {
+    var n = normalizeExpenseItem(e && e.item);
+    if (!n) return null;
+    if (n.indexOf('機票') >= 0 && n.indexOf('虎航') >= 0) return 'flight:tigerair';
+    if (n.indexOf('royallotus') >= 0 && (n.indexOf('飯店') >= 0 || n.indexOf('住宿') >= 0 || n.indexOf('hotel') >= 0)) {
+      return 'hotel:royallotus';
+    }
+    return null;
+  }
+
+  function expenseRichness(e) {
+    var score = 0;
+    if (!e) return -999;
+    if (e.id === 'ex_flights' || e.id === 'ex_hotel') score += 50;
+    if ((Number(e.twd) || 0) > 0) score += 100;
+    if ((Number(e.amount) || 0) > 0) score += 20;
+    if ((Number(e.estimateTwd) || 0) > 0) score += 10;
+    if (e.note && !isPlaceholderNote(e)) score += 5;
+    if (isPlaceholderNote(e)) score -= 50;
+    if (expenseMoneyEmpty(e)) score -= 20;
+    return score;
+  }
+
+  function itemsNearDuplicate(a, b) {
+    if (!a || !b) return false;
+    var keyA = expenseNearDedupeKey(a);
+    var keyB = expenseNearDedupeKey(b);
+    if (keyA && keyB && keyA === keyB) return true;
+    var na = normalizeExpenseItem(a.item);
+    var nb = normalizeExpenseItem(b.item);
+    if (!na || !nb) return false;
+    if (na === nb) return true;
+    if (na.indexOf(nb) >= 0 || nb.indexOf(na) >= 0) return true;
+    return false;
+  }
+
+  /**
+   * Drop seed leftover placeholders (「金額請自行補上」) and collapse
+   * zero-amount near-duplicates of the real ex_flights / ex_hotel rows.
+   */
+  function sanitizeExpenses(list) {
+    list = Array.isArray(list) ? list.filter(Boolean) : [];
+    var withoutJunk = list.filter(function (e) {
+      return !isJunkPlaceholderExpense(e);
+    });
+
+    var out = [];
+    withoutJunk.forEach(function (e) {
+      var dupIdx = -1;
+      for (var i = 0; i < out.length; i++) {
+        if (itemsNearDuplicate(out[i], e)) {
+          var keyA = expenseNearDedupeKey(out[i]);
+          var keyB = expenseNearDedupeKey(e);
+          // Conservative: only auto-collapse known flight/hotel pairs,
+          // or exact/substring item match when one side is zero-money.
+          if ((keyA && keyB && keyA === keyB) || expenseMoneyEmpty(out[i]) || expenseMoneyEmpty(e) || isPlaceholderNote(out[i]) || isPlaceholderNote(e)) {
+            dupIdx = i;
+            break;
+          }
+        }
+      }
+      if (dupIdx < 0) {
+        out.push(e);
+        return;
+      }
+      var keep = out[dupIdx];
+      var challenger = e;
+      var winner = expenseRichness(challenger) > expenseRichness(keep) ? challenger : keep;
+      var loser = winner === keep ? challenger : keep;
+      // Only drop when loser is zero-amount or placeholder
+      if (!(expenseMoneyEmpty(loser) || isPlaceholderNote(loser))) {
+        out.push(e);
+        return;
+      }
+      out[dupIdx] = winner;
+    });
+    return out;
+  }
+
   function mergeTrip(localTrip, remoteTrip) {
     if (!localTrip) return clone(remoteTrip);
     if (!remoteTrip) return clone(localTrip);
@@ -348,6 +478,8 @@
       if (localWins(loc, rem)) {
         if (loc.estimateTwd != null) merged.estimateTwd = loc.estimateTwd;
         if (loc.excludeFromEstimate != null) merged.excludeFromEstimate = !!loc.excludeFromEstimate;
+        // Eye-toggle / userEdited can make localWins while money is still empty seed junk.
+        repairMergedExpenseMoney(merged, loc, rem);
       } else {
         if (merged.estimateTwd == null && loc.estimateTwd != null) merged.estimateTwd = loc.estimateTwd;
         if (merged.excludeFromEstimate == null && loc.excludeFromEstimate != null) {
@@ -358,6 +490,7 @@
       if (merged.excludeFromEstimate == null) merged.excludeFromEstimate = false;
       return merged;
     });
+    out.expenses = sanitizeExpenses(out.expenses);
     out.journal = mergeList(localTrip.journal, remoteTrip.journal, 'journal', function (merged, loc, rem) {
       // Photos: keep local photo list if local wins / has photos; never drop local photo refs
       if (localWins(loc, rem)) {
@@ -382,10 +515,18 @@
 
   function mergeStates(localState, remoteState) {
     if (!remoteState || !Array.isArray(remoteState.trips)) {
-      return localState ? clone(localState) : null;
+      if (!localState) return null;
+      var localOnly = clone(localState);
+      (localOnly.trips || []).forEach(function (t) {
+        if (t) t.expenses = sanitizeExpenses(t.expenses);
+      });
+      return localOnly;
     }
     if (!localState || !Array.isArray(localState.trips) || !localState.trips.length) {
       var fresh = clone(remoteState);
+      (fresh.trips || []).forEach(function (t) {
+        if (t) t.expenses = sanitizeExpenses(t.expenses);
+      });
       fresh.syncedAt = new Date().toISOString();
       return fresh;
     }
@@ -409,6 +550,10 @@
       if (!lt) return;
       if (lt.id && used[lt.id]) return;
       trips.push(clone(lt));
+    });
+
+    trips.forEach(function (t) {
+      if (t) t.expenses = sanitizeExpenses(t.expenses);
     });
 
     var out = {
@@ -469,7 +614,12 @@
       return mergeStates(local, remote);
     }).catch(function (err) {
       console.warn('remote sync skipped', err);
-      if (local && Array.isArray(local.trips) && local.trips.length) return local;
+      if (local && Array.isArray(local.trips) && local.trips.length) {
+        (local.trips || []).forEach(function (t) {
+          if (t) t.expenses = sanitizeExpenses(t.expenses);
+        });
+        return local;
+      }
       return seedFactory ? seedFactory() : (local || null);
     });
   }
@@ -483,6 +633,8 @@
     mergeDetailsField: mergeDetailsField,
     localWins: localWins,
     loadMergedState: loadMergedState,
-    fingerprint: fingerprint
+    fingerprint: fingerprint,
+    sanitizeExpenses: sanitizeExpenses,
+    isJunkPlaceholderExpense: isJunkPlaceholderExpense
   };
 })(window);
