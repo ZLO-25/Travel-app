@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v15';
+const CACHE = 'ryan-travel-v16';
 const ASSETS = [
   './',
   './index.html',
@@ -53,6 +53,22 @@ const ASSETS = [
   './assets/details/thumbs/loafer-casual-jeans.webp',
   './assets/details/thumbs/loafer-casual-chinos.webp',
   './assets/details/thumbs/loafer-casual-shorts.webp',
+  './assets/details/loafer-thin-sole-closeup.webp',
+  './assets/details/loafer-thin-sole-edge.webp',
+  './assets/details/loafer-thin-sole-profile.webp',
+  './assets/details/loafer-modern-sleek-brown.webp',
+  './assets/details/loafer-modern-soft-casual.webp',
+  './assets/details/loafer-casual-young-jeans.webp',
+  './assets/details/loafer-casual-young-linen.webp',
+  './assets/details/loafer-casual-young-shorts.webp',
+  './assets/details/thumbs/loafer-thin-sole-closeup.webp',
+  './assets/details/thumbs/loafer-thin-sole-edge.webp',
+  './assets/details/thumbs/loafer-thin-sole-profile.webp',
+  './assets/details/thumbs/loafer-modern-sleek-brown.webp',
+  './assets/details/thumbs/loafer-modern-soft-casual.webp',
+  './assets/details/thumbs/loafer-casual-young-jeans.webp',
+  './assets/details/thumbs/loafer-casual-young-linen.webp',
+  './assets/details/thumbs/loafer-casual-young-shorts.webp',
 ];
 
 function isRemoteJson(url) {
