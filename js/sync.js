@@ -203,6 +203,14 @@
     out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop');
     out.packing = mergePacking(localTrip.packing, remoteTrip.packing);
     out.expenses = mergeList(localTrip.expenses, remoteTrip.expenses, 'expense');
+    // Structural routeMap: keep local if userEdited trip, else prefer remote if present, else local
+    if (localTrip.userEdited && localTrip.routeMap) {
+      out.routeMap = clone(localTrip.routeMap);
+    } else if (remoteTrip.routeMap) {
+      out.routeMap = clone(remoteTrip.routeMap);
+    } else if (localTrip.routeMap) {
+      out.routeMap = clone(localTrip.routeMap);
+    }
     return out;
   }
 
@@ -280,8 +288,8 @@
       return mergeStates(local, remote);
     }).catch(function (err) {
       console.warn('remote sync skipped', err);
-      if (local) return local;
-      return seedFactory ? seedFactory() : null;
+      if (local && Array.isArray(local.trips) && local.trips.length) return local;
+      return seedFactory ? seedFactory() : (local || null);
     });
   }
 

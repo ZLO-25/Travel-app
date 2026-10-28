@@ -126,20 +126,52 @@
   }
 
   /* ---------- Render shell ---------- */
+  function ensureValidState(recoveredOnce) {
+    if (!state || !Array.isArray(state.trips) || !state.trips.length) {
+      console.warn('empty trips — recovering from seed');
+      state = TravelSeed.defaultState();
+      return true;
+    }
+    if (!state.trips.some(function (t) { return t && t.id === state.activeTripId; })) {
+      state.activeTripId = state.trips[0].id;
+    }
+    return !!recoveredOnce;
+  }
+
   function renderTripSelect() {
     const sel = $('#tripSelect');
-    const trips = state.trips.filter(function (t) { return !t.archived; });
-    const archived = state.trips.filter(function (t) { return t.archived; });
+    if (!sel) return;
+    ensureValidState(false);
+    let trips = (state.trips || []).filter(function (t) { return t && !t.archived; });
+    let archived = (state.trips || []).filter(function (t) { return t && t.archived; });
+    // If filter wiped options but trips exist (e.g. bad archived flags), still show all
+    if (!trips.length && !archived.length && state.trips && state.trips.length) {
+      trips = state.trips.slice();
+      archived = [];
+    }
+    if (!trips.length && !archived.length) {
+      if (!renderTripSelect._recovered) {
+        renderTripSelect._recovered = true;
+        ensureValidState(true);
+        TravelStorage.save(state);
+        trips = state.trips.filter(function (t) { return !t.archived; });
+        archived = state.trips.filter(function (t) { return t.archived; });
+      }
+    }
     let html = '';
     trips.forEach(function (t) {
-      html += '<option value="' + escapeHtml(t.id) + '"' + (t.id === state.activeTripId ? ' selected' : '') + '>' + escapeHtml(t.title) + '</option>';
+      html += '<option value="' + escapeHtml(t.id) + '"' + (t.id === state.activeTripId ? ' selected' : '') + '>' + escapeHtml(t.title || t.id) + '</option>';
     });
     if (archived.length) {
       html += '<optgroup label="已封存">';
       archived.forEach(function (t) {
-        html += '<option value="' + escapeHtml(t.id) + '"' + (t.id === state.activeTripId ? ' selected' : '') + '>' + escapeHtml(t.title) + '（封存）</option>';
+        html += '<option value="' + escapeHtml(t.id) + '"' + (t.id === state.activeTripId ? ' selected' : '') + '>' + escapeHtml(t.title || t.id) + '（封存）</option>';
       });
       html += '</optgroup>';
+    }
+    if (!html) {
+      html = '<option value="">（無旅程）</option>';
+      console.warn('renderTripSelect: still no options after recovery');
     }
     sel.innerHTML = html;
   }
@@ -334,9 +366,102 @@
   }
 
   /* ---------- Places ---------- */
+  function projectRoutePoints(points, width, height, pad) {
+    pad = pad == null ? 36 : pad;
+    const lats = points.map(function (p) { return Number(p.lat); });
+    const lngs = points.map(function (p) { return Number(p.lng); });
+    const minLat = Math.min.apply(null, lats);
+    const maxLat = Math.max.apply(null, lats);
+    const minLng = Math.min.apply(null, lngs);
+    const maxLng = Math.max.apply(null, lngs);
+    const dLat = Math.max(maxLat - minLat, 0.0001);
+    const dLng = Math.max(maxLng - minLng, 0.0001);
+    // Keep aspect roughly geographic (lng scale by cos mid-lat)
+    const midLat = (minLat + maxLat) / 2;
+    const cos = Math.cos(midLat * Math.PI / 180) || 1;
+    const spanX = dLng * cos;
+    const spanY = dLat;
+    const usableW = width - pad * 2;
+    const usableH = height - pad * 2;
+    const scale = Math.min(usableW / spanX, usableH / spanY);
+    const ox = (width - spanX * scale) / 2;
+    const oy = (height - spanY * scale) / 2;
+    const byId = {};
+    points.forEach(function (p) {
+      const x = ox + (Number(p.lng) - minLng) * cos * scale;
+      // SVG y grows down; north (higher lat) should be higher on screen
+      const y = height - (oy + (Number(p.lat) - minLat) * scale);
+      byId[p.id] = { x: x, y: y, p: p };
+    });
+    return byId;
+  }
+
+  function renderRouteMapSvg(routeMap) {
+    if (!routeMap || !routeMap.points || routeMap.points.length < 2) return '';
+    const W = 360;
+    const H = 280;
+    const pts = projectRoutePoints(routeMap.points, W, H, 44);
+    const colors = { hotel: '#e76f51', marble: '#2a9d8f', hoian: '#f4a261' };
+    let lines = '';
+    let labels = '';
+    (routeMap.edges || []).forEach(function (e, idx) {
+      const a = pts[e.from];
+      const b = pts[e.to];
+      if (!a || !b) return;
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+      // Slight perpendicular offset so hotel↔hoian label doesn't overlap others
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      const side = (idx === 2) ? -1 : 1;
+      const ox = (-dy / len) * 14 * side;
+      const oy = (dx / len) * 14 * side;
+      const lx = mx + ox;
+      const ly = my + oy;
+      const stroke = idx === 2 ? '#f4a261' : '#2a9d8f';
+      const dash = idx === 2 ? '6 4' : '0';
+      lines += '<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) +
+        '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) +
+        '" stroke="' + stroke + '" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="' + dash + '" opacity="0.85"/>';
+      const label = escapeHtml((e.distance || '') + (e.distance && e.time ? ' · ' : '') + (e.time || ''));
+      labels += '<rect x="' + (lx - 54).toFixed(1) + '" y="' + (ly - 11).toFixed(1) +
+        '" width="108" height="22" rx="11" fill="rgba(255,255,255,0.92)" stroke="#e8ddd2"/>' +
+        '<text x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) +
+        '" text-anchor="middle" class="route-edge-label">' + label + '</text>';
+    });
+    let markers = '';
+    routeMap.points.forEach(function (p) {
+      const c = pts[p.id];
+      if (!c) return;
+      const fill = colors[p.id] || '#e76f51';
+      markers += '<circle cx="' + c.x.toFixed(1) + '" cy="' + c.y.toFixed(1) +
+        '" r="9" fill="' + fill + '" stroke="#fff" stroke-width="2.5"/>' +
+        '<text x="' + c.x.toFixed(1) + '" y="' + (c.y - 16).toFixed(1) +
+        '" text-anchor="middle" class="route-point-label">' + escapeHtml(p.label) + '</text>' +
+        '<text x="' + c.x.toFixed(1) + '" y="' + (c.y + 24).toFixed(1) +
+        '" text-anchor="middle" class="route-point-sub">' + escapeHtml(p.sublabel || '') + '</text>';
+    });
+    return '<div class="route-map" role="img" aria-label="' + escapeHtml(routeMap.title || '主要動線') + '">' +
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="0" y="0" width="' + W + '" height="' + H + '" rx="14" fill="#faf6f1"/>' +
+      lines + labels + markers +
+      '</svg></div>';
+  }
+
   function renderPlaces(trip) {
     const el = $('#view-places');
-    let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">地點</h2>' +
+    let html = '';
+    if (trip.routeMap && trip.routeMap.points && trip.routeMap.points.length) {
+      html += '<div class="card route-card">' +
+        '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
+        '<div><h2 style="margin:0">' + escapeHtml(trip.routeMap.title || '主要動線') + '</h2>' +
+        '<div class="faint">飯店 · 五行山 · 會安（相對位置與 Grab／車程估算）</div></div></div>' +
+        renderRouteMapSvg(trip.routeMap) +
+        (trip.routeMap.note ? '<p class="faint" style="margin-top:8px">' + escapeHtml(trip.routeMap.note) + '</p>' : '') +
+        '</div>';
+    }
+    html += '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">地點</h2>' +
       '<button type="button" class="btn btn-secondary btn-sm" data-action="add-place">＋ 新增</button></div>';
     if (!(trip.places || []).length) html += '<p class="muted">尚無地點</p>';
     (trip.places || []).forEach(function (p) {
@@ -988,6 +1113,15 @@
     var hadLocal = !!TravelStorage.load();
     var finish = function (merged) {
       state = merged || TravelSeed.defaultState();
+      if (!state.trips || !state.trips.length) {
+        console.warn('boot: merged state had no trips — using seed/remote fallback');
+        var local = TravelStorage.load();
+        if (local && local.trips && local.trips.length) state = local;
+        else state = TravelSeed.defaultState();
+      }
+      if (!state.trips.some(function (t) { return t && t.id === state.activeTripId; })) {
+        state.activeTripId = state.trips[0].id;
+      }
       TravelStorage.save(state);
       startUi();
       if (state.syncedAt && hadLocal) {
@@ -1000,10 +1134,12 @@
     if (window.TravelSync && TravelSync.loadMergedState) {
       TravelSync.loadMergedState(TravelSeed.defaultState).then(finish).catch(function (err) {
         console.warn('boot sync failed', err);
-        finish(TravelStorage.load() || TravelSeed.defaultState());
+        var local = TravelStorage.load();
+        finish((local && local.trips && local.trips.length) ? local : TravelSeed.defaultState());
       });
     } else {
-      finish(TravelStorage.load() || TravelSeed.defaultState());
+      var localOnly = TravelStorage.load();
+      finish((localOnly && localOnly.trips && localOnly.trips.length) ? localOnly : TravelSeed.defaultState());
     }
   }
 

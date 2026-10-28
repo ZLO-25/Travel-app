@@ -84,6 +84,7 @@ a { color: var(--teal); }
 .trip-switch {
   flex: 1;
   min-width: 0;
+  max-width: min(100%, 480px);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -91,6 +92,8 @@ a { color: var(--teal); }
 .trip-select {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
+  width: 100%;
   appearance: none;
   border: 1px solid var(--border);
   background: var(--bg-elevated);
@@ -100,6 +103,9 @@ a { color: var(--teal); }
   background-repeat: no-repeat;
   background-position: right 14px center;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .icon-btn {
   min-width: var(--tap);
@@ -614,3 +620,38 @@ body.locked .app { visibility: hidden; pointer-events: none; }
   margin-bottom: 12px;
 }
 .lock-error { color: var(--danger); margin: 12px 0 0; font-size: 0.9rem; }
+
+/* Route schematic map (places tab) */
+.route-card .route-map {
+  margin-top: 12px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+.route-map svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.route-edge-label {
+  font-size: 10px;
+  font-weight: 600;
+  fill: #6b5b4e;
+  font-family: var(--font);
+}
+.route-point-label {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #2b2118;
+  font-family: var(--font);
+}
+.route-point-sub {
+  font-size: 8.5px;
+  fill: #9a8b7c;
+  font-family: var(--font);
+}
+@media (max-width: 420px) {
+  .route-point-sub { font-size: 7.5px; }
+  .route-edge-label { font-size: 9px; }
+}

@@ -1351,7 +1351,54 @@
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
       "updatedAt": "2026-10-28T10:04:05+08:00",
-      "userEdited": false
+      "userEdited": false,
+      "routeMap": {
+        "title": "主要動線",
+        "note": "Grab／自駕估算；實際視路況與尖峰而異",
+        "points": [
+          {
+            "id": "hotel",
+            "label": "飯店",
+            "sublabel": "Royal Lotus Hotel Danang",
+            "lat": 16.0548,
+            "lng": 108.2435
+          },
+          {
+            "id": "marble",
+            "label": "五行山",
+            "sublabel": "Marble Mountains（Ngũ Hành Sơn）",
+            "lat": 16.0039,
+            "lng": 108.2635
+          },
+          {
+            "id": "hoian",
+            "label": "會安",
+            "sublabel": "古城／日本橋一帶",
+            "lat": 15.8777,
+            "lng": 108.3287
+          }
+        ],
+        "edges": [
+          {
+            "from": "hotel",
+            "to": "marble",
+            "distance": "約 8–10 km",
+            "time": "15–25 分"
+          },
+          {
+            "from": "marble",
+            "to": "hoian",
+            "distance": "約 18–20 km",
+            "time": "30–40 分"
+          },
+          {
+            "from": "hotel",
+            "to": "hoian",
+            "distance": "約 25–28 km",
+            "time": "40–55 分"
+          }
+        ]
+      }
     }
   ],
   "syncedAt": "2026-10-28T11:22:16+08:00",
