@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v8';
+const CACHE = 'ryan-travel-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -18,9 +18,15 @@ const ASSETS = [
   './assets/details/dermatix-ultra-7g.webp',
   './assets/details/contractubex-10g.webp',
   './assets/details/vibram-kso-evo.webp',
+  './assets/details/id-badge-vertical-red-stitch.webp',
+  './assets/details/id-badge-horizontal-red-bar.webp',
+  './assets/details/id-badge-bifold-minimal.webp',
   './assets/details/thumbs/dermatix-ultra-7g.webp',
   './assets/details/thumbs/contractubex-10g.webp',
-  './assets/details/thumbs/vibram-kso-evo.webp'
+  './assets/details/thumbs/vibram-kso-evo.webp',
+  './assets/details/thumbs/id-badge-vertical-red-stitch.webp',
+  './assets/details/thumbs/id-badge-horizontal-red-bar.webp',
+  './assets/details/thumbs/id-badge-bifold-minimal.webp'
 ];
 
 function isRemoteJson(url) {

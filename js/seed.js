@@ -126,13 +126,69 @@
   "tips": [
     "出發前決定規格、量腳、剪趾甲、拍參考照片",
     "Trần Phú 淹水時改其他分店；11/6 早上可查 Hội An ngập",
-    "留足試穿與修改時間；最晚 11/9 取鞋付尾款"
+    "留足試穿與修改時間；最晚 11/9 取鞋付尾款",
+    "訂鞋時順便問小皮件：識別證皮套（深色牛皮＋紅線）能否同店做"
   ],
   "warnings": [
     "雨季可能改店／延誤，別拖到最後一天才下單"
   ],
   "images": [],
   "links": []
+};
+  }
+
+
+  function detailIdBadge() {
+    return {
+  "title": "訂做識別證皮套（深色牛皮＋台積電配色）",
+  "summary": "台積電官方主色是紅 #E60012＋黑（不是藍）。用深色牛皮本體＋紅色車線／邊條點綴。熱門三款見圖。建議一次訂 2–3 個（日常＋備用）。",
+  "tips": [
+    "款式A 直式雙面（最熱門）：正面透明窗放員工證，背面 2–3 卡槽放門禁／悠遊卡；頸繩 D環",
+    "款式B 橫式：員工證若是橫式用這款；頂部紅皮條＋槍色夾",
+    "款式C 對開皮夾式：證件窗＋多卡槽，可拆掛繩；較厚但實用",
+    "皮料：深巧克力／近黑全粒面牛皮，與樂福鞋同店同皮料較好配",
+    "配色：紅線或紅邊條用接近 #E60012；金屬五金槍色或黑色",
+    "壓印：建議只壓姓名縮寫（如 OU），不要擅自做未授權的公司商標",
+    "尺寸：先量自己員工證實際長寬（常見 CR80 約 85.6×54mm）；直式／橫式對應證件方向",
+    "會安詢問：跟 Friendly Shoe Shop 訂樂福鞋時順便問小皮件；若不做可回台找 Pinkoi 手工皮件",
+    "數量：建議 2 個同款直式＋可選 1 個橫式備援"
+  ],
+  "warnings": [
+    "勿在皮套上仿製未授權的台積電 Logo／字樣（商標風險）；用配色致敬即可",
+    "透明窗用耐磨 PVC／TPU，避免軟質易霧化材質",
+    "門禁卡若有特殊厚度／感應，確認背面槽位不會擋感應"
+  ],
+  "images": [
+    {
+      "src": "assets/details/id-badge-vertical-red-stitch.webp",
+      "alt": "款式A 直式雙面識別證皮套示意",
+      "caption": "款式A｜直式雙面：深棕牛皮＋台積電紅車線（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-horizontal-red-bar.webp",
+      "alt": "款式B 橫式識別證皮套示意",
+      "caption": "款式B｜橫式：頂部紅皮條＋槍色夾（示意圖）"
+    },
+    {
+      "src": "assets/details/id-badge-bifold-minimal.webp",
+      "alt": "款式C 對開皮夾式識別證皮套示意",
+      "caption": "款式C｜對開皮夾式：近黑＋紅線＋掛繩（示意圖）"
+    }
+  ],
+  "links": [
+    {
+      "label": "Pinkoi SEANCHY 直式識別證皮套（備援）",
+      "url": "https://www.pinkoi.com/product/9uPZBCHX"
+    },
+    {
+      "label": "Pinkoi SEANCHY 扣環款識別證皮套",
+      "url": "https://www.pinkoi.com/product/mcbWArpj"
+    },
+    {
+      "label": "Pinkoi SEANCHY 店舖",
+      "url": "https://www.pinkoi.com/store/seanchy"
+    }
+  ]
 };
   }
 
@@ -145,15 +201,17 @@
   /** Attach expandable detail panels to high-value Da Nang items (offline seed). */
   function enrichDanangDetails(trip) {
     if (!trip || trip.id !== 'trip_danang_2026') return trip;
-    var ts = '2026-10-28T13:40:00+08:00';
+    var ts = '2026-10-28T18:30:00+08:00';
     var scar = detailScarCream();
     var five = detailFiveFinger();
     var loafer = detailLoafer();
+    var badge = detailIdBadge();
     (trip.shopping || []).forEach(function (item) {
       if (!item) return;
       if (item.id === 'sh_scar') applyDetails(item, scar, ts);
       else if (item.id === 'sh_fivefinger') applyDetails(item, five, ts);
       else if (item.id === 'sh_loafer') applyDetails(item, loafer, ts);
+      else if (item.id === 'sh_id_badge') applyDetails(item, badge, ts);
     });
     (trip.places || []).forEach(function (p) {
       if (!p) return;
@@ -945,6 +1003,14 @@
       "text": "訂做樂福鞋",
       "done": false,
       "note": "Friendly Shoe Shop；規格／尺寸事先決定"
+    },
+    {
+      "id": "sh_id_badge",
+      "updatedAt": "2026-10-28T18:30:00+08:00",
+      "userEdited": false,
+      "text": "訂做識別證皮套（台積電紅＋深色牛皮）",
+      "done": false,
+      "note": "建議直式雙面；跟樂福鞋同店詢問能否做"
     },
     {
       "id": "sh_snacks",
