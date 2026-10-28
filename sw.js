@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v7';
+const CACHE = 'ryan-travel-v8';
 const ASSETS = [
   './',
   './index.html',
@@ -14,7 +14,13 @@ const ASSETS = [
   './assets/icon-192.png',
   './assets/icon-512.png',
   './assets/apple-touch-icon.png',
-  './assets/icon.svg'
+  './assets/icon.svg',
+  './assets/details/dermatix-ultra-7g.webp',
+  './assets/details/contractubex-10g.webp',
+  './assets/details/vibram-kso-evo.webp',
+  './assets/details/thumbs/dermatix-ultra-7g.webp',
+  './assets/details/thumbs/contractubex-10g.webp',
+  './assets/details/thumbs/vibram-kso-evo.webp'
 ];
 
 function isRemoteJson(url) {

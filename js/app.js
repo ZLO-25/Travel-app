@@ -130,6 +130,240 @@
       .replace(/"/g, '&quot;');
   }
 
+
+  /* ---------- Expandable details (compact chip → dialog) ---------- */
+  var detailOpener = null;
+  var detailSwipe = null;
+
+  function hasDetails(obj) {
+    return !!(obj && obj.details && (obj.details.title || obj.details.summary ||
+      (obj.details.tips && obj.details.tips.length) ||
+      (obj.details.images && obj.details.images.length)));
+  }
+
+  function detailThumbOf(details) {
+    var imgs = details && details.images;
+    if (!imgs || !imgs.length) return '';
+    var src = imgs[0].src || '';
+    if (!src) return '';
+    if (src.indexOf('/thumbs/') >= 0) return src;
+    var slash = src.lastIndexOf('/');
+    if (slash < 0) return 'assets/details/thumbs/' + src;
+    return src.slice(0, slash + 1) + 'thumbs/' + src.slice(slash + 1);
+  }
+
+  function detailChipHtml(details, kind, id, dayId) {
+    if (!details) return '';
+    var label = '查看詳情：' + String(details.title || '更多').replace(/[<>&"]/g, '');
+    var thumb = detailThumbOf(details);
+    var extra = dayId ? (' data-day="' + escapeHtml(dayId) + '"') : '';
+    if (thumb) {
+      return '<button type="button" class="detail-chip" data-action="open-detail" data-kind="' +
+        escapeHtml(kind) + '" data-id="' + escapeHtml(id) + '"' + extra +
+        ' aria-label="' + escapeHtml(label) + '">' +
+        '<img src="' + escapeHtml(thumb) + '" alt="" width="40" height="40" loading="lazy" decoding="async">' +
+        '</button>';
+    }
+    return '<button type="button" class="detail-chip detail-chip-info" data-action="open-detail" data-kind="' +
+      escapeHtml(kind) + '" data-id="' + escapeHtml(id) + '"' + extra +
+      ' aria-label="' + escapeHtml(label) + '">ℹ️</button>';
+  }
+
+  function lookupDetails(kind, id, dayId) {
+    var trip = activeTrip();
+    if (!trip || !id) return null;
+    if (kind === 'shop') {
+      var s = (trip.shopping || []).find(function (x) { return x.id === id; });
+      return s && s.details ? s.details : null;
+    }
+    if (kind === 'place') {
+      var p = (trip.places || []).find(function (x) { return x.id === id; });
+      return p && p.details ? p.details : null;
+    }
+    if (kind === 'todo') {
+      var groups = trip.todoGroups || [];
+      for (var i = 0; i < groups.length; i++) {
+        var items = groups[i].items || [];
+        for (var j = 0; j < items.length; j++) {
+          if (items[j].id === id) return items[j].details || null;
+        }
+      }
+      return null;
+    }
+    if (kind === 'block') {
+      var day = (trip.days || []).find(function (d) { return d.id === dayId; });
+      if (!day) {
+        // fallback scan
+        for (var d = 0; d < (trip.days || []).length; d++) {
+          var bls = trip.days[d].blocks || [];
+          for (var b = 0; b < bls.length; b++) {
+            if (bls[b].id === id) return bls[b].details || null;
+          }
+        }
+        return null;
+      }
+      var block = (day.blocks || []).find(function (x) { return x.id === id; });
+      return block && block.details ? block.details : null;
+    }
+    return null;
+  }
+
+  function listHtml(items, className) {
+    if (!items || !items.length) return '';
+    var html = '<div class="detail-section' + (className ? ' ' + className : '') + '">';
+    if (className === 'warn') html += '<h4>注意</h4>';
+    else html += '<h4>重點</h4>';
+    html += '<ul>';
+    items.forEach(function (t) {
+      html += '<li>' + escapeHtml(t) + '</li>';
+    });
+    html += '</ul></div>';
+    return html;
+  }
+
+  function renderDetailBody(details) {
+    var html = '';
+    if (details.summary) html += '<p class="detail-summary">' + escapeHtml(details.summary) + '</p>';
+    html += listHtml(details.tips, '');
+    html += listHtml(details.warnings, 'warn');
+    if (details.images && details.images.length) {
+      html += '<div class="detail-section"><h4>圖片</h4><div class="detail-gallery">';
+      details.images.forEach(function (img, idx) {
+        html += '<button type="button" data-action="open-lightbox" data-idx="' + idx + '" aria-label="' +
+          escapeHtml(img.alt || img.caption || '放大圖片') + '">' +
+          '<img src="' + escapeHtml(img.src) + '" alt="' + escapeHtml(img.alt || '') + '" loading="lazy" decoding="async">' +
+          (img.caption ? '<span class="cap">' + escapeHtml(img.caption) + '</span>' : '') +
+          '</button>';
+      });
+      html += '</div></div>';
+    }
+    if (details.links && details.links.length) {
+      html += '<div class="detail-section"><h4>連結</h4><div class="detail-links">';
+      details.links.forEach(function (lnk) {
+        if (!lnk || !lnk.url) return;
+        html += '<a href="' + escapeHtml(lnk.url) + '" target="_blank" rel="noopener noreferrer">' +
+          escapeHtml(lnk.label || lnk.url) + '</a>';
+      });
+      html += '</div></div>';
+    }
+    return html || '<p class="muted">尚無更多說明</p>';
+  }
+
+  function closeDetailDialog() {
+    var dlg = $('#detailDialog');
+    if (dlg && dlg.open) {
+      try { dlg.close(); } catch (e) { dlg.removeAttribute('open'); }
+    }
+    detailSwipe = null;
+    var opener = detailOpener;
+    detailOpener = null;
+    if (opener && typeof opener.focus === 'function') {
+      try { opener.focus(); } catch (e) {}
+    }
+  }
+
+  function openDetail(details, openerEl) {
+    if (!details) return;
+    var dlg = $('#detailDialog');
+    var body = $('#detailBody');
+    var title = $('#detailTitle');
+    if (!dlg || !body || !title) return;
+    detailOpener = openerEl || document.activeElement;
+    title.textContent = details.title || '詳情';
+    body.innerHTML = renderDetailBody(details);
+    // stash for lightbox
+    dlg._details = details;
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+    var closeBtn = dlg.querySelector('.detail-close');
+    if (closeBtn) {
+      try { closeBtn.focus(); } catch (e) {}
+    }
+  }
+
+  function openLightbox(details, idx) {
+    var imgMeta = details && details.images && details.images[idx];
+    if (!imgMeta) return;
+    var dlg = $('#lightboxDialog');
+    var img = $('#lightboxImg');
+    var cap = $('#lightboxCaption');
+    if (!dlg || !img) return;
+    img.src = imgMeta.src;
+    img.alt = imgMeta.alt || '';
+    if (cap) cap.textContent = imgMeta.caption || imgMeta.alt || '';
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+  }
+
+  function closeLightbox() {
+    var dlg = $('#lightboxDialog');
+    if (dlg && dlg.open) {
+      try { dlg.close(); } catch (e) { dlg.removeAttribute('open'); }
+    }
+    var img = $('#lightboxImg');
+    if (img) img.removeAttribute('src');
+  }
+
+  function bindDetailGestures() {
+    if (bindDetailGestures._done) return;
+    bindDetailGestures._done = true;
+    var dlg = $('#detailDialog');
+    var sheet = $('#detailSheet');
+    var lb = $('#lightboxDialog');
+    if (dlg) {
+      dlg.addEventListener('cancel', function (e) {
+        // Esc — native; ensure focus restore via close handler
+        e.preventDefault();
+        closeDetailDialog();
+      });
+      dlg.addEventListener('click', function (e) {
+        if (e.target === dlg) closeDetailDialog();
+      });
+    }
+    if (lb) {
+      lb.addEventListener('cancel', function (e) {
+        e.preventDefault();
+        closeLightbox();
+      });
+      lb.addEventListener('click', function (e) {
+        if (e.target === lb || e.target.id === 'lightboxCaption' || e.target.classList.contains('lightbox-figure')) {
+          closeLightbox();
+        }
+      });
+    }
+    if (sheet) {
+      var onStart = function (e) {
+        if (window.matchMedia && window.matchMedia('(min-width: 641px)').matches) return;
+        var t = e.touches && e.touches[0];
+        if (!t) return;
+        // only from grab / toolbar
+        if (!e.target.closest('.detail-grab, .detail-toolbar')) return;
+        detailSwipe = { y0: t.clientY, dy: 0 };
+      };
+      var onMove = function (e) {
+        if (!detailSwipe) return;
+        var t = e.touches && e.touches[0];
+        if (!t) return;
+        detailSwipe.dy = t.clientY - detailSwipe.y0;
+        if (detailSwipe.dy > 0) {
+          sheet.style.transform = 'translateX(-50%) translateY(' + detailSwipe.dy + 'px)';
+          if (e.cancelable) e.preventDefault();
+        }
+      };
+      var onEnd = function () {
+        if (!detailSwipe) return;
+        var dy = detailSwipe.dy || 0;
+        detailSwipe = null;
+        sheet.style.transform = '';
+        if (dy > 96) closeDetailDialog();
+      };
+      sheet.addEventListener('touchstart', onStart, { passive: true });
+      sheet.addEventListener('touchmove', onMove, { passive: false });
+      sheet.addEventListener('touchend', onEnd);
+      sheet.addEventListener('touchcancel', onEnd);
+    }
+  }
+
   function bookingIco(type) {
     const t = BOOKING_TYPES.find(function (x) { return x.value === type; });
     return t ? t.ico : '📌';
@@ -428,6 +662,7 @@
           '<div class="body"><div>' + escapeHtml(item.text) + '</div>' +
           ((item.due || item.note) ? '<div class="faint">' + (item.due ? escapeHtml(item.due) : '') + (item.due && item.note ? ' · ' : '') + (item.note ? escapeHtml(item.note) : '') + '</div>' : '') +
           '</div><div class="actions">' +
+          (hasDetails(item) ? detailChipHtml(item.details, 'todo', item.id) : '') +
           '<button type="button" class="icon-btn" data-action="edit-todo" data-gid="' + g.id + '" data-id="' + item.id + '" aria-label="編輯">✏️</button>' +
           '<button type="button" class="icon-btn" data-action="del-todo" data-gid="' + g.id + '" data-id="' + item.id + '" aria-label="刪除">🗑️</button>' +
           '</div></div>';
@@ -480,7 +715,9 @@
           '<span class="drag-handle" title="拖曳換日／排序" aria-hidden="true">⠿</span>' +
           '<div class="time">' + escapeHtml(bl.time || '—') + '</div>' +
           '<div>' + escapeHtml(bl.text || '') + (bl.place ? '<div class="faint">📍 ' + escapeHtml(bl.place) + '</div>' : '') + '</div>' +
-          '<div class="actions"><button type="button" class="icon-btn" data-action="edit-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="編輯">✏️</button>' +
+          '<div class="actions">' +
+          (hasDetails(bl) ? detailChipHtml(bl.details, 'block', bl.id, day.id) : '') +
+          '<button type="button" class="icon-btn" data-action="edit-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="編輯">✏️</button>' +
           '<button type="button" class="icon-btn" data-action="del-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="刪除">🗑️</button></div></div>';
       });
       html += '<div class="block-drop-zone" data-day-drop="' + day.id + '" aria-hidden="true"></div></div>';
@@ -824,6 +1061,7 @@
         (p.url ? '<a href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener">連結</a>' : '') +
         (p.mapsUrl ? '<a href="' + escapeHtml(p.mapsUrl) + '" target="_blank" rel="noopener">地圖</a>' : '') +
         '</div></div><div class="actions">' +
+        (hasDetails(p) ? detailChipHtml(p.details, 'place', p.id) : '') +
         '<button type="button" class="icon-btn" data-action="edit-place" data-id="' + p.id + '" aria-label="編輯">✏️</button>' +
         '<button type="button" class="icon-btn" data-action="del-place" data-id="' + p.id + '" aria-label="刪除">🗑️</button>' +
         '</div></div>';
@@ -847,6 +1085,7 @@
         '<div class="body"><div>' + escapeHtml(item.text) + '</div>' +
         (item.note ? '<div class="faint">' + escapeHtml(item.note) + '</div>' : '') +
         '</div><div class="actions">' +
+        (hasDetails(item) ? detailChipHtml(item.details, 'shop', item.id) : '') +
         '<button type="button" class="icon-btn" data-action="edit-shop" data-id="' + item.id + '" aria-label="編輯">✏️</button>' +
         '<button type="button" class="icon-btn" data-action="del-shop" data-id="' + item.id + '" aria-label="刪除">🗑️</button>' +
         '</div></div>';
@@ -1300,6 +1539,25 @@
     }
     if (action === 'more') {
       $('#moreMenu').classList.toggle('open');
+      return;
+    }
+    if (action === 'open-detail') {
+      var details = lookupDetails(t.dataset.kind, t.dataset.id, t.dataset.day);
+      openDetail(details, t);
+      return;
+    }
+    if (action === 'close-detail') {
+      closeDetailDialog();
+      return;
+    }
+    if (action === 'open-lightbox') {
+      var host = $('#detailDialog');
+      var d = host && host._details;
+      openLightbox(d, parseInt(t.dataset.idx, 10) || 0);
+      return;
+    }
+    if (action === 'close-lightbox') {
+      closeLightbox();
       return;
     }
 
@@ -1833,6 +2091,10 @@
       bind._keys = true;
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
+          const lb = $('#lightboxDialog');
+          if (lb && lb.open) { closeLightbox(); return; }
+          const dd = $('#detailDialog');
+          if (dd && dd.open) { closeDetailDialog(); return; }
           const mb = $('#modalBackdrop');
           if (mb) mb.classList.remove('open');
         }

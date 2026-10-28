@@ -126,12 +126,42 @@
     return result;
   }
 
+
+  /**
+   * Merge optional `details` panels.
+   * - If local.userEdited: keep local details (including absence).
+   * - Else prefer remote details when present.
+   * - Never wipe local-only details when remote has none.
+   */
+  function mergeDetailsField(merged, loc, rem) {
+    loc = loc || {};
+    rem = rem || {};
+    var locD = loc.details;
+    var remD = rem.details;
+    // If user edited AND already has local details, keep them.
+    // If user only toggled/edited other fields (no local details), still accept remote details.
+    if (loc.userEdited && locD) {
+      merged.details = clone(locD);
+      return merged;
+    }
+    if (remD) {
+      merged.details = clone(remD);
+    } else if (locD) {
+      merged.details = clone(locD);
+    }
+    return merged;
+  }
+
+  function withDetailsMerge(merged, loc, rem) {
+    return mergeDetailsField(merged, loc, rem);
+  }
+
   function mergeTodoGroups(localGroups, remoteGroups) {
     return mergeList(localGroups, remoteGroups, 'todoGroup', function (merged, loc, rem) {
       var localItems = (loc && loc.items) || [];
       var remoteItems = (rem && rem.items) || [];
       // If group-level local wins, still merge items so new remote todos appear
-      merged.items = mergeList(localItems, remoteItems, 'todo');
+      merged.items = mergeList(localItems, remoteItems, 'todo', withDetailsMerge);
       if (localWins(loc, rem)) {
         merged.name = loc.name;
         if (loc.userEdited) merged.userEdited = true;
@@ -145,7 +175,7 @@
     return mergeList(localDays, remoteDays, 'day', function (merged, loc, rem) {
       var localBlocks = (loc && loc.blocks) || [];
       var remoteBlocks = (rem && rem.blocks) || [];
-      merged.blocks = mergeList(localBlocks, remoteBlocks, 'block');
+      merged.blocks = mergeList(localBlocks, remoteBlocks, 'block', withDetailsMerge);
       if (localWins(loc, rem)) {
         merged.date = loc.date;
         merged.title = loc.title;
@@ -250,8 +280,8 @@
     out.todoGroups = mergeTodoGroups(localTrip.todoGroups, remoteTrip.todoGroups);
     out.bookings = mergeList(localTrip.bookings, remoteTrip.bookings, 'booking');
     out.days = mergeDays(localTrip.days, remoteTrip.days);
-    out.places = mergeList(localTrip.places, remoteTrip.places, 'place');
-    out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop');
+    out.places = mergeList(localTrip.places, remoteTrip.places, 'place', withDetailsMerge);
+    out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop', withDetailsMerge);
     out.packing = mergePacking(localTrip.packing, remoteTrip.packing);
     out.expenses = mergeList(localTrip.expenses, remoteTrip.expenses, 'expense');
     out.journal = mergeList(localTrip.journal, remoteTrip.journal, 'journal', function (merged, loc, rem) {
@@ -376,6 +406,7 @@
     mergeStates: mergeStates,
     mergeTrip: mergeTrip,
     mergeList: mergeList,
+    mergeDetailsField: mergeDetailsField,
     localWins: localWins,
     loadMergedState: loadMergedState,
     fingerprint: fingerprint

@@ -49,6 +49,135 @@
     }, overrides || {});
   }
 
+
+  function detailScarCream() {
+    return {
+  "title": "除疤膏（Dermatix Ultra／Contractubex）",
+  "summary": "首選 Dermatix Ultra 7g（約 VND 210,000／NT$250）；備案 Contractubex 10g（約 VND 164,500）。Long Châu 65 Nguyễn Văn Thoại（跟 Royal Lotus 同一條路）。",
+  "tips": [
+    "買哪一款：凸起偏硬癢痛 → Dermatix Ultra（矽膠）；新疤深紅/褐 → 兩款可、Contractubex 較便宜；不確定 → Dermatix Ultra 7g",
+    "哪裡買：Long Châu 65 Nguyễn Văn Thoại；連鎖藥局（Long Châu／Pharmacity／An Khang）較可靠；營業約 06:00–23:00（以現場為準）",
+    "驗貨：外盒封膜完整 → 管身鋁箔封口完好 → 盒上越南文標籤或登記號（Contractubex 10g：VN-23121-22）→ 批號效期與管身一致 → 要收據並拍盒子與批號",
+    "使用：傷口完全癒合才能擦；先手臂內側測試；疤痕怕曬白天防曬；Dermatix 至少約 2 個月才見效",
+    "台灣對照：倍舒痕 Dermatix 7g 約 NT$945（momo），越南約 NT$250 划算很多"
+  ],
+  "warnings": [
+    "不要買：會安古城、韓市場、夜市、Grab 代買（仿冒／保存風險）",
+    "痘疤凹洞型兩款效果有限",
+    "店內價格以現場為準"
+  ],
+  "images": [
+    {
+      "src": "assets/details/dermatix-ultra-7g.webp",
+      "alt": "Dermatix Ultra 7g 外盒與軟管",
+      "caption": "Dermatix Ultra 7g（來源：Long Châu 商品圖）"
+    },
+    {
+      "src": "assets/details/contractubex-10g.webp",
+      "alt": "Contractubex 10g 外盒",
+      "caption": "Contractubex 10g（來源：Long Châu 商品圖）"
+    }
+  ],
+  "links": [
+    {
+      "label": "Long Châu 比較文",
+      "url": "https://nhathuoclongchau.com.vn/bai-viet/so-sanh-kem-tri-seo-contractubex-va-dermatix-cai-nao-tot-hon-49098.html"
+    },
+    {
+      "label": "Pharmacity Dermatix Ultra 7g",
+      "url": "https://www.pharmacity.vn/gel-tri-seo-dermatix-ultra-7g.html"
+    },
+    {
+      "label": "Long Châu 店（65 Nguyễn Văn Thoại）",
+      "url": "https://nhathuoclongchau.com.vn/he-thong-cua-hang/65-nguyen-van-thoai-p-an-hai-dong-q-son-tra-tp-da-nang"
+    }
+  ]
+};
+  }
+
+  function detailFiveFinger() {
+    return {
+  "title": "Vibram 五指鞋（KSO EVO）",
+  "summary": "Flow Store（268 Dương Đình Nghệ）正品；KSO EVO 約 VND 3,599,000。週日公休，建議平日試穿 30–45 分。",
+  "tips": [
+    "先問現貨／尺寸再過去；可穿隱形襪或五指襪試",
+    "試穿走一圈確認趾套長度與足弓；不適合就別硬買",
+    "雨天路滑，五指鞋抓地好但仍小心積水"
+  ],
+  "warnings": [
+    "週日公休",
+    "價格以店內為準；慎選非授權通路仿品"
+  ],
+  "images": [
+    {
+      "src": "assets/details/vibram-kso-evo.webp",
+      "alt": "Vibram FiveFingers KSO EVO 參考卡",
+      "caption": "參考卡（非實品照片）· Flow Store 峴港"
+    }
+  ],
+  "links": []
+};
+  }
+
+  function detailLoafer() {
+    return {
+  "title": "會安訂做樂福鞋",
+  "summary": "Friendly Shoe Shop；建議深棕便士樂福＋橡膠底。下單約 1–1.5 小時，旅期內試穿取鞋。",
+  "tips": [
+    "出發前決定規格、量腳、剪趾甲、拍參考照片",
+    "Trần Phú 淹水時改其他分店；11/6 早上可查 Hội An ngập",
+    "留足試穿與修改時間；最晚 11/9 取鞋付尾款"
+  ],
+  "warnings": [
+    "雨季可能改店／延誤，別拖到最後一天才下單"
+  ],
+  "images": [],
+  "links": []
+};
+  }
+
+  function applyDetails(item, details, ts) {
+    if (!item || !details) return;
+    item.details = details;
+    if (ts) item.updatedAt = ts;
+  }
+
+  /** Attach expandable detail panels to high-value Da Nang items (offline seed). */
+  function enrichDanangDetails(trip) {
+    if (!trip || trip.id !== 'trip_danang_2026') return trip;
+    var ts = '2026-10-28T13:40:00+08:00';
+    var scar = detailScarCream();
+    var five = detailFiveFinger();
+    var loafer = detailLoafer();
+    (trip.shopping || []).forEach(function (item) {
+      if (!item) return;
+      if (item.id === 'sh_scar') applyDetails(item, scar, ts);
+      else if (item.id === 'sh_fivefinger') applyDetails(item, five, ts);
+      else if (item.id === 'sh_loafer') applyDetails(item, loafer, ts);
+    });
+    (trip.places || []).forEach(function (p) {
+      if (!p) return;
+      if (p.id === 'pl_long_chau') applyDetails(p, scar, ts);
+      else if (p.id === 'pl_flow') applyDetails(p, five, ts);
+      else if (p.id === 'pl_friendly_shoe') applyDetails(p, loafer, ts);
+    });
+    (trip.days || []).forEach(function (day) {
+      (day.blocks || []).forEach(function (bl) {
+        if (!bl) return;
+        if (bl.id === 'bl_1105_3') applyDetails(bl, scar, ts);
+        else if (bl.id === 'bl_1107_2') applyDetails(bl, five, ts);
+      });
+    });
+    (trip.todoGroups || []).forEach(function (g) {
+      (g.items || []).forEach(function (item) {
+        if (!item) return;
+        if (item.id === 'td_buy_onsite') applyDetails(item, scar, ts);
+        else if (item.id === 'td_flow_stock') applyDetails(item, five, ts);
+      });
+    });
+    return trip;
+  }
+
   /** Offline fallback seed — stable ids match data/remote.json */
   function daNangTrip() {
     const now = new Date().toISOString();
@@ -1465,6 +1594,7 @@
       overallRating: null,
       postTripNote: ''
     };
+    enrichDanangDetails(trip);
     trip.updatedAt = now;
     trip.createdAt = trip.createdAt || now;
     return trip;

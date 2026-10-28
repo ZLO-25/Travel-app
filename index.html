@@ -75,6 +75,26 @@
     </div>
   </div>
 
+
+  <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle">
+    <div class="detail-sheet" id="detailSheet">
+      <div class="detail-grab" aria-hidden="true"><span></span></div>
+      <div class="detail-toolbar">
+        <h3 id="detailTitle" class="detail-title">詳情</h3>
+        <button type="button" class="icon-btn detail-close" data-action="close-detail" aria-label="關閉詳情">✕</button>
+      </div>
+      <div id="detailBody" class="detail-body"></div>
+    </div>
+  </dialog>
+
+  <dialog id="lightboxDialog" class="lightbox-dialog" aria-label="圖片預覽">
+    <button type="button" class="lightbox-close icon-btn" data-action="close-lightbox" aria-label="關閉圖片">✕</button>
+    <figure class="lightbox-figure">
+      <img id="lightboxImg" alt="">
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="js/auth.js"></script>
