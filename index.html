@@ -34,13 +34,18 @@
     <header class="topbar">
       <div class="brand">
         <img src="assets/icon-192.png" width="28" height="28" alt="">
-        <span>旅遊助手</span>
+        <div class="brand-text">
+          <span>旅遊助手</span>
+          <span id="dataStamp" class="data-stamp" hidden></span>
+        </div>
       </div>
       <div class="trip-switch">
         <label class="sr-only" for="tripSelect">切換旅程</label>
         <select id="tripSelect" class="trip-select" aria-label="切換旅程"></select>
+        <span id="tripSelectLabel" class="trip-select-fallback" hidden></span>
       </div>
     </header>
+    <input type="file" id="importFile" accept="application/json,.json" class="sr-only" hidden>
 
     <main class="main">
       <section class="panel" id="view-overview" data-view="overview"></section>

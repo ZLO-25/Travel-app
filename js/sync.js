@@ -260,17 +260,32 @@
     return out;
   }
 
-  function fetchRemote() {
+  var FETCH_TIMEOUT_MS = 8000;
+
+  function fetchRemote(opts) {
+    opts = opts || {};
+    var timeoutMs = opts.timeoutMs != null ? opts.timeoutMs : FETCH_TIMEOUT_MS;
     var url = REMOTE_PATH + (REMOTE_PATH.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
-    return fetch(url, {
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timer = null;
+    if (controller && timeoutMs > 0) {
+      timer = setTimeout(function () {
+        try { controller.abort(); } catch (e) {}
+      }, timeoutMs);
+    }
+    var fetchOpts = {
       cache: 'no-store',
       headers: { 'Accept': 'application/json' }
-    }).then(function (res) {
+    };
+    if (controller) fetchOpts.signal = controller.signal;
+    return fetch(url, fetchOpts).then(function (res) {
       if (!res.ok) throw new Error('remote ' + res.status);
       return res.json();
     }).then(function (data) {
       if (!data || !Array.isArray(data.trips)) throw new Error('invalid remote payload');
       return data;
+    }).finally(function () {
+      if (timer) clearTimeout(timer);
     });
   }
 

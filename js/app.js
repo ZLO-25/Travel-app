@@ -138,6 +138,19 @@
     return !!recoveredOnce;
   }
 
+  function syncTripSelectLabel() {
+    const label = $('#tripSelectLabel');
+    const sel = $('#tripSelect');
+    if (!label) return;
+    const trip = activeTrip();
+    const title = trip ? (trip.title || trip.id) : '（無旅程）';
+    label.textContent = title;
+    const optCount = sel ? sel.options.length : 0;
+    const firstVal = sel && sel.options[0] ? sel.options[0].value : '';
+    // Show fallback text if select still has no real options
+    label.hidden = !(optCount === 0 || (optCount === 1 && !firstVal));
+  }
+
   function renderTripSelect() {
     const sel = $('#tripSelect');
     if (!sel) return;
@@ -150,12 +163,13 @@
       archived = [];
     }
     if (!trips.length && !archived.length) {
-      if (!renderTripSelect._recovered) {
-        renderTripSelect._recovered = true;
-        ensureValidState(true);
-        TravelStorage.save(state);
-        trips = state.trips.filter(function (t) { return !t.archived; });
-        archived = state.trips.filter(function (t) { return t.archived; });
+      ensureValidState(true);
+      TravelStorage.save(state);
+      trips = (state.trips || []).filter(function (t) { return t && !t.archived; });
+      archived = (state.trips || []).filter(function (t) { return t && t.archived; });
+      if (!trips.length && state.trips && state.trips.length) {
+        trips = state.trips.slice();
+        archived = [];
       }
     }
     let html = '';
@@ -170,10 +184,65 @@
       html += '</optgroup>';
     }
     if (!html) {
-      html = '<option value="">（無旅程）</option>';
-      console.warn('renderTripSelect: still no options after recovery');
+      // Last-resort seed recovery — never leave select empty
+      console.warn('renderTripSelect: forcing seed recovery');
+      state = TravelSeed.defaultState();
+      TravelStorage.save(state);
+      const t0 = state.trips[0];
+      html = '<option value="' + escapeHtml(t0.id) + '" selected>' + escapeHtml(t0.title || t0.id) + '</option>';
     }
     sel.innerHTML = html;
+    if (sel.options.length < 1) {
+      console.error('renderTripSelect: assert failed — 0 options');
+    }
+    try { sel.value = state.activeTripId; } catch (e) {}
+    syncTripSelectLabel();
+    updateDataStamp();
+  }
+
+  function fmtDataStamp(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    try {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Taipei',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).formatToParts(d);
+      const get = function (type) {
+        const p = parts.find(function (x) { return x.type === type; });
+        return p ? p.value : '';
+      };
+      let hour = get('hour');
+      if (hour === '24') hour = '00';
+      return '更新 ' + get('month') + '/' + get('day') + ' ' + hour + ':' + get('minute');
+    } catch (e) {
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return '更新 ' + m + '/' + day + ' ' + hh + ':' + mm;
+    }
+  }
+
+  function updateDataStamp() {
+    const el = $('#dataStamp');
+    if (!el || !state) return;
+    const trip = activeTrip();
+    const iso = state.remoteSyncedAt || state.syncedAt || (trip && trip.updatedAt) || null;
+    const text = fmtDataStamp(iso);
+    if (text) {
+      el.textContent = text;
+      el.hidden = false;
+      el.title = iso || '';
+    } else {
+      el.textContent = '';
+      el.hidden = true;
+    }
   }
 
   function setView(id) {
@@ -282,7 +351,6 @@
           '<button type="button" class="btn btn-ghost btn-sm" data-action="export">匯出 JSON</button>' +
           '<button type="button" class="btn btn-ghost btn-sm" data-action="lock">上鎖</button>' +
           '<button type="button" class="btn btn-ghost btn-sm" data-action="import">匯入 JSON</button>' +
-          '<input type="file" id="importFile" accept="application/json,.json" class="sr-only">' +
         '</div>' +
         '<p class="faint" style="margin-top:10px">資料存在本機瀏覽器；開啟時會拉取 Notion 同步檔並以「本機編輯優先」合併。換裝置前請先匯出備份。</p>' +
       '</div>';
@@ -365,100 +433,213 @@
     el.innerHTML = html;
   }
 
-  /* ---------- Places ---------- */
-  function projectRoutePoints(points, width, height, pad) {
-    pad = pad == null ? 36 : pad;
-    const lats = points.map(function (p) { return Number(p.lat); });
-    const lngs = points.map(function (p) { return Number(p.lng); });
-    const minLat = Math.min.apply(null, lats);
-    const maxLat = Math.max.apply(null, lats);
-    const minLng = Math.min.apply(null, lngs);
-    const maxLng = Math.max.apply(null, lngs);
-    const dLat = Math.max(maxLat - minLat, 0.0001);
-    const dLng = Math.max(maxLng - minLng, 0.0001);
-    // Keep aspect roughly geographic (lng scale by cos mid-lat)
-    const midLat = (minLat + maxLat) / 2;
-    const cos = Math.cos(midLat * Math.PI / 180) || 1;
-    const spanX = dLng * cos;
-    const spanY = dLat;
-    const usableW = width - pad * 2;
-    const usableH = height - pad * 2;
-    const scale = Math.min(usableW / spanX, usableH / spanY);
-    const ox = (width - spanX * scale) / 2;
-    const oy = (height - spanY * scale) / 2;
-    const byId = {};
-    points.forEach(function (p) {
-      const x = ox + (Number(p.lng) - minLng) * cos * scale;
-      // SVG y grows down; north (higher lat) should be higher on screen
-      const y = height - (oy + (Number(p.lat) - minLat) * scale);
-      byId[p.id] = { x: x, y: y, p: p };
-    });
-    return byId;
+  /* ---------- Places / route map (Leaflet + timeline) ---------- */
+  const ROUTE_COLORS = { hotel: '#e76f51', marble: '#2a9d8f', hoian: '#f4a261' };
+  const ROUTE_ORDER = ['hotel', 'marble', 'hoian'];
+  let routeLeafletMap = null;
+  let leafletLoadPromise = null;
+
+  function destroyRouteLeaflet() {
+    if (routeLeafletMap) {
+      try { routeLeafletMap.remove(); } catch (e) {}
+      routeLeafletMap = null;
+    }
   }
 
-  function renderRouteMapSvg(routeMap) {
-    if (!routeMap || !routeMap.points || routeMap.points.length < 2) return '';
-    const W = 360;
-    const H = 280;
-    const pts = projectRoutePoints(routeMap.points, W, H, 44);
-    const colors = { hotel: '#e76f51', marble: '#2a9d8f', hoian: '#f4a261' };
-    let lines = '';
-    let labels = '';
-    (routeMap.edges || []).forEach(function (e, idx) {
-      const a = pts[e.from];
-      const b = pts[e.to];
-      if (!a || !b) return;
-      const mx = (a.x + b.x) / 2;
-      const my = (a.y + b.y) / 2;
-      // Slight perpendicular offset so hotel↔hoian label doesn't overlap others
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const len = Math.sqrt(dx * dx + dy * dy) || 1;
-      const side = (idx === 2) ? -1 : 1;
-      const ox = (-dy / len) * 14 * side;
-      const oy = (dx / len) * 14 * side;
-      const lx = mx + ox;
-      const ly = my + oy;
-      const stroke = idx === 2 ? '#f4a261' : '#2a9d8f';
-      const dash = idx === 2 ? '6 4' : '0';
-      lines += '<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) +
-        '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) +
-        '" stroke="' + stroke + '" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="' + dash + '" opacity="0.85"/>';
-      const label = escapeHtml((e.distance || '') + (e.distance && e.time ? ' · ' : '') + (e.time || ''));
-      labels += '<rect x="' + (lx - 54).toFixed(1) + '" y="' + (ly - 11).toFixed(1) +
-        '" width="108" height="22" rx="11" fill="rgba(255,255,255,0.92)" stroke="#e8ddd2"/>' +
-        '<text x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) +
-        '" text-anchor="middle" class="route-edge-label">' + label + '</text>';
+  function loadLeaflet() {
+    if (window.L) return Promise.resolve(window.L);
+    if (leafletLoadPromise) return leafletLoadPromise;
+    leafletLoadPromise = new Promise(function (resolve, reject) {
+      var cssHref = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';
+      if (!document.querySelector('link[data-leaflet]')) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = cssHref;
+        link.setAttribute('data-leaflet', '1');
+        document.head.appendChild(link);
+      }
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
+      s.async = true;
+      s.onload = function () {
+        if (window.L) resolve(window.L);
+        else {
+          leafletLoadPromise = null;
+          reject(new Error('Leaflet missing after load'));
+        }
+      };
+      s.onerror = function () {
+        leafletLoadPromise = null;
+        reject(new Error('Leaflet failed to load'));
+      };
+      document.head.appendChild(s);
     });
-    let markers = '';
-    routeMap.points.forEach(function (p) {
-      const c = pts[p.id];
-      if (!c) return;
-      const fill = colors[p.id] || '#e76f51';
-      markers += '<circle cx="' + c.x.toFixed(1) + '" cy="' + c.y.toFixed(1) +
-        '" r="9" fill="' + fill + '" stroke="#fff" stroke-width="2.5"/>' +
-        '<text x="' + c.x.toFixed(1) + '" y="' + (c.y - 16).toFixed(1) +
-        '" text-anchor="middle" class="route-point-label">' + escapeHtml(p.label) + '</text>' +
-        '<text x="' + c.x.toFixed(1) + '" y="' + (c.y + 24).toFixed(1) +
-        '" text-anchor="middle" class="route-point-sub">' + escapeHtml(p.sublabel || '') + '</text>';
+    return leafletLoadPromise;
+  }
+
+  function pointById(routeMap, id) {
+    return (routeMap.points || []).find(function (p) { return p.id === id; });
+  }
+
+  function edgeBetween(routeMap, fromId, toId) {
+    return (routeMap.edges || []).find(function (e) {
+      return e.from === fromId && e.to === toId;
+    }) || (routeMap.edges || []).find(function (e) {
+      return e.from === toId && e.to === fromId;
     });
-    return '<div class="route-map" role="img" aria-label="' + escapeHtml(routeMap.title || '主要動線') + '">' +
-      '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">' +
-      '<rect x="0" y="0" width="' + W + '" height="' + H + '" rx="14" fill="#faf6f1"/>' +
-      lines + labels + markers +
-      '</svg></div>';
+  }
+
+  function gmapsDirUrl(a, b) {
+    if (!a || !b) return '';
+    return 'https://www.google.com/maps/dir/?api=1&origin=' +
+      encodeURIComponent(a.lat + ',' + a.lng) +
+      '&destination=' + encodeURIComponent(b.lat + ',' + b.lng) +
+      '&travelmode=driving';
+  }
+
+  function renderRouteTimeline(routeMap) {
+    if (!routeMap || !routeMap.points || !routeMap.points.length) return '';
+    const byId = {};
+    routeMap.points.forEach(function (p) { byId[p.id] = p; });
+    const order = ROUTE_ORDER.filter(function (id) { return byId[id]; });
+    // Fall back to given order if custom ids
+    const stops = order.length ? order.map(function (id) { return byId[id]; })
+      : routeMap.points.slice();
+    let html = '<div class="route-timeline" role="list">';
+    stops.forEach(function (stop, idx) {
+      const num = idx + 1;
+      const color = ROUTE_COLORS[stop.id] || '#e76f51';
+      html += '<div class="route-stop" role="listitem">' +
+        '<div class="route-stop-rail"><span class="route-bubble" style="background:' + color + '">' + num + '</span>' +
+        (idx < stops.length - 1 ? '<span class="route-rail-line" aria-hidden="true"></span>' : '') +
+        '</div>' +
+        '<div class="route-stop-body">' +
+        '<div class="route-stop-title">' + escapeHtml(stop.label || stop.id) + '</div>' +
+        (stop.sublabel ? '<div class="route-stop-sub">' + escapeHtml(stop.sublabel) + '</div>' : '') +
+        '</div></div>';
+      if (idx < stops.length - 1) {
+        const next = stops[idx + 1];
+        const edge = edgeBetween(routeMap, stop.id, next.id);
+        const dist = edge ? edge.distance : '';
+        const time = edge ? edge.time : '';
+        const maps = gmapsDirUrl(stop, next);
+        html += '<div class="route-leg">' +
+          '<div class="route-leg-chip">' +
+          '<span class="route-leg-ico" aria-hidden="true">🚗</span>' +
+          '<span>' + escapeHtml((dist || '') + (dist && time ? ' · ' : '') + (time || '車程')) + '</span>' +
+          (maps ? '<a class="route-leg-link" href="' + escapeHtml(maps) + '" target="_blank" rel="noopener">地圖</a>' : '') +
+          '</div></div>';
+      }
+    });
+    // Secondary direct hotel → hoian
+    const hotel = byId.hotel;
+    const hoian = byId.hoian;
+    const direct = edgeBetween(routeMap, 'hotel', 'hoian');
+    if (hotel && hoian && direct) {
+      const maps = gmapsDirUrl(hotel, hoian);
+      html += '<div class="route-alt">' +
+        '<div class="route-alt-label">直達備援</div>' +
+        '<div class="route-alt-chip">' +
+        escapeHtml(hotel.label) + ' → ' + escapeHtml(hoian.label) +
+        '<span class="route-alt-meta">' + escapeHtml((direct.distance || '') +
+          (direct.distance && direct.time ? ' · ' : '') + (direct.time || '')) + '</span>' +
+        (maps ? '<a class="route-leg-link" href="' + escapeHtml(maps) + '" target="_blank" rel="noopener">地圖</a>' : '') +
+        '</div></div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  function mountRouteLeaflet(routeMap) {
+    const host = $('#routeLeaflet');
+    if (!host || !routeMap || !routeMap.points || routeMap.points.length < 1) return;
+    destroyRouteLeaflet();
+    loadLeaflet().then(function (L) {
+      const el = $('#routeLeaflet');
+      if (!el || currentView !== 'places') return;
+      const points = routeMap.points.filter(function (p) {
+        return p && isFinite(Number(p.lat)) && isFinite(Number(p.lng));
+      });
+      if (!points.length) return;
+      const map = L.map(el, {
+        scrollWheelZoom: false,
+        attributionControl: true
+      });
+      routeLeafletMap = map;
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+      }).addTo(map);
+
+      const latLngs = [];
+      const orderIds = ROUTE_ORDER.filter(function (id) {
+        return points.some(function (p) { return p.id === id; });
+      });
+      const ordered = orderIds.length
+        ? orderIds.map(function (id) { return points.find(function (p) { return p.id === id; }); }).filter(Boolean)
+        : points;
+
+      ordered.forEach(function (p, idx) {
+        const color = ROUTE_COLORS[p.id] || '#e76f51';
+        const ll = L.latLng(Number(p.lat), Number(p.lng));
+        latLngs.push(ll);
+        const icon = L.divIcon({
+          className: 'route-marker-wrap',
+          html: '<div class="route-marker" style="background:' + color + '">' + (idx + 1) + '</div>',
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
+          popupAnchor: [0, -14]
+        });
+        L.marker(ll, { icon: icon }).addTo(map).bindPopup(
+          '<strong>' + escapeHtml(p.label || p.id) + '</strong>' +
+          (p.sublabel ? '<br><span style="color:#6b5b4e">' + escapeHtml(p.sublabel) + '</span>' : '')
+        );
+      });
+
+      // Main path polyline
+      if (latLngs.length >= 2) {
+        L.polyline(latLngs, {
+          color: '#2a9d8f',
+          weight: 4,
+          opacity: 0.85,
+          lineJoin: 'round'
+        }).addTo(map);
+      }
+      // Dashed direct hotel→hoian
+      const hotel = pointById(routeMap, 'hotel');
+      const hoian = pointById(routeMap, 'hoian');
+      if (hotel && hoian) {
+        L.polyline(
+          [[Number(hotel.lat), Number(hotel.lng)], [Number(hoian.lat), Number(hoian.lng)]],
+          { color: '#f4a261', weight: 3, opacity: 0.7, dashArray: '8 6' }
+        ).addTo(map);
+      }
+
+      map.fitBounds(L.latLngBounds(latLngs).pad(0.18));
+      setTimeout(function () { try { map.invalidateSize(); } catch (e) {} }, 80);
+      const fb = $('#routeMapFallback');
+      if (fb) fb.hidden = true;
+    }).catch(function (err) {
+      console.warn('Leaflet unavailable', err);
+      const fb = $('#routeMapFallback');
+      if (fb) fb.hidden = false;
+    });
   }
 
   function renderPlaces(trip) {
     const el = $('#view-places');
+    destroyRouteLeaflet();
     let html = '';
     if (trip.routeMap && trip.routeMap.points && trip.routeMap.points.length) {
       html += '<div class="card route-card">' +
         '<div class="row" style="justify-content:space-between;align-items:flex-start">' +
         '<div><h2 style="margin:0">' + escapeHtml(trip.routeMap.title || '主要動線') + '</h2>' +
-        '<div class="faint">飯店 · 五行山 · 會安（相對位置與 Grab／車程估算）</div></div></div>' +
-        renderRouteMapSvg(trip.routeMap) +
-        (trip.routeMap.note ? '<p class="faint" style="margin-top:8px">' + escapeHtml(trip.routeMap.note) + '</p>' : '') +
+        '<div class="faint">飯店 · 五行山 · 會安 — 地圖與車程</div></div></div>' +
+        '<div id="routeLeaflet" class="route-leaflet" aria-label="主要動線地圖"></div>' +
+        '<div id="routeMapFallback" class="route-map-fallback" hidden>' +
+        '<p class="muted">地圖載入失敗，仍可看下方動線與 Google 地圖連結。</p></div>' +
+        renderRouteTimeline(trip.routeMap) +
+        (trip.routeMap.note ? '<p class="faint" style="margin-top:10px">' + escapeHtml(trip.routeMap.note) + '</p>' : '') +
         '</div>';
     }
     html += '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">地點</h2>' +
@@ -478,6 +659,9 @@
     });
     html += '</div>';
     el.innerHTML = html;
+    if (trip.routeMap && trip.routeMap.points && trip.routeMap.points.length) {
+      mountRouteLeaflet(trip.routeMap);
+    }
   }
 
   /* ---------- Shopping ---------- */
@@ -732,7 +916,9 @@
       return;
     }
     if (action === 'import') {
-      $('#importFile').click();
+      const imp = $('#importFile');
+      if (imp) imp.click();
+      else toast('找不到匯入元件');
       return;
     }
 
@@ -1033,11 +1219,15 @@
   }
 
   function bind() {
+    if (bind._doc) return;
+    bind._doc = true;
     document.addEventListener('click', onClick);
     document.addEventListener('change', function (e) {
       if (e.target && e.target.id === 'tripSelect') {
         state.activeTripId = e.target.value;
         persist(true);
+        syncTripSelectLabel();
+        updateDataStamp();
         renderView();
         toast('已切換旅程');
       }
@@ -1046,34 +1236,49 @@
         onClick(e);
       }
     });
-    $('#importFile').addEventListener('change', function (e) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function () {
-        try {
-          const data = TravelStorage.importJson(String(reader.result));
-          if (!confirm('匯入會覆蓋目前本機所有旅程資料，確定？')) return;
-          state = data;
-          TravelStorage.save(state);
-          renderTripSelect();
-          setView('overview');
-          toast('匯入成功');
-        } catch (err) {
-          toast('匯入失敗：' + (err.message || err));
+    const importEl = $('#importFile');
+    if (importEl && !importEl.__bound) {
+      importEl.__bound = true;
+      importEl.addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            const data = TravelStorage.importJson(String(reader.result));
+            if (!confirm('匯入會覆蓋目前本機所有旅程資料，確定？')) return;
+            state = data;
+            ensureValidState(false);
+            TravelStorage.save(state);
+            renderTripSelect();
+            setView('overview');
+            toast('匯入成功');
+          } catch (err) {
+            toast('匯入失敗：' + (err.message || err));
+          }
+          e.target.value = '';
+        };
+        reader.readAsText(file, 'utf-8');
+      });
+    }
+    const backdrop = $('#modalBackdrop');
+    if (backdrop && !backdrop.__bound) {
+      backdrop.__bound = true;
+      backdrop.addEventListener('click', function (e) {
+        if (e.target.id === 'modalBackdrop') {
+          $('#modalBackdrop').classList.remove('open');
         }
-        e.target.value = '';
-      };
-      reader.readAsText(file, 'utf-8');
-    });
-    $('#modalBackdrop').addEventListener('click', function (e) {
-      if (e.target.id === 'modalBackdrop') {
-        $('#modalBackdrop').classList.remove('open');
-      }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') $('#modalBackdrop').classList.remove('open');
-    });
+      });
+    }
+    if (!bind._keys) {
+      bind._keys = true;
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          const mb = $('#modalBackdrop');
+          if (mb) mb.classList.remove('open');
+        }
+      });
+    }
   }
 
   function buildNav() {
@@ -1095,11 +1300,18 @@
 
   function startUi() {
     buildNav();
-    bind();
+    // Paint trip select BEFORE bind so a bind error cannot leave dropdown empty
+    ensureValidState(false);
     renderTripSelect();
     const hash = (location.hash || '').replace(/^#/, '');
     const start = VIEWS.some(function (v) { return v.id === hash; }) ? hash : 'overview';
     setView(start);
+    updateDataStamp();
+    try {
+      bind();
+    } catch (err) {
+      console.error('bind failed (UI already painted)', err);
+    }
 
     if ('serviceWorker' in navigator) {
       const swUrl = new URL('sw.js', location.href).pathname;
@@ -1109,37 +1321,45 @@
     }
   }
 
-  function bootApp() {
-    var hadLocal = !!TravelStorage.load();
-    var finish = function (merged) {
-      state = merged || TravelSeed.defaultState();
-      if (!state.trips || !state.trips.length) {
-        console.warn('boot: merged state had no trips — using seed/remote fallback');
-        var local = TravelStorage.load();
-        if (local && local.trips && local.trips.length) state = local;
-        else state = TravelSeed.defaultState();
-      }
-      if (!state.trips.some(function (t) { return t && t.id === state.activeTripId; })) {
-        state.activeTripId = state.trips[0].id;
-      }
-      TravelStorage.save(state);
-      startUi();
-      if (state.syncedAt && hadLocal) {
-        /* quiet: local-wins merge already applied */
-      } else if (state.syncedAt && !hadLocal) {
-        toast('已載入雲端行程資料');
-      }
-    };
+  function applyMergedState(merged, opts) {
+    opts = opts || {};
+    if (!merged || !Array.isArray(merged.trips) || !merged.trips.length) return false;
+    state = merged;
+    ensureValidState(false);
+    TravelStorage.save(state);
+    renderTripSelect();
+    renderView();
+    updateDataStamp();
+    if (opts.toastRemote) toast('已載入雲端行程資料');
+    return true;
+  }
 
-    if (window.TravelSync && TravelSync.loadMergedState) {
-      TravelSync.loadMergedState(TravelSeed.defaultState).then(finish).catch(function (err) {
-        console.warn('boot sync failed', err);
-        var local = TravelStorage.load();
-        finish((local && local.trips && local.trips.length) ? local : TravelSeed.defaultState());
-      });
+  function bootApp() {
+    // Sync-first paint: never wait on network for #tripSelect options
+    var hadLocal = false;
+    var local = null;
+    try { local = TravelStorage.load(); } catch (e) { local = null; }
+    if (local && Array.isArray(local.trips) && local.trips.length) {
+      state = local;
+      hadLocal = true;
     } else {
-      var localOnly = TravelStorage.load();
-      finish((localOnly && localOnly.trips && localOnly.trips.length) ? localOnly : TravelSeed.defaultState());
+      state = TravelSeed.defaultState();
+      TravelStorage.save(state);
+    }
+    ensureValidState(false);
+    if (!state.trips || !state.trips.length) {
+      state = TravelSeed.defaultState();
+      TravelStorage.save(state);
+    }
+    startUi();
+
+    // Background Notion remote merge (8s timeout inside fetchRemote)
+    if (window.TravelSync && TravelSync.loadMergedState) {
+      TravelSync.loadMergedState(TravelSeed.defaultState).then(function (merged) {
+        applyMergedState(merged, { toastRemote: !hadLocal && !!(merged && merged.syncedAt) });
+      }).catch(function (err) {
+        console.warn('background sync failed', err);
+      });
     }
   }
 

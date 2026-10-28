@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v4';
+const CACHE = 'ryan-travel-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -94,8 +94,16 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
-  // Network-first for app shell JS + index.html so dropdown/map fixes land quickly
-  if (isAppJs(req.url) || isShellDoc(req.url)) {
+  // Network-first for app shell JS/CSS + index.html so dropdown/map fixes land quickly
+  function isAppCss(url) {
+    try {
+      const u = new URL(url);
+      return /\/css\/[^/]+\.css$/.test(u.pathname);
+    } catch (e) {
+      return /\/css\/[^/?]+\.css(\?|$)/.test(String(url));
+    }
+  }
+  if (isAppJs(req.url) || isShellDoc(req.url) || isAppCss(req.url)) {
     event.respondWith(networkFirst(req));
     return;
   }
