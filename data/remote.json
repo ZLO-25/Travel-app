@@ -239,24 +239,61 @@
               "note": "+84 878 268 468／Zalo",
               "details": {
                 "title": "Vibram 五指鞋（KSO EVO）",
-                "summary": "Flow Store（268 Dương Đình Nghệ）正品；KSO EVO 約 VND 3,599,000。週日公休，建議平日試穿 30–45 分。",
+                "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
                 "tips": [
-                  "先問現貨／尺寸再過去；可穿隱形襪或五指襪試",
-                  "試穿走一圈確認趾套長度與足弓；不適合就別硬買",
-                  "雨天路滑，五指鞋抓地好但仍小心積水"
+                  "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
+                  "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
+                  "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
+                  "試穿 2：不穿襪子試（除非打算配五趾襪）",
+                  "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
+                  "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
+                  "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
+                  "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
+                  "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
+                  "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
+                  "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
+                  "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
+                  "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
+                  "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
+                  "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
                 ],
                 "warnings": [
-                  "週日公休",
-                  "價格以店內為準；慎選非授權通路仿品"
+                  "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
+                  "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
+                  "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
                 ],
                 "images": [
+                  {
+                    "src": "assets/details/vibram-flow-mens-lineup.webp",
+                    "alt": "Flow Store Vibram 男款選擇",
+                    "caption": "Flow Store 男款選擇（官網價 2026/10）"
+                  },
+                  {
+                    "src": "assets/details/vibram-kso-evo-product.webp",
+                    "alt": "Vibram KSO EVO 產品圖",
+                    "caption": "KSO EVO（首選）"
+                  },
+                  {
+                    "src": "assets/details/vibram-alt-models.webp",
+                    "alt": "Vibram 其他型號",
+                    "caption": "其他型號"
+                  },
                   {
                     "src": "assets/details/vibram-kso-evo.webp",
                     "alt": "Vibram FiveFingers KSO EVO 參考卡",
                     "caption": "參考卡（非實品照片）· Flow Store 峴港"
                   }
                 ],
-                "links": []
+                "links": [
+                  {
+                    "label": "Flow Store 官網",
+                    "url": "https://flowstore.com.vn"
+                  },
+                  {
+                    "label": "Vibram 尺寸／試穿指南",
+                    "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
+                  }
+                ]
               }
             },
             {
@@ -647,24 +684,61 @@
               "place": "Flow Store",
               "details": {
                 "title": "Vibram 五指鞋（KSO EVO）",
-                "summary": "Flow Store（268 Dương Đình Nghệ）正品；KSO EVO 約 VND 3,599,000。週日公休，建議平日試穿 30–45 分。",
+                "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
                 "tips": [
-                  "先問現貨／尺寸再過去；可穿隱形襪或五指襪試",
-                  "試穿走一圈確認趾套長度與足弓；不適合就別硬買",
-                  "雨天路滑，五指鞋抓地好但仍小心積水"
+                  "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
+                  "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
+                  "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
+                  "試穿 2：不穿襪子試（除非打算配五趾襪）",
+                  "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
+                  "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
+                  "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
+                  "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
+                  "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
+                  "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
+                  "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
+                  "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
+                  "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
+                  "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
+                  "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
                 ],
                 "warnings": [
-                  "週日公休",
-                  "價格以店內為準；慎選非授權通路仿品"
+                  "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
+                  "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
+                  "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
                 ],
                 "images": [
+                  {
+                    "src": "assets/details/vibram-flow-mens-lineup.webp",
+                    "alt": "Flow Store Vibram 男款選擇",
+                    "caption": "Flow Store 男款選擇（官網價 2026/10）"
+                  },
+                  {
+                    "src": "assets/details/vibram-kso-evo-product.webp",
+                    "alt": "Vibram KSO EVO 產品圖",
+                    "caption": "KSO EVO（首選）"
+                  },
+                  {
+                    "src": "assets/details/vibram-alt-models.webp",
+                    "alt": "Vibram 其他型號",
+                    "caption": "其他型號"
+                  },
                   {
                     "src": "assets/details/vibram-kso-evo.webp",
                     "alt": "Vibram FiveFingers KSO EVO 參考卡",
                     "caption": "參考卡（非實品照片）· Flow Store 峴港"
                   }
                 ],
-                "links": []
+                "links": [
+                  {
+                    "label": "Flow Store 官網",
+                    "url": "https://flowstore.com.vn"
+                  },
+                  {
+                    "label": "Vibram 尺寸／試穿指南",
+                    "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
+                  }
+                ]
               }
             },
             {
@@ -914,24 +988,61 @@
           "mapsUrl": "",
           "details": {
             "title": "Vibram 五指鞋（KSO EVO）",
-            "summary": "Flow Store（268 Dương Đình Nghệ）正品；KSO EVO 約 VND 3,599,000。週日公休，建議平日試穿 30–45 分。",
+            "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
             "tips": [
-              "先問現貨／尺寸再過去；可穿隱形襪或五指襪試",
-              "試穿走一圈確認趾套長度與足弓；不適合就別硬買",
-              "雨天路滑，五指鞋抓地好但仍小心積水"
+              "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
+              "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
+              "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
+              "試穿 2：不穿襪子試（除非打算配五趾襪）",
+              "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
+              "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
+              "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
+              "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
+              "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
+              "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
+              "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
+              "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
+              "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
+              "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
+              "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
             ],
             "warnings": [
-              "週日公休",
-              "價格以店內為準；慎選非授權通路仿品"
+              "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
+              "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
+              "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
             ],
             "images": [
+              {
+                "src": "assets/details/vibram-flow-mens-lineup.webp",
+                "alt": "Flow Store Vibram 男款選擇",
+                "caption": "Flow Store 男款選擇（官網價 2026/10）"
+              },
+              {
+                "src": "assets/details/vibram-kso-evo-product.webp",
+                "alt": "Vibram KSO EVO 產品圖",
+                "caption": "KSO EVO（首選）"
+              },
+              {
+                "src": "assets/details/vibram-alt-models.webp",
+                "alt": "Vibram 其他型號",
+                "caption": "其他型號"
+              },
               {
                 "src": "assets/details/vibram-kso-evo.webp",
                 "alt": "Vibram FiveFingers KSO EVO 參考卡",
                 "caption": "參考卡（非實品照片）· Flow Store 峴港"
               }
             ],
-            "links": []
+            "links": [
+              {
+                "label": "Flow Store 官網",
+                "url": "https://flowstore.com.vn"
+              },
+              {
+                "label": "Vibram 尺寸／試穿指南",
+                "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
+              }
+            ]
           }
         },
         {
@@ -1097,24 +1208,61 @@
           "note": "Flow Store；約 VND 3,599,000",
           "details": {
             "title": "Vibram 五指鞋（KSO EVO）",
-            "summary": "Flow Store（268 Dương Đình Nghệ）正品；KSO EVO 約 VND 3,599,000。週日公休，建議平日試穿 30–45 分。",
+            "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
             "tips": [
-              "先問現貨／尺寸再過去；可穿隱形襪或五指襪試",
-              "試穿走一圈確認趾套長度與足弓；不適合就別硬買",
-              "雨天路滑，五指鞋抓地好但仍小心積水"
+              "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
+              "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
+              "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
+              "試穿 2：不穿襪子試（除非打算配五趾襪）",
+              "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
+              "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
+              "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
+              "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
+              "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
+              "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
+              "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
+              "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
+              "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
+              "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
+              "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
             ],
             "warnings": [
-              "週日公休",
-              "價格以店內為準；慎選非授權通路仿品"
+              "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
+              "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
+              "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
             ],
             "images": [
+              {
+                "src": "assets/details/vibram-flow-mens-lineup.webp",
+                "alt": "Flow Store Vibram 男款選擇",
+                "caption": "Flow Store 男款選擇（官網價 2026/10）"
+              },
+              {
+                "src": "assets/details/vibram-kso-evo-product.webp",
+                "alt": "Vibram KSO EVO 產品圖",
+                "caption": "KSO EVO（首選）"
+              },
+              {
+                "src": "assets/details/vibram-alt-models.webp",
+                "alt": "Vibram 其他型號",
+                "caption": "其他型號"
+              },
               {
                 "src": "assets/details/vibram-kso-evo.webp",
                 "alt": "Vibram FiveFingers KSO EVO 參考卡",
                 "caption": "參考卡（非實品照片）· Flow Store 峴港"
               }
             ],
-            "links": []
+            "links": [
+              {
+                "label": "Flow Store 官網",
+                "url": "https://flowstore.com.vn"
+              },
+              {
+                "label": "Vibram 尺寸／試穿指南",
+                "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
+              }
+            ]
           }
         },
         {
