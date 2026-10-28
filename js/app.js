@@ -65,7 +65,16 @@
   }
 
   function touchTrip(trip) {
+    if (!trip) return;
     trip.updatedAt = new Date().toISOString();
+    trip.userEdited = true;
+  }
+
+  /** Mark a list item so Notion→app sync keeps the local edit (local wins). */
+  function touchItem(item) {
+    if (!item) return;
+    item.updatedAt = new Date().toISOString();
+    item.userEdited = true;
   }
 
   function parseDate(s) {
@@ -243,7 +252,7 @@
           '<button type="button" class="btn btn-ghost btn-sm" data-action="import">匯入 JSON</button>' +
           '<input type="file" id="importFile" accept="application/json,.json" class="sr-only">' +
         '</div>' +
-        '<p class="faint" style="margin-top:10px">資料存在本機瀏覽器。換裝置或清除網站資料前，請先匯出備份。</p>' +
+        '<p class="faint" style="margin-top:10px">資料存在本機瀏覽器；開啟時會拉取 Notion 同步檔並以「本機編輯優先」合併。換裝置前請先匯出備份。</p>' +
       '</div>';
   }
 
@@ -540,9 +549,12 @@
             existing.label = val('label').trim();
             existing.date = val('date');
             existing.note = val('note').trim();
+            touchItem(existing);
           } else {
             trip.deadlines = trip.deadlines || [];
-            trip.deadlines.push({ id: uid('dl'), label: val('label').trim(), date: val('date'), note: val('note').trim() });
+            var nd = { id: uid('dl'), label: val('label').trim(), date: val('date'), note: val('note').trim() };
+            touchItem(nd);
+            trip.deadlines.push(nd);
           }
           touchTrip(trip);
         },
@@ -605,7 +617,9 @@
         const name = val('name').trim();
         if (!name) { toast('請填名稱'); return false; }
         trip.todoGroups = trip.todoGroups || [];
-        trip.todoGroups.push({ id: uid('tg'), name: name, items: [] });
+        var ng = { id: uid('tg'), name: name, items: [] };
+        touchItem(ng);
+        trip.todoGroups.push(ng);
         touchTrip(trip); toast('已新增群組');
       });
       return;
@@ -614,7 +628,7 @@
       const g = trip.todoGroups.find(function (x) { return x.id === t.dataset.gid; });
       if (!g) return;
       openModal('群組改名', field('名稱', 'name', g.name), function () {
-        g.name = val('name').trim() || g.name; touchTrip(trip);
+        g.name = val('name').trim() || g.name; touchItem(g); touchTrip(trip);
       });
       return;
     }
@@ -634,8 +648,11 @@
           if (!val('text').trim()) { toast('請填內容'); return false; }
           if (item) {
             item.text = val('text').trim(); item.due = val('due').trim(); item.note = val('note').trim();
+            touchItem(item);
           } else {
-            g.items.push({ id: uid('td'), text: val('text').trim(), done: false, due: val('due').trim(), note: val('note').trim() });
+            var nt = { id: uid('td'), text: val('text').trim(), done: false, due: val('due').trim(), note: val('note').trim() };
+            touchItem(nt);
+            g.items.push(nt);
           }
           touchTrip(trip);
         },
@@ -646,7 +663,7 @@
     if (action === 'toggle-todo') {
       const g = trip.todoGroups.find(function (x) { return x.id === t.dataset.gid; });
       const item = g && g.items.find(function (i) { return i.id === t.dataset.id; });
-      if (item) { item.done = !!t.checked; touchTrip(trip); persist(); renderView(); }
+      if (item) { item.done = !!t.checked; touchItem(item); touchTrip(trip); persist(); renderView(); }
       return;
     }
     if (action === 'del-todo') {
@@ -672,8 +689,8 @@
         function () {
           if (!val('title').trim()) { toast('請填標題'); return false; }
           const data = { type: val('type'), title: val('title').trim(), detail: val('detail').trim(), ref: val('ref').trim(), status: val('status'), note: val('note').trim() };
-          if (b) Object.assign(b, data);
-          else { data.id = uid('bk'); trip.bookings = trip.bookings || []; trip.bookings.push(data); }
+          if (b) { Object.assign(b, data); touchItem(b); }
+          else { data.id = uid('bk'); touchItem(data); trip.bookings = trip.bookings || []; trip.bookings.push(data); }
           touchTrip(trip);
         },
         b ? { onDelete: function () { trip.bookings = trip.bookings.filter(function (x) { return x.id !== b.id; }); touchTrip(trip); } } : null
@@ -692,10 +709,12 @@
       openModal(day ? '編輯行程日' : '新增一天',
         field('日期', 'date', day ? day.date : '', 'date') + field('標題', 'title', day ? day.title : ''),
         function () {
-          if (day) { day.date = val('date'); day.title = val('title').trim(); }
+          if (day) { day.date = val('date'); day.title = val('title').trim(); touchItem(day); }
           else {
             trip.days = trip.days || [];
-            trip.days.push({ id: uid('day'), date: val('date'), title: val('title').trim(), blocks: [] });
+            var nday = { id: uid('day'), date: val('date'), title: val('title').trim(), blocks: [] };
+            touchItem(nday);
+            trip.days.push(nday);
           }
           touchTrip(trip);
         },
@@ -718,10 +737,12 @@
         field('時間', 'time', bl ? bl.time : '') + field('內容', 'text', bl ? bl.text : '', 'textarea') + field('地點', 'place', bl ? bl.place : ''),
         function () {
           if (!val('text').trim()) { toast('請填內容'); return false; }
-          if (bl) { bl.time = val('time').trim(); bl.text = val('text').trim(); bl.place = val('place').trim(); }
+          if (bl) { bl.time = val('time').trim(); bl.text = val('text').trim(); bl.place = val('place').trim(); touchItem(bl); }
           else {
             day.blocks = day.blocks || [];
-            day.blocks.push({ id: uid('bl'), time: val('time').trim(), text: val('text').trim(), place: val('place').trim() });
+            var nb = { id: uid('bl'), time: val('time').trim(), text: val('text').trim(), place: val('place').trim() };
+            touchItem(nb);
+            day.blocks.push(nb);
           }
           touchTrip(trip);
         },
@@ -750,8 +771,8 @@
         function () {
           if (!val('name').trim()) { toast('請填名稱'); return false; }
           const data = { name: val('name').trim(), category: val('category').trim(), note: val('note').trim(), url: val('url').trim(), mapsUrl: val('mapsUrl').trim() };
-          if (p) Object.assign(p, data);
-          else { data.id = uid('pl'); trip.places = trip.places || []; trip.places.push(data); }
+          if (p) { Object.assign(p, data); touchItem(p); }
+          else { data.id = uid('pl'); touchItem(data); trip.places = trip.places || []; trip.places.push(data); }
           touchTrip(trip);
         },
         p ? { onDelete: function () { trip.places = trip.places.filter(function (x) { return x.id !== p.id; }); touchTrip(trip); } } : null
@@ -771,8 +792,13 @@
         field('項目', 'text', item ? item.text : '') + field('備註', 'note', item ? item.note : ''),
         function () {
           if (!val('text').trim()) { toast('請填項目'); return false; }
-          if (item) { item.text = val('text').trim(); item.note = val('note').trim(); }
-          else { trip.shopping = trip.shopping || []; trip.shopping.push({ id: uid('sh'), text: val('text').trim(), done: false, note: val('note').trim() }); }
+          if (item) { item.text = val('text').trim(); item.note = val('note').trim(); touchItem(item); }
+          else {
+            var ns = { id: uid('sh'), text: val('text').trim(), done: false, note: val('note').trim() };
+            touchItem(ns);
+            trip.shopping = trip.shopping || [];
+            trip.shopping.push(ns);
+          }
           touchTrip(trip);
         },
         item ? { onDelete: function () { trip.shopping = trip.shopping.filter(function (x) { return x.id !== item.id; }); touchTrip(trip); } } : null
@@ -781,7 +807,7 @@
     }
     if (action === 'toggle-shop') {
       const item = trip.shopping.find(function (x) { return x.id === t.dataset.id; });
-      if (item) { item.done = !!t.checked; touchTrip(trip); persist(); renderView(); }
+      if (item) { item.done = !!t.checked; touchItem(item); touchTrip(trip); persist(); renderView(); }
       return;
     }
     if (action === 'del-shop') {
@@ -796,7 +822,9 @@
         const name = val('name').trim();
         if (!name) { toast('請填名稱'); return false; }
         trip.packing = trip.packing || [];
-        trip.packing.push({ id: uid('pk'), category: name, items: [] });
+        var npc = { id: uid('pk'), category: name, items: [] };
+        touchItem(npc);
+        trip.packing.push(npc);
         touchTrip(trip);
       });
       return;
@@ -805,7 +833,7 @@
       const cat = trip.packing.find(function (c) { return c.id === t.dataset.cid; });
       if (!cat) return;
       openModal('分類改名', field('名稱', 'name', cat.category), function () {
-        cat.category = val('name').trim() || cat.category; touchTrip(trip);
+        cat.category = val('name').trim() || cat.category; touchItem(cat); touchTrip(trip);
       });
       return;
     }
@@ -821,8 +849,13 @@
       const item = action === 'edit-pack' ? cat.items.find(function (i) { return i.id === t.dataset.id; }) : null;
       openModal(item ? '編輯打包項目' : '新增打包項目', field('項目', 'text', item ? item.text : ''), function () {
         if (!val('text').trim()) { toast('請填項目'); return false; }
-        if (item) item.text = val('text').trim();
-        else { cat.items = cat.items || []; cat.items.push({ id: uid('pi'), text: val('text').trim(), done: false }); }
+        if (item) { item.text = val('text').trim(); touchItem(item); }
+        else {
+          cat.items = cat.items || [];
+          var npi = { id: uid('pi'), text: val('text').trim(), done: false };
+          touchItem(npi);
+          cat.items.push(npi);
+        }
         touchTrip(trip);
       }, item ? { onDelete: function () { cat.items = cat.items.filter(function (i) { return i.id !== item.id; }); touchTrip(trip); } } : null);
       return;
@@ -830,7 +863,7 @@
     if (action === 'toggle-pack') {
       const cat = trip.packing.find(function (c) { return c.id === t.dataset.cid; });
       const item = cat && cat.items.find(function (i) { return i.id === t.dataset.id; });
-      if (item) { item.done = !!t.checked; touchTrip(trip); persist(); renderView(); }
+      if (item) { item.done = !!t.checked; touchItem(item); touchTrip(trip); persist(); renderView(); }
       return;
     }
     if (action === 'del-pack') {
@@ -859,8 +892,8 @@
             amount: Number(val('amount')) || 0, currency: val('currency').trim() || 'TWD',
             twd: Number(val('twd')) || 0, status: val('status'), card: val('card').trim(), note: val('note').trim()
           };
-          if (ex) Object.assign(ex, data);
-          else { data.id = uid('ex'); trip.expenses = trip.expenses || []; trip.expenses.push(data); }
+          if (ex) { Object.assign(ex, data); touchItem(ex); }
+          else { data.id = uid('ex'); touchItem(data); trip.expenses = trip.expenses || []; trip.expenses.push(data); }
           touchTrip(trip);
         },
         ex ? { onDelete: function () { trip.expenses = trip.expenses.filter(function (x) { return x.id !== ex.id; }); touchTrip(trip); } } : null
@@ -935,11 +968,7 @@
     nav.innerHTML = html;
   }
 
-  function bootApp() {
-    state = TravelStorage.load() || TravelSeed.defaultState();
-    if (!TravelStorage.load()) {
-      TravelStorage.save(state);
-    }
+  function startUi() {
     buildNav();
     bind();
     renderTripSelect();
@@ -952,6 +981,29 @@
       navigator.serviceWorker.register(swUrl).catch(function (err) {
         console.warn('SW register failed', err);
       });
+    }
+  }
+
+  function bootApp() {
+    var hadLocal = !!TravelStorage.load();
+    var finish = function (merged) {
+      state = merged || TravelSeed.defaultState();
+      TravelStorage.save(state);
+      startUi();
+      if (state.syncedAt && hadLocal) {
+        /* quiet: local-wins merge already applied */
+      } else if (state.syncedAt && !hadLocal) {
+        toast('已載入雲端行程資料');
+      }
+    };
+
+    if (window.TravelSync && TravelSync.loadMergedState) {
+      TravelSync.loadMergedState(TravelSeed.defaultState).then(finish).catch(function (err) {
+        console.warn('boot sync failed', err);
+        finish(TravelStorage.load() || TravelSeed.defaultState());
+      });
+    } else {
+      finish(TravelStorage.load() || TravelSeed.defaultState());
     }
   }
 
