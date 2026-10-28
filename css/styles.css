@@ -1344,3 +1344,9 @@ body.locked .app { visibility: hidden; pointer-events: none; }
     transition: none !important;
   }
 }
+
+/* Expense filter chips */
+.expense-filter { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 0 0 10px; }
+.filter-chip { border: 1px solid rgba(127,127,127,.35); background: transparent; color: inherit; border-radius: 999px; padding: 5px 12px; font-size: .85rem; cursor: pointer; }
+.filter-chip.active { background: var(--accent, #2563eb); border-color: var(--accent, #2563eb); color: #fff; font-weight: 600; }
+.expense-filter-count { font-size: .8rem; margin-left: 4px; }

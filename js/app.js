@@ -1384,6 +1384,16 @@
   }
 
   /* ---------- Expenses ---------- */
+  const EXP_FILTER_KEY = 'ryan-travel-expense-filter';
+  const EXP_FILTERS = [['all', '全部'], ['paid', '已付款'], ['expected', '預計'], ['excluded', '不計入合計']];
+  let expenseFilter = (function () { try { return localStorage.getItem(EXP_FILTER_KEY) || 'all'; } catch (_) { return 'all'; } })();
+  function expenseMatchesFilter(e) {
+    if (expenseFilter === 'paid') return e.status === 'paid';
+    if (expenseFilter === 'expected') return e.status !== 'paid';
+    if (expenseFilter === 'excluded') return !!e.excludeFromEstimate;
+    return true;
+  }
+
   function renderExpenses(trip) {
     ensureTripShape(trip);
     const el = $('#view-expenses');
@@ -1405,10 +1415,15 @@
       '<p class="faint" style="margin-top:8px">已付＝已付實際；總預估＝各列預估加總；預計列沒有實際金額。尚未付預估 ' + unpaidEstimate.toLocaleString('zh-TW') + '。</p>' +
       (excludedN ? '<p class="faint" style="margin-top:4px">已排除 ' + excludedN + ' 筆不計入合計</p>' : '') +
       '<p class="faint" style="margin-top:4px">按 👁 不計入已付與總預估（列仍顯示）。</p></div>';
+    const shown = list.filter(expenseMatchesFilter);
+    html += '<div class="expense-filter" role="group" aria-label="篩選花費">' + EXP_FILTERS.map(function (f) {
+      return '<button type="button" class="filter-chip' + (expenseFilter === f[0] ? ' active' : '') + '" data-action="expense-filter" data-filter="' + f[0] + '" aria-pressed="' + (expenseFilter === f[0]) + '">' + f[1] + '</button>';
+    }).join('') + (expenseFilter !== 'all' ? '<span class="faint expense-filter-count">顯示 ' + shown.length + '／' + list.length + '</span>' : '') + '</div>';
     html += '<div class="card expense-scroll"><table class="expense-table"><thead><tr>' +
       '<th class="th-drag"></th><th>日期</th><th>項目</th><th>狀態</th><th class="col-amt-desk">原幣</th><th class="col-amt-desk">實際TWD</th><th class="col-amt-desk">預估TWD</th><th>計入</th><th></th></tr></thead><tbody>';
     if (!list.length) html += '<tr><td colspan="9" class="muted">尚無花費</td></tr>';
-    list.forEach(function (e) {
+    else if (!shown.length) html += '<tr><td colspan="9" class="muted">此篩選尚無花費</td></tr>';
+    shown.forEach(function (e) {
       const excl = !!e.excludeFromEstimate;
       const isPaid = e.status === 'paid';
       const twdDisp = isPaid ? (Number(e.twd) || 0).toLocaleString('zh-TW') : '—';
@@ -2319,6 +2334,12 @@
           }
         });
       }
+      return;
+    }
+    if (action === 'expense-filter') {
+      expenseFilter = t.dataset.filter || 'all';
+      try { localStorage.setItem(EXP_FILTER_KEY, expenseFilter); } catch (_) {}
+      renderView();
       return;
     }
     if (action === 'toggle-expense-estimate') {
