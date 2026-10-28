@@ -123,6 +123,41 @@
       result.push(clone(loc));
     });
 
+    // Prefer local array order (preserves DnD reorder). Remote-only items append.
+    if (localArr.length) {
+      var byId = {};
+      var byFp = {};
+      result.forEach(function (it) {
+        if (!it) return;
+        if (it.id) byId[it.id] = it;
+        var fp = fingerprint(kind, it);
+        if (fp) byFp[fp] = it;
+      });
+      var ordered = [];
+      var seen = {};
+      function mark(it) {
+        var k = it.id ? ('id:' + it.id) : ('fp:' + fingerprint(kind, it));
+        if (seen[k]) return false;
+        seen[k] = true;
+        return true;
+      }
+      localArr.forEach(function (loc) {
+        if (!loc) return;
+        var m = null;
+        if (loc.id && byId[loc.id]) m = byId[loc.id];
+        else {
+          var fp = fingerprint(kind, loc);
+          if (fp && byFp[fp]) m = byFp[fp];
+        }
+        if (m && mark(m)) ordered.push(m);
+      });
+      result.forEach(function (it) {
+        if (!it) return;
+        if (mark(it)) ordered.push(it);
+      });
+      return ordered;
+    }
+
     return result;
   }
 
@@ -187,10 +222,34 @@
   }
 
   function mergePacking(localPack, remotePack) {
+    // Track items that already live in some local category (cross-cat DnD).
+    var localItemIds = {};
+    var localItemFps = {};
+    (localPack || []).forEach(function (cat) {
+      (cat.items || []).forEach(function (it) {
+        if (!it) return;
+        if (it.id) localItemIds[it.id] = true;
+        var fp = fingerprint('packItem', it);
+        if (fp) localItemFps[fp] = true;
+      });
+    });
     return mergeList(localPack, remotePack, 'packCat', function (merged, loc, rem) {
       var localItems = (loc && loc.items) || [];
       var remoteItems = (rem && rem.items) || [];
-      merged.items = mergeList(localItems, remoteItems, 'packItem');
+      var filteredRemote = remoteItems.filter(function (rit) {
+        if (!rit) return false;
+        var inThis = localItems.some(function (li) {
+          if (!li) return false;
+          if (rit.id && li.id === rit.id) return true;
+          return fingerprint('packItem', li) === fingerprint('packItem', rit);
+        });
+        if (inThis) return true;
+        if (rit.id && localItemIds[rit.id]) return false;
+        var fp = fingerprint('packItem', rit);
+        if (fp && localItemFps[fp]) return false;
+        return true;
+      });
+      merged.items = mergeList(localItems, filteredRemote, 'packItem');
       if (localWins(loc, rem)) {
         merged.category = loc.category;
         if (loc.userEdited) merged.userEdited = true;
@@ -283,7 +342,22 @@
     out.places = mergeList(localTrip.places, remoteTrip.places, 'place', withDetailsMerge);
     out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop', withDetailsMerge);
     out.packing = mergePacking(localTrip.packing, remoteTrip.packing);
-    out.expenses = mergeList(localTrip.expenses, remoteTrip.expenses, 'expense');
+    out.expenses = mergeList(localTrip.expenses, remoteTrip.expenses, 'expense', function (merged, loc, rem) {
+      loc = loc || {};
+      rem = rem || {};
+      if (localWins(loc, rem)) {
+        if (loc.estimateTwd != null) merged.estimateTwd = loc.estimateTwd;
+        if (loc.excludeFromEstimate != null) merged.excludeFromEstimate = !!loc.excludeFromEstimate;
+      } else {
+        if (merged.estimateTwd == null && loc.estimateTwd != null) merged.estimateTwd = loc.estimateTwd;
+        if (merged.excludeFromEstimate == null && loc.excludeFromEstimate != null) {
+          merged.excludeFromEstimate = !!loc.excludeFromEstimate;
+        }
+      }
+      if (merged.estimateTwd == null) merged.estimateTwd = Number(merged.twd) || 0;
+      if (merged.excludeFromEstimate == null) merged.excludeFromEstimate = false;
+      return merged;
+    });
     out.journal = mergeList(localTrip.journal, remoteTrip.journal, 'journal', function (merged, loc, rem) {
       // Photos: keep local photo list if local wins / has photos; never drop local photo refs
       if (localWins(loc, rem)) {

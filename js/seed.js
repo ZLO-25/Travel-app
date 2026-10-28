@@ -1233,7 +1233,9 @@
       "twd": 5890,
       "status": "paid",
       "card": "滙豐旅人",
-      "note": "10/30 越南時間前可免費取消"
+      "note": "10/30 越南時間前可免費取消",
+      "estimateTwd": 5890,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_flights",
@@ -1247,7 +1249,9 @@
       "twd": 6355,
       "status": "paid",
       "card": "滙豐旅人",
-      "note": "訂單 1616334893071825；不含託運"
+      "note": "訂單 1616334893071825；不含託運",
+      "estimateTwd": 6355,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_esim",
@@ -1261,7 +1265,9 @@
       "twd": 248,
       "status": "paid",
       "card": "滙豐旅人",
-      "note": "26KK259044234"
+      "note": "26KK259044234",
+      "estimateTwd": 248,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_visa",
@@ -1275,7 +1281,9 @@
       "twd": 834,
       "status": "paid",
       "card": "滙豐旅人",
-      "note": "帳單入帳 NT$834"
+      "note": "帳單入帳 NT$834",
+      "estimateTwd": 834,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_fx_fees",
@@ -1289,7 +1297,9 @@
       "twd": 242,
       "status": "paid",
       "card": "滙豐旅人",
-      "note": "含已取消訂房手續費 46"
+      "note": "含已取消訂房手續費 46",
+      "estimateTwd": 242,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_lounge",
@@ -1303,7 +1313,9 @@
       "twd": 0,
       "status": "paid",
       "card": "滙豐旅人權益",
-      "note": "QR 已寄達"
+      "note": "QR 已寄達",
+      "estimateTwd": 0,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_insurance",
@@ -1317,7 +1329,9 @@
       "twd": 985,
       "status": "paid",
       "card": "LINE Pay→滙豐旅人",
-      "note": "576109368868"
+      "note": "576109368868",
+      "estimateTwd": 985,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_transfer_out",
@@ -1331,7 +1345,9 @@
       "twd": 0,
       "status": "paid",
       "card": "國泰長榮極致權益",
-      "note": "F15528953；免費"
+      "note": "F15528953；免費",
+      "estimateTwd": 0,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_baggage",
@@ -1345,7 +1361,9 @@
       "twd": 1000,
       "status": "expected",
       "card": "",
-      "note": "待加購"
+      "note": "待加購",
+      "estimateTwd": 1000,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_transfer_back",
@@ -1359,7 +1377,9 @@
       "twd": 200,
       "status": "expected",
       "card": "滙豐旅人",
-      "note": "尚未預約"
+      "note": "尚未預約",
+      "estimateTwd": 200,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_grab_arrive",
@@ -1373,7 +1393,9 @@
       "twd": 125,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 125,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_seafood",
@@ -1387,7 +1409,9 @@
       "twd": 502,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 502,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_massage",
@@ -1401,7 +1425,9 @@
       "twd": 2735,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 2735,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_scar",
@@ -1415,7 +1441,9 @@
       "twd": 263,
       "status": "expected",
       "card": "",
-      "note": ""
+      "note": "",
+      "estimateTwd": 263,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_marble",
@@ -1429,7 +1457,9 @@
       "twd": 94,
       "status": "expected",
       "card": "現金",
-      "note": "只收現金"
+      "note": "只收現金",
+      "estimateTwd": 94,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_hoian_ticket",
@@ -1443,7 +1473,9 @@
       "twd": 151,
       "status": "expected",
       "card": "現金",
-      "note": ""
+      "note": "",
+      "estimateTwd": 151,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_grab_1106",
@@ -1457,7 +1489,9 @@
       "twd": 916,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 916,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_loafer",
@@ -1471,7 +1505,9 @@
       "twd": 2760,
       "status": "expected",
       "card": "",
-      "note": "抓上限 USD 85"
+      "note": "抓上限 USD 85",
+      "estimateTwd": 2760,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_fivefinger",
@@ -1485,7 +1521,9 @@
       "twd": 4516,
       "status": "expected",
       "card": "",
-      "note": ""
+      "note": "",
+      "estimateTwd": 4516,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_barber",
@@ -1499,7 +1537,9 @@
       "twd": 376,
       "status": "expected",
       "card": "",
-      "note": "扣券後估算"
+      "note": "扣券後估算",
+      "estimateTwd": 376,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_blackhead",
@@ -1513,7 +1553,9 @@
       "twd": 627,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 627,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_dinner_1108",
@@ -1527,7 +1569,9 @@
       "twd": 1757,
       "status": "expected",
       "card": "",
-      "note": ""
+      "note": "",
+      "estimateTwd": 1757,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_buffet",
@@ -1541,7 +1585,9 @@
       "twd": 878,
       "status": "expected",
       "card": "",
-      "note": ""
+      "note": "",
+      "estimateTwd": 878,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_souvenirs",
@@ -1555,7 +1601,9 @@
       "twd": 627,
       "status": "expected",
       "card": "",
-      "note": ""
+      "note": "",
+      "estimateTwd": 627,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_meals_misc",
@@ -1569,7 +1617,9 @@
       "twd": 1769,
       "status": "expected",
       "card": "",
-      "note": "估算"
+      "note": "估算",
+      "estimateTwd": 1769,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_grab_misc",
@@ -1583,7 +1633,9 @@
       "twd": 916,
       "status": "expected",
       "card": "",
-      "note": "合併估算：1107+1108+1110 等"
+      "note": "合併估算：1107+1108+1110 等",
+      "estimateTwd": 916,
+      "excludeFromEstimate": false
     },
     {
       "id": "ex_boots_opt",
@@ -1597,7 +1649,9 @@
       "twd": 3572,
       "status": "expected",
       "card": "",
-      "note": "不計入主合計；選配"
+      "note": "不計入主合計；選配",
+      "estimateTwd": 3572,
+      "excludeFromEstimate": true
     }
   ],
   "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,554；預期尚未付款約 NT$20,588；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/28 10:06（台北）。",

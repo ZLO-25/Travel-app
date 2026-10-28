@@ -326,6 +326,84 @@ a { color: var(--teal); }
   flex-shrink: 0;
 }
 
+.check-item {
+  position: relative;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.check-item .drag-handle {
+  cursor: grab;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  user-select: none;
+  touch-action: none;
+  opacity: 0.55;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.check-item:hover .drag-handle,
+.check-item.dragging .drag-handle { opacity: 1; }
+.check-item.dragging {
+  opacity: 0.45;
+  background: var(--bg-soft);
+}
+.check-item.drag-over-before::before,
+.check-item.drag-over-after::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-deep, #2a9d8f);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 1;
+}
+.check-item.drag-over-before::before { top: -1px; }
+.check-item.drag-over-after::after { bottom: -1px; }
+.pack-cat-card.drag-over {
+  outline: 2px solid var(--accent-deep, #2a9d8f);
+  outline-offset: 2px;
+  background: var(--bg-soft);
+}
+.pack-drop-zone {
+  min-height: 10px;
+  margin-top: 4px;
+}
+
+.expense-table .th-drag,
+.expense-table .td-drag {
+  width: 1.4rem;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.expense-row {
+  position: relative;
+}
+.expense-row .drag-handle {
+  cursor: grab;
+  color: var(--ink-muted);
+  opacity: 0.55;
+  user-select: none;
+  touch-action: none;
+}
+.expense-row:hover .drag-handle,
+.expense-row.dragging .drag-handle { opacity: 1; }
+.expense-row.dragging { opacity: 0.45; background: var(--bg-soft); }
+.expense-row.drag-over-before td { box-shadow: inset 0 2px 0 var(--accent-deep, #2a9d8f); }
+.expense-row.drag-over-after td { box-shadow: inset 0 -2px 0 var(--accent-deep, #2a9d8f); }
+.expense-row.expense-excluded { opacity: 0.55; }
+.expense-row.expense-excluded strong { font-weight: 600; }
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.check-label input { width: 18px; height: 18px; accent-color: var(--teal); }
+
+
 .group-title {
   display: flex;
   align-items: center;

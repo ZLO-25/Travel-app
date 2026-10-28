@@ -382,6 +382,11 @@
     if (trip.id === 'trip_danang_2026' && OLD_DANANG_TITLES[String(trip.title || '').trim()]) {
       trip.title = NEW_DANANG_TITLE;
     }
+    (trip.expenses || []).forEach(function (e) {
+      if (!e) return;
+      if (e.estimateTwd == null || e.estimateTwd === '') e.estimateTwd = Number(e.twd) || 0;
+      if (e.excludeFromEstimate == null) e.excludeFromEstimate = false;
+    });
     return trip;
   }
 
@@ -841,6 +846,249 @@
     moveItineraryBlock(fromDayId, blockId, toDayId, beforeBlockId);
   }
 
+
+  /* ---------- Shopping / Packing / Expenses DnD ---------- */
+  var listDrag = null; // { kind: 'shop'|'pack'|'expense', id, fromCatId? }
+
+  function clearListDragUI() {
+    $$('.check-item.drag-over-before, .check-item.drag-over-after, .check-item.dragging, .pack-cat-card.drag-over, .expense-row.drag-over-before, .expense-row.drag-over-after, .expense-row.dragging').forEach(function (el) {
+      el.classList.remove('drag-over-before', 'drag-over-after', 'dragging', 'drag-over');
+    });
+  }
+
+  function reorderArrayById(arr, id, beforeId) {
+    if (!arr || !id) return false;
+    var idx = arr.findIndex(function (x) { return x && x.id === id; });
+    if (idx < 0) return false;
+    var insertAt = arr.length;
+    if (beforeId) {
+      var bi = arr.findIndex(function (x) { return x && x.id === beforeId; });
+      if (bi >= 0) insertAt = bi;
+    }
+    if (insertAt > idx) insertAt -= 1;
+    if (insertAt === idx) return false;
+    var item = arr.splice(idx, 1)[0];
+    arr.splice(insertAt, 0, item);
+    return item;
+  }
+
+  function moveShopItem(itemId, beforeId) {
+    var trip = activeTrip();
+    if (!trip) return;
+    trip.shopping = trip.shopping || [];
+    var item = reorderArrayById(trip.shopping, itemId, beforeId);
+    if (!item) return;
+    touchItem(item);
+    touchTrip(trip);
+    persist(true);
+    renderView();
+    toast('已調整順序');
+  }
+
+  function movePackItem(fromCatId, itemId, toCatId, beforeId) {
+    var trip = activeTrip();
+    if (!trip || !itemId || !toCatId) return;
+    var fromCat = (trip.packing || []).find(function (c) { return c.id === fromCatId; });
+    var toCat = (trip.packing || []).find(function (c) { return c.id === toCatId; });
+    if (!fromCat || !toCat) return;
+    fromCat.items = fromCat.items || [];
+    toCat.items = toCat.items || [];
+    var idx = fromCat.items.findIndex(function (x) { return x.id === itemId; });
+    if (idx < 0) return;
+    var insertAt = toCat.items.length;
+    if (beforeId) {
+      var bi = toCat.items.findIndex(function (x) { return x.id === beforeId; });
+      if (bi >= 0) insertAt = bi;
+    }
+    if (fromCatId === toCatId) {
+      if (insertAt > idx) insertAt -= 1;
+      if (insertAt === idx) return;
+    }
+    var item = fromCat.items.splice(idx, 1)[0];
+    toCat.items.splice(insertAt, 0, item);
+    touchItem(item);
+    touchItem(fromCat);
+    touchItem(toCat);
+    touchTrip(trip);
+    persist(true);
+    renderView();
+    toast(fromCatId === toCatId ? '已調整順序' : '已移到其他分類');
+  }
+
+  function moveExpenseItem(itemId, beforeId) {
+    var trip = activeTrip();
+    if (!trip) return;
+    trip.expenses = trip.expenses || [];
+    var item = reorderArrayById(trip.expenses, itemId, beforeId);
+    if (!item) return;
+    touchItem(item);
+    touchTrip(trip);
+    persist(true);
+    renderView();
+    toast('已調整順序');
+  }
+
+  function onListDragStart(e) {
+    if (e.target.closest && e.target.closest('button, a, input, textarea, select')) {
+      e.preventDefault();
+      return;
+    }
+    var shopRow = e.target.closest && e.target.closest('#view-shopping .check-item[draggable="true"]');
+    if (shopRow) {
+      listDrag = { kind: 'shop', id: shopRow.dataset.shopId };
+      shopRow.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', listDrag.id || ''); } catch (err) {}
+      return;
+    }
+    var packRow = e.target.closest && e.target.closest('#view-packing .check-item[draggable="true"]');
+    if (packRow) {
+      listDrag = { kind: 'pack', id: packRow.dataset.packId, fromCatId: packRow.dataset.packCid };
+      packRow.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', listDrag.id || ''); } catch (err) {}
+      return;
+    }
+    var expRow = e.target.closest && e.target.closest('#view-expenses tr.expense-row[draggable="true"]');
+    if (expRow) {
+      listDrag = { kind: 'expense', id: expRow.dataset.expenseId };
+      expRow.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', listDrag.id || ''); } catch (err) {}
+    }
+  }
+
+  function onListDragEnd() {
+    listDrag = null;
+    clearListDragUI();
+  }
+
+  function onListDragOver(e) {
+    if (!listDrag) return;
+    if (listDrag.kind === 'shop') {
+      var view = e.target.closest && e.target.closest('#view-shopping');
+      if (!view) return;
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+      clearListDragUI();
+      var dragging = view.querySelector('.check-item[data-shop-id="' + listDrag.id + '"]');
+      if (dragging) dragging.classList.add('dragging');
+      var over = e.target.closest('.check-item[data-shop-id]');
+      if (over && over.dataset.shopId !== listDrag.id) {
+        var rect = over.getBoundingClientRect();
+        if (e.clientY < rect.top + rect.height / 2) over.classList.add('drag-over-before');
+        else over.classList.add('drag-over-after');
+      }
+      return;
+    }
+    if (listDrag.kind === 'pack') {
+      var pview = e.target.closest && e.target.closest('#view-packing');
+      if (!pview) return;
+      var catCard = e.target.closest('.pack-cat-card');
+      if (!catCard) return;
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+      clearListDragUI();
+      var pdrag = pview.querySelector('.check-item[data-pack-id="' + listDrag.id + '"]');
+      if (pdrag) pdrag.classList.add('dragging');
+      catCard.classList.add('drag-over');
+      var pover = e.target.closest('.check-item[data-pack-id]');
+      if (pover && pover.dataset.packId !== listDrag.id) {
+        var prect = pover.getBoundingClientRect();
+        if (e.clientY < prect.top + prect.height / 2) pover.classList.add('drag-over-before');
+        else pover.classList.add('drag-over-after');
+      }
+      return;
+    }
+    if (listDrag.kind === 'expense') {
+      var eview = e.target.closest && e.target.closest('#view-expenses');
+      if (!eview) return;
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+      clearListDragUI();
+      var edrag = eview.querySelector('tr.expense-row[data-expense-id="' + listDrag.id + '"]');
+      if (edrag) edrag.classList.add('dragging');
+      var eover = e.target.closest('tr.expense-row[data-expense-id]');
+      if (eover && eover.dataset.expenseId !== listDrag.id) {
+        var erect = eover.getBoundingClientRect();
+        if (e.clientY < erect.top + erect.height / 2) eover.classList.add('drag-over-before');
+        else eover.classList.add('drag-over-after');
+      }
+    }
+  }
+
+  function onListDrop(e) {
+    if (!listDrag) return;
+    if (listDrag.kind === 'shop') {
+      var view = e.target.closest && e.target.closest('#view-shopping');
+      if (!view) return;
+      e.preventDefault();
+      var over = e.target.closest('.check-item[data-shop-id]');
+      var beforeId = null;
+      if (over && over.dataset.shopId !== listDrag.id) {
+        var rect = over.getBoundingClientRect();
+        if (e.clientY < rect.top + rect.height / 2) beforeId = over.dataset.shopId;
+        else {
+          var next = over.nextElementSibling;
+          while (next && !next.classList.contains('check-item')) next = next.nextElementSibling;
+          beforeId = next && next.dataset.shopId ? next.dataset.shopId : null;
+        }
+      } else if (over && over.dataset.shopId === listDrag.id) {
+        listDrag = null; clearListDragUI(); return;
+      }
+      var id = listDrag.id;
+      listDrag = null; clearListDragUI();
+      moveShopItem(id, beforeId);
+      return;
+    }
+    if (listDrag.kind === 'pack') {
+      var pview = e.target.closest && e.target.closest('#view-packing');
+      if (!pview) return;
+      var catCard = e.target.closest('.pack-cat-card');
+      if (!catCard) return;
+      e.preventDefault();
+      var toCatId = catCard.getAttribute('data-pack-drop');
+      var fromCatId = listDrag.fromCatId;
+      var itemId = listDrag.id;
+      var beforeId = null;
+      var pover = e.target.closest('.check-item[data-pack-id]');
+      if (pover && pover.dataset.packId === itemId) {
+        listDrag = null; clearListDragUI(); return;
+      }
+      if (pover && pover.dataset.packId !== itemId) {
+        var prect = pover.getBoundingClientRect();
+        if (e.clientY < prect.top + prect.height / 2) beforeId = pover.dataset.packId;
+        else {
+          var pnext = pover.nextElementSibling;
+          while (pnext && !pnext.classList.contains('check-item')) pnext = pnext.nextElementSibling;
+          beforeId = pnext && pnext.dataset.packId ? pnext.dataset.packId : null;
+        }
+      }
+      listDrag = null; clearListDragUI();
+      movePackItem(fromCatId, itemId, toCatId, beforeId);
+      return;
+    }
+    if (listDrag.kind === 'expense') {
+      var eview = e.target.closest && e.target.closest('#view-expenses');
+      if (!eview) return;
+      e.preventDefault();
+      var eover = e.target.closest('tr.expense-row[data-expense-id]');
+      var beforeId = null;
+      if (eover && eover.dataset.expenseId !== listDrag.id) {
+        var erect = eover.getBoundingClientRect();
+        if (e.clientY < erect.top + erect.height / 2) beforeId = eover.dataset.expenseId;
+        else {
+          var enext = eover.nextElementSibling;
+          while (enext && !enext.classList.contains('expense-row')) enext = enext.nextElementSibling;
+          beforeId = enext && enext.dataset.expenseId ? enext.dataset.expenseId : null;
+        }
+      } else if (eover && eover.dataset.expenseId === listDrag.id) {
+        listDrag = null; clearListDragUI(); return;
+      }
+      var eid = listDrag.id;
+      listDrag = null; clearListDragUI();
+      moveExpenseItem(eid, beforeId);
+    }
+  }
+
+
   /* ---------- Places / route map (Leaflet + timeline) ---------- */
   const ROUTE_COLORS = { hotel: '#e76f51', marble: '#2a9d8f', hoian: '#f4a261' };
   const ROUTE_ORDER = ['hotel', 'marble', 'hoian'];
@@ -1077,10 +1325,12 @@
   function renderShopping(trip) {
     const el = $('#view-shopping');
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">購物</h2>' +
-      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-shop">＋ 新增</button></div>';
+      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-shop">＋ 新增</button></div>' +
+      '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序</p>';
     if (!(trip.shopping || []).length) html += '<p class="muted">尚無購物項目</p>';
     (trip.shopping || []).forEach(function (item) {
-      html += '<div class="check-item' + (item.done ? ' done' : '') + '">' +
+      html += '<div class="check-item' + (item.done ? ' done' : '') + '" draggable="true" data-shop-id="' + item.id + '">' +
+        '<span class="drag-handle" title="拖曳排序" aria-hidden="true">⠿</span>' +
         '<input type="checkbox" ' + (item.done ? 'checked' : '') + ' data-action="toggle-shop" data-id="' + item.id + '" aria-label="完成">' +
         '<div class="body"><div>' + escapeHtml(item.text) + '</div>' +
         (item.note ? '<div class="faint">' + escapeHtml(item.note) + '</div>' : '') +
@@ -1098,52 +1348,66 @@
   function renderPacking(trip) {
     const el = $('#view-packing');
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">打包</h2>' +
-      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-pack-cat">＋ 分類</button></div></div>';
+      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-pack-cat">＋ 分類</button></div>' +
+      '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序，或拖到其他分類</p></div>';
     (trip.packing || []).forEach(function (cat) {
       const done = (cat.items || []).filter(function (i) { return i.done; }).length;
       const total = (cat.items || []).length;
-      html += '<div class="card"><div class="group-title"><span>' + escapeHtml(cat.category) +
+      html += '<div class="card pack-cat-card" data-pack-drop="' + cat.id + '"><div class="group-title"><span>' + escapeHtml(cat.category) +
         ' <span class="faint">' + done + '/' + total + '</span></span><div class="row">' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="rename-pack-cat" data-cid="' + cat.id + '">改名</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="add-pack-item" data-cid="' + cat.id + '">＋ 項目</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="del-pack-cat" data-cid="' + cat.id + '">刪分類</button>' +
         '</div></div>';
       (cat.items || []).forEach(function (item) {
-        html += '<div class="check-item' + (item.done ? ' done' : '') + '">' +
+        html += '<div class="check-item' + (item.done ? ' done' : '') + '" draggable="true" data-pack-id="' + item.id + '" data-pack-cid="' + cat.id + '">' +
+          '<span class="drag-handle" title="拖曳排序／換分類" aria-hidden="true">⠿</span>' +
           '<input type="checkbox" ' + (item.done ? 'checked' : '') + ' data-action="toggle-pack" data-cid="' + cat.id + '" data-id="' + item.id + '" aria-label="完成">' +
           '<div class="body">' + escapeHtml(item.text) + '</div>' +
           '<div class="actions"><button type="button" class="icon-btn" data-action="edit-pack" data-cid="' + cat.id + '" data-id="' + item.id + '" aria-label="編輯">✏️</button>' +
           '<button type="button" class="icon-btn" data-action="del-pack" data-cid="' + cat.id + '" data-id="' + item.id + '" aria-label="刪除">🗑️</button></div></div>';
       });
-      html += '</div>';
+      html += '<div class="pack-drop-zone" data-pack-drop="' + cat.id + '" aria-hidden="true"></div></div>';
     });
     el.innerHTML = html;
   }
 
   /* ---------- Expenses ---------- */
   function renderExpenses(trip) {
+    ensureTripShape(trip);
     const el = $('#view-expenses');
     const list = trip.expenses || [];
-    let paid = 0, expected = 0;
+    let paid = 0, estimateTotal = 0, excludedN = 0;
     list.forEach(function (e) {
-      const v = Number(e.twd) || 0;
-      if (e.status === 'paid') paid += v; else expected += v;
+      if (e.status === 'paid') paid += Number(e.twd) || 0;
+      if (e.excludeFromEstimate) excludedN += 1;
+      else estimateTotal += Number(e.estimateTwd) || 0;
     });
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">花費</h2>' +
       '<button type="button" class="btn btn-secondary btn-sm" data-action="add-expense">＋ 新增</button></div>' +
+      '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序</p>' +
       '<div class="totals"><div class="total-box"><div class="faint">已付（TWD）</div><div class="amt">' + paid.toLocaleString('zh-TW') + '</div></div>' +
-      '<div class="total-box"><div class="faint">預計（TWD）</div><div class="amt">' + expected.toLocaleString('zh-TW') + '</div></div></div>' +
-      '<p class="faint" style="margin-top:8px">合計以「TWD 約當」欄加總；外幣請自行填約當台幣。</p></div>';
+      '<div class="total-box"><div class="faint">總預估（TWD）</div><div class="amt">' + estimateTotal.toLocaleString('zh-TW') + '</div></div></div>' +
+      (excludedN ? '<p class="faint" style="margin-top:8px">已排除 ' + excludedN + ' 筆不計入預估</p>' : '') +
+      '<p class="faint" style="margin-top:8px">「總預估」加總預估欄（可按 👁 不計入）；已付仍用實際 TWD。</p></div>';
     html += '<div class="card expense-scroll"><table class="expense-table"><thead><tr>' +
-      '<th>日期</th><th>項目</th><th>狀態</th><th>原幣</th><th>TWD</th><th></th></tr></thead><tbody>';
-    if (!list.length) html += '<tr><td colspan="6" class="muted">尚無花費</td></tr>';
+      '<th class="th-drag"></th><th>日期</th><th>項目</th><th>狀態</th><th>原幣</th><th>實際TWD</th><th>預估TWD</th><th>計入</th><th></th></tr></thead><tbody>';
+    if (!list.length) html += '<tr><td colspan="9" class="muted">尚無花費</td></tr>';
     list.forEach(function (e) {
-      html += '<tr><td>' + escapeHtml(e.date || '—') + '</td><td><strong>' + escapeHtml(e.item) + '</strong>' +
+      const excl = !!e.excludeFromEstimate;
+      html += '<tr class="expense-row' + (excl ? ' expense-excluded' : '') + '" draggable="true" data-expense-id="' + e.id + '">' +
+        '<td class="td-drag"><span class="drag-handle" title="拖曳排序" aria-hidden="true">⠿</span></td>' +
+        '<td>' + escapeHtml(e.date || '—') + '</td><td><strong>' + escapeHtml(e.item) + '</strong>' +
         (e.merchant ? '<div class="faint">' + escapeHtml(e.merchant) + '</div>' : '') +
         (e.note ? '<div class="faint">' + escapeHtml(e.note) + '</div>' : '') +
+        (excl ? '<div><span class="pill warn">不計入預估</span></div>' : '') +
         '</td><td><span class="pill ' + (e.status === 'paid' ? 'ok' : 'warn') + '">' + escapeHtml(EXP_STATUS[e.status] || e.status) + '</span></td>' +
         '<td>' + (e.amount != null ? escapeHtml(String(e.amount)) + ' ' + escapeHtml(e.currency || '') : '—') + '</td>' +
         '<td>' + (Number(e.twd) || 0).toLocaleString('zh-TW') + '</td>' +
+        '<td>' + (Number(e.estimateTwd) || 0).toLocaleString('zh-TW') + '</td>' +
+        '<td><button type="button" class="icon-btn" data-action="toggle-expense-estimate" data-id="' + e.id + '" title="' +
+        (excl ? '改為計入總預估' : '不計入總預估') + '" aria-label="' + (excl ? '計入' : '不計入') + '">' +
+        (excl ? '👁‍🗨' : '👁') + '</button></td>' +
         '<td><button type="button" class="icon-btn" data-action="edit-expense" data-id="' + e.id + '" aria-label="編輯">✏️</button>' +
         '<button type="button" class="icon-btn" data-action="del-expense" data-id="' + e.id + '" aria-label="刪除">🗑️</button></td></tr>';
     });
@@ -1977,17 +2241,26 @@
       const st = ['paid', 'expected'].map(function (s) {
         return '<option value="' + s + '"' + ((ex ? ex.status : 'expected') === s ? ' selected' : '') + '>' + EXP_STATUS[s] + '</option>';
       }).join('');
+      const estDefault = ex ? (ex.estimateTwd != null ? ex.estimateTwd : ex.twd) : '0';
       openModal(ex ? '編輯花費' : '新增花費',
         field('日期', 'date', ex ? ex.date : '', 'date') + field('項目', 'item', ex ? ex.item : '') + field('商家', 'merchant', ex ? ex.merchant : '') +
         field('金額', 'amount', ex ? ex.amount : '0', 'number') + field('幣別', 'currency', ex ? ex.currency : 'TWD') +
-        field('TWD 約當', 'twd', ex ? ex.twd : '0', 'number') + field('狀態', 'status', st, 'select') +
-        field('卡別／付款', 'card', ex ? ex.card : '') + field('備註', 'note', ex ? ex.note : ''),
+        field('實際 TWD', 'twd', ex ? ex.twd : '0', 'number') +
+        field('預估 TWD', 'estimateTwd', estDefault, 'number') +
+        field('狀態', 'status', st, 'select') +
+        field('卡別／付款', 'card', ex ? ex.card : '') + field('備註', 'note', ex ? ex.note : '') +
+        '<div class="field"><label class="check-label"><input type="checkbox" id="f_excludeFromEstimate"' +
+        (ex && ex.excludeFromEstimate ? ' checked' : '') + '> 不計入總預估</label></div>',
         function () {
           if (!val('item').trim()) { toast('請填項目'); return false; }
+          const exclEl = $('#f_excludeFromEstimate');
           const data = {
             date: val('date'), item: val('item').trim(), merchant: val('merchant').trim(),
             amount: Number(val('amount')) || 0, currency: val('currency').trim() || 'TWD',
-            twd: Number(val('twd')) || 0, status: val('status'), card: val('card').trim(), note: val('note').trim()
+            twd: Number(val('twd')) || 0,
+            estimateTwd: Number(val('estimateTwd')) || 0,
+            excludeFromEstimate: !!(exclEl && exclEl.checked),
+            status: val('status'), card: val('card').trim(), note: val('note').trim()
           };
           if (ex) { Object.assign(ex, data); touchItem(ex); }
           else { data.id = uid('ex'); touchItem(data); trip.expenses = trip.expenses || []; trip.expenses.push(data); }
@@ -1995,6 +2268,14 @@
         },
         ex ? { onDelete: function () { trip.expenses = trip.expenses.filter(function (x) { return x.id !== ex.id; }); touchTrip(trip); } } : null
       );
+      return;
+    }
+    if (action === 'toggle-expense-estimate') {
+      const ex = trip.expenses.find(function (x) { return x.id === t.dataset.id; });
+      if (!ex) return;
+      ex.excludeFromEstimate = !ex.excludeFromEstimate;
+      touchItem(ex); touchTrip(trip); persist(true); renderView();
+      toast(ex.excludeFromEstimate ? '已不計入總預估' : '已計入總預估');
       return;
     }
     if (action === 'del-expense') {
@@ -2008,14 +2289,31 @@
     if (bind._doc) return;
     bind._doc = true;
     document.addEventListener('click', onClick);
-    document.addEventListener('dragstart', onItineraryDragStart);
-    document.addEventListener('dragend', onItineraryDragEnd);
-    document.addEventListener('dragover', onItineraryDragOver);
-    document.addEventListener('drop', onItineraryDrop);
+    document.addEventListener('dragstart', function (e) {
+      onItineraryDragStart(e);
+      onListDragStart(e);
+    });
+    document.addEventListener('dragend', function (e) {
+      onItineraryDragEnd(e);
+      onListDragEnd(e);
+    });
+    document.addEventListener('dragover', function (e) {
+      onItineraryDragOver(e);
+      onListDragOver(e);
+    });
+    document.addEventListener('drop', function (e) {
+      onItineraryDrop(e);
+      onListDrop(e);
+    });
     document.addEventListener('dragleave', function (e) {
-      if (!itineraryDrag) return;
-      const card = e.target.closest && e.target.closest('.day-card');
-      if (card && !card.contains(e.relatedTarget)) card.classList.remove('drag-over');
+      if (itineraryDrag) {
+        const card = e.target.closest && e.target.closest('.day-card');
+        if (card && !card.contains(e.relatedTarget)) card.classList.remove('drag-over');
+      }
+      if (listDrag && listDrag.kind === 'pack') {
+        const pcard = e.target.closest && e.target.closest('.pack-cat-card');
+        if (pcard && !pcard.contains(e.relatedTarget)) pcard.classList.remove('drag-over');
+      }
     });
     document.addEventListener('change', function (e) {
       if (e.target && e.target.id === 'tripSelect') {
