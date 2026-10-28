@@ -376,10 +376,51 @@ a { color: var(--teal); }
 }
 .block-row {
   display: grid;
-  grid-template-columns: 72px 1fr auto;
+  grid-template-columns: 22px 72px 1fr auto;
   gap: 8px;
   padding: 8px 0;
   border-top: 1px dashed var(--border);
+  align-items: start;
+  position: relative;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.block-row .drag-handle {
+  cursor: grab;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  user-select: none;
+  touch-action: none;
+  opacity: 0.55;
+  padding-top: 1px;
+}
+.block-row:hover .drag-handle,
+.block-row.dragging .drag-handle { opacity: 1; }
+.block-row.dragging {
+  opacity: 0.45;
+  background: var(--bg-soft);
+}
+.block-row.drag-over-before::before,
+.block-row.drag-over-after::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-deep, #2a9d8f);
+  border-radius: 1px;
+  pointer-events: none;
+}
+.block-row.drag-over-before::before { top: -1px; }
+.block-row.drag-over-after::after { bottom: -1px; }
+.day-card.drag-over {
+  outline: 2px solid var(--accent-deep, #2a9d8f);
+  outline-offset: 2px;
+  background: var(--bg-soft);
+}
+.block-drop-zone {
+  min-height: 10px;
+  margin-top: 4px;
 }
 .block-row .time {
   font-weight: 700;

@@ -464,25 +464,144 @@
   function renderItinerary(trip) {
     const el = $('#view-itinerary');
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">行程</h2>' +
-      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-day">＋ 一天</button></div></div>';
+      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-day">＋ 一天</button></div>' +
+      '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序或移到其他天</p></div>';
     const days = (trip.days || []).slice().sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
     if (!days.length) html += '<div class="card"><p class="muted">尚無行程日</p></div>';
     days.forEach(function (day) {
-      html += '<div class="card day-card"><div class="day-head"><div><strong>' + fmtDate(day.date) + '</strong> · ' + escapeHtml(day.title || '') +
+      html += '<div class="card day-card" data-day-drop="' + day.id + '"><div class="day-head"><div><strong>' + fmtDate(day.date) + '</strong> · ' + escapeHtml(day.title || '') +
         '</div><div class="row">' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="edit-day" data-id="' + day.id + '">編輯日</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="add-block" data-id="' + day.id + '">＋ 區塊</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="del-day" data-id="' + day.id + '">刪日</button>' +
         '</div></div>';
       (day.blocks || []).forEach(function (bl) {
-        html += '<div class="block-row"><div class="time">' + escapeHtml(bl.time || '—') + '</div>' +
+        html += '<div class="block-row" draggable="true" data-block-id="' + bl.id + '" data-day-id="' + day.id + '">' +
+          '<span class="drag-handle" title="拖曳換日／排序" aria-hidden="true">⠿</span>' +
+          '<div class="time">' + escapeHtml(bl.time || '—') + '</div>' +
           '<div>' + escapeHtml(bl.text || '') + (bl.place ? '<div class="faint">📍 ' + escapeHtml(bl.place) + '</div>' : '') + '</div>' +
           '<div class="actions"><button type="button" class="icon-btn" data-action="edit-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="編輯">✏️</button>' +
           '<button type="button" class="icon-btn" data-action="del-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="刪除">🗑️</button></div></div>';
       });
-      html += '</div>';
+      html += '<div class="block-drop-zone" data-day-drop="' + day.id + '" aria-hidden="true"></div></div>';
     });
     el.innerHTML = html;
+  }
+
+  /** Move / reorder an itinerary block; persists + re-renders. */
+  function moveItineraryBlock(fromDayId, blockId, toDayId, beforeBlockId) {
+    const trip = activeTrip();
+    if (!trip || !blockId || !toDayId) return false;
+    const fromDay = (trip.days || []).find(function (d) { return d.id === fromDayId; });
+    const toDay = (trip.days || []).find(function (d) { return d.id === toDayId; });
+    if (!fromDay || !toDay) return false;
+    fromDay.blocks = fromDay.blocks || [];
+    const idx = fromDay.blocks.findIndex(function (b) { return b.id === blockId; });
+    if (idx < 0) return false;
+    // Compute insert index before mutating (same-day: account for removal)
+    toDay.blocks = toDay.blocks || [];
+    var insertAt = toDay.blocks.length;
+    if (beforeBlockId) {
+      var bi = toDay.blocks.findIndex(function (b) { return b.id === beforeBlockId; });
+      if (bi >= 0) insertAt = bi;
+    }
+    if (fromDayId === toDayId) {
+      if (insertAt > idx) insertAt -= 1; // removed item shifts later indices
+      if (insertAt === idx) return false; // same position
+    }
+    const block = fromDay.blocks.splice(idx, 1)[0];
+    toDay.blocks.splice(insertAt, 0, block);
+    touchItem(block);
+    touchItem(fromDay);
+    touchItem(toDay);
+    touchTrip(trip);
+    persist(true);
+    renderView();
+    toast(fromDayId === toDayId ? '已調整順序' : '已移到其他天');
+    return true;
+  }
+
+  var itineraryDrag = null;
+
+  function clearItineraryDragUI() {
+    $$('.day-card.drag-over, .block-row.drag-over-before, .block-row.drag-over-after, .block-row.dragging').forEach(function (el) {
+      el.classList.remove('drag-over', 'drag-over-before', 'drag-over-after', 'dragging');
+    });
+  }
+
+  function onItineraryDragStart(e) {
+    const row = e.target.closest && e.target.closest('#view-itinerary .block-row[draggable="true"]');
+    if (!row) return;
+    if (e.target.closest && e.target.closest('button, a, input, textarea, select')) {
+      e.preventDefault();
+      return;
+    }
+    itineraryDrag = { blockId: row.dataset.blockId, fromDayId: row.dataset.dayId };
+    row.classList.add('dragging');
+    try {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', row.dataset.blockId || '');
+    } catch (err) {}
+  }
+
+  function onItineraryDragEnd() {
+    itineraryDrag = null;
+    clearItineraryDragUI();
+  }
+
+  function onItineraryDragOver(e) {
+    if (!itineraryDrag) return;
+    const view = e.target.closest && e.target.closest('#view-itinerary');
+    if (!view) return;
+    const dayCard = e.target.closest('.day-card');
+    if (!dayCard) return;
+    e.preventDefault();
+    try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+    clearItineraryDragUI();
+    if (itineraryDrag) {
+      const dragging = view.querySelector('.block-row[data-block-id="' + itineraryDrag.blockId + '"]');
+      if (dragging) dragging.classList.add('dragging');
+    }
+    dayCard.classList.add('drag-over');
+    const overRow = e.target.closest('.block-row[data-block-id]');
+    if (overRow && overRow.dataset.blockId !== itineraryDrag.blockId) {
+      const rect = overRow.getBoundingClientRect();
+      if (e.clientY < rect.top + rect.height / 2) overRow.classList.add('drag-over-before');
+      else overRow.classList.add('drag-over-after');
+    }
+  }
+
+  function onItineraryDrop(e) {
+    if (!itineraryDrag) return;
+    const view = e.target.closest && e.target.closest('#view-itinerary');
+    if (!view) return;
+    const dayCard = e.target.closest('.day-card');
+    if (!dayCard) return;
+    e.preventDefault();
+    const toDayId = dayCard.getAttribute('data-day-drop');
+    const fromDayId = itineraryDrag.fromDayId;
+    const blockId = itineraryDrag.blockId;
+    var beforeBlockId = null;
+    const overRow = e.target.closest('.block-row[data-block-id]');
+    if (overRow && overRow.dataset.blockId === blockId) {
+      itineraryDrag = null;
+      clearItineraryDragUI();
+      return;
+    }
+    if (overRow && overRow.dataset.blockId !== blockId) {
+      const rect = overRow.getBoundingClientRect();
+      if (e.clientY < rect.top + rect.height / 2) {
+        beforeBlockId = overRow.dataset.blockId;
+      } else {
+        // insert after: find next sibling block in same day
+        var next = overRow.nextElementSibling;
+        while (next && !next.classList.contains('block-row')) next = next.nextElementSibling;
+        beforeBlockId = next && next.dataset.blockId ? next.dataset.blockId : null;
+      }
+    }
+    itineraryDrag = null;
+    clearItineraryDragUI();
+    moveItineraryBlock(fromDayId, blockId, toDayId, beforeBlockId);
   }
 
   /* ---------- Places / route map (Leaflet + timeline) ---------- */
@@ -1631,6 +1750,15 @@
     if (bind._doc) return;
     bind._doc = true;
     document.addEventListener('click', onClick);
+    document.addEventListener('dragstart', onItineraryDragStart);
+    document.addEventListener('dragend', onItineraryDragEnd);
+    document.addEventListener('dragover', onItineraryDragOver);
+    document.addEventListener('drop', onItineraryDrop);
+    document.addEventListener('dragleave', function (e) {
+      if (!itineraryDrag) return;
+      const card = e.target.closest && e.target.closest('.day-card');
+      if (card && !card.contains(e.relatedTarget)) card.classList.remove('drag-over');
+    });
     document.addEventListener('change', function (e) {
       if (e.target && e.target.id === 'tripSelect') {
         state.activeTripId = e.target.value;
