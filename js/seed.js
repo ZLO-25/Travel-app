@@ -578,7 +578,7 @@
       "userEdited": false,
       "type": "flight",
       "title": "去程 Tigerair IT585",
-      "detail": "高雄 KHH 17:20 → 峴港 DAD 19:00｜2026-11-05",
+      "detail": "高雄 KHH 17:20 → 峴港 DAD 19:00｜2026-11-05｜已付 TWD 6,355（去回合計，見花費）",
       "ref": "Trip.com 1616334893071825",
       "status": "confirmed",
       "note": ""
