@@ -335,7 +335,7 @@
 
   function expenseMoneyEmpty(e) {
     if (!e) return true;
-    return (Number(e.twd) || 0) === 0 && (Number(e.amount) || 0) === 0;
+    return (Number(e.twd) || 0) === 0 && (Number(e.amount) || 0) === 0 && (Number(e.estimateTwd) || 0) === 0;
   }
 
   function isPlaceholderNote(e) {
@@ -347,7 +347,7 @@
   }
 
   function remoteHasPositiveTwd(rem) {
-    return !!(rem && (Number(rem.twd) || 0) > 0);
+    return !!(rem && ((Number(rem.twd) || 0) > 0 || (Number(rem.estimateTwd) || 0) > 0 || (Number(rem.amount) || 0) > 0));
   }
 
   function copyRemoteMoneyFields(merged, rem) {
@@ -421,6 +421,29 @@
    * Drop seed leftover placeholders (「金額請自行補上」) and collapse
    * zero-amount near-duplicates of the real ex_flights / ex_hotel rows.
    */
+  function normalizeExpenseStatusMoney(e) {
+    if (!e) return e;
+    if (e.status === 'paid') {
+      if (e.estimateTwd == null || e.estimateTwd === '') {
+        e.estimateTwd = Number(e.twd) || 0;
+      }
+      if (e.excludeFromEstimate == null) e.excludeFromEstimate = false;
+      return e;
+    }
+    // expected (or any non-paid): never store actual TWD
+    var est = e.estimateTwd;
+    var estEmpty = est == null || est === '';
+    if (estEmpty) {
+      var prev = Number(e.twd) || 0;
+      e.estimateTwd = prev;
+    } else {
+      e.estimateTwd = Number(est) || 0;
+    }
+    e.twd = 0;
+    if (e.excludeFromEstimate == null) e.excludeFromEstimate = false;
+    return e;
+  }
+
   function sanitizeExpenses(list) {
     list = Array.isArray(list) ? list.filter(Boolean) : [];
     var withoutJunk = list.filter(function (e) {
@@ -457,6 +480,7 @@
       }
       out[dupIdx] = winner;
     });
+    out.forEach(normalizeExpenseStatusMoney);
     return out;
   }
 

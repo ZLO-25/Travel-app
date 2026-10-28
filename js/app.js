@@ -387,7 +387,15 @@
     }
     (trip.expenses || []).forEach(function (e) {
       if (!e) return;
-      if (e.estimateTwd == null || e.estimateTwd === '') e.estimateTwd = Number(e.twd) || 0;
+      if (e.status === 'paid') {
+        if (e.estimateTwd == null || e.estimateTwd === '') e.estimateTwd = Number(e.twd) || 0;
+      } else {
+        // expected: move any leftover actual into estimate, then clear actual
+        if (e.estimateTwd == null || e.estimateTwd === '') {
+          e.estimateTwd = Number(e.twd) || 0;
+        }
+        e.twd = 0;
+      }
       if (e.excludeFromEstimate == null) e.excludeFromEstimate = false;
     });
     return trip;
@@ -1380,37 +1388,44 @@
     ensureTripShape(trip);
     const el = $('#view-expenses');
     const list = trip.expenses || [];
-    let paid = 0, estimateTotal = 0, excludedN = 0;
+    let paid = 0, estimateTotal = 0, unpaidEstimate = 0, excludedN = 0;
     list.forEach(function (e) {
       if (e.status === 'paid' && !e.excludeFromEstimate) paid += Number(e.twd) || 0;
       if (e.excludeFromEstimate) excludedN += 1;
-      else estimateTotal += Number(e.estimateTwd) || 0;
+      else {
+        estimateTotal += Number(e.estimateTwd) || 0;
+        if (e.status !== 'paid') unpaidEstimate += Number(e.estimateTwd) || 0;
+      }
     });
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">花費</h2>' +
       '<button type="button" class="btn btn-secondary btn-sm" data-action="add-expense">＋ 新增</button></div>' +
       '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序</p>' +
       '<div class="totals"><div class="total-box"><div class="faint">已付（TWD）</div><div class="amt">' + paid.toLocaleString('zh-TW') + '</div></div>' +
       '<div class="total-box"><div class="faint">總預估（TWD）</div><div class="amt">' + estimateTotal.toLocaleString('zh-TW') + '</div></div></div>' +
-      (excludedN ? '<p class="faint" style="margin-top:8px">已排除 ' + excludedN + ' 筆不計入合計</p>' : '') +
-      '<p class="faint" style="margin-top:8px">按 👁 不計入已付與總預估（列仍顯示）。</p></div>';
+      '<p class="faint" style="margin-top:8px">已付＝已付實際；總預估＝各列預估加總；預計列沒有實際金額。尚未付預估 ' + unpaidEstimate.toLocaleString('zh-TW') + '。</p>' +
+      (excludedN ? '<p class="faint" style="margin-top:4px">已排除 ' + excludedN + ' 筆不計入合計</p>' : '') +
+      '<p class="faint" style="margin-top:4px">按 👁 不計入已付與總預估（列仍顯示）。</p></div>';
     html += '<div class="card expense-scroll"><table class="expense-table"><thead><tr>' +
       '<th class="th-drag"></th><th>日期</th><th>項目</th><th>狀態</th><th class="col-amt-desk">原幣</th><th class="col-amt-desk">實際TWD</th><th class="col-amt-desk">預估TWD</th><th>計入</th><th></th></tr></thead><tbody>';
     if (!list.length) html += '<tr><td colspan="9" class="muted">尚無花費</td></tr>';
     list.forEach(function (e) {
       const excl = !!e.excludeFromEstimate;
+      const isPaid = e.status === 'paid';
+      const twdDisp = isPaid ? (Number(e.twd) || 0).toLocaleString('zh-TW') : '—';
+      const estDisp = (Number(e.estimateTwd) || 0).toLocaleString('zh-TW');
       html += '<tr class="expense-row' + (excl ? ' expense-excluded' : '') + '" draggable="true" data-expense-id="' + e.id + '">' +
         '<td class="td-drag"><span class="drag-handle" title="拖曳排序" aria-hidden="true">⠿</span></td>' +
         '<td>' + escapeHtml(e.date || '—') + '</td><td><strong>' + escapeHtml(e.item) + '</strong>' +
         (e.merchant ? '<div class="faint">' + escapeHtml(e.merchant) + '</div>' : '') +
         (e.note ? '<div class="faint">' + escapeHtml(e.note) + '</div>' : '') +
         (excl ? '<div><span class="pill warn">不計入合計</span></div>' : '') +
-        '<div class="expense-amt-inline faint">實際 ' + (Number(e.twd) || 0).toLocaleString('zh-TW') +
-        ' · 預估 ' + (Number(e.estimateTwd) || 0).toLocaleString('zh-TW') +
+        '<div class="expense-amt-inline faint">實際 ' + twdDisp +
+        ' · 預估 ' + estDisp +
         (e.amount != null ? (' · 原幣 ' + escapeHtml(String(e.amount)) + ' ' + escapeHtml(e.currency || '')) : '') + '</div>' +
-        '</td><td><span class="pill ' + (e.status === 'paid' ? 'ok' : 'warn') + '">' + escapeHtml(EXP_STATUS[e.status] || e.status) + '</span></td>' +
+        '</td><td><span class="pill ' + (isPaid ? 'ok' : 'warn') + '">' + escapeHtml(EXP_STATUS[e.status] || e.status) + '</span></td>' +
         '<td class="col-amt-desk">' + (e.amount != null ? escapeHtml(String(e.amount)) + ' ' + escapeHtml(e.currency || '') : '—') + '</td>' +
-        '<td class="col-amt-desk">' + (Number(e.twd) || 0).toLocaleString('zh-TW') + '</td>' +
-        '<td class="col-amt-desk">' + (Number(e.estimateTwd) || 0).toLocaleString('zh-TW') + '</td>' +
+        '<td class="col-amt-desk">' + twdDisp + '</td>' +
+        '<td class="col-amt-desk">' + estDisp + '</td>' +
         '<td><button type="button" class="icon-btn" data-action="toggle-expense-estimate" data-id="' + e.id + '" title="' +
         (excl ? '改為計入合計' : '不計入已付與總預估') + '" aria-label="' + (excl ? '計入' : '不計入') + '">' +
         (excl ? '👁‍🗨' : '👁') + '</button></td>' +
@@ -2244,29 +2259,45 @@
     /* expenses */
     if (action === 'add-expense' || action === 'edit-expense') {
       const ex = action === 'edit-expense' ? trip.expenses.find(function (x) { return x.id === t.dataset.id; }) : null;
+      const curStatus = ex ? ex.status : 'expected';
       const st = ['paid', 'expected'].map(function (s) {
-        return '<option value="' + s + '"' + ((ex ? ex.status : 'expected') === s ? ' selected' : '') + '>' + EXP_STATUS[s] + '</option>';
+        return '<option value="' + s + '"' + (curStatus === s ? ' selected' : '') + '>' + EXP_STATUS[s] + '</option>';
       }).join('');
-      const estDefault = ex ? (ex.estimateTwd != null ? ex.estimateTwd : ex.twd) : '0';
+      const estDefault = ex ? (ex.estimateTwd != null ? ex.estimateTwd : (ex.status === 'paid' ? ex.twd : 0)) : '0';
+      const twdDefault = (ex && ex.status === 'paid') ? (ex.twd != null ? ex.twd : 0) : '';
       openModal(ex ? '編輯花費' : '新增花費',
         field('日期', 'date', ex ? ex.date : '', 'date') + field('項目', 'item', ex ? ex.item : '') + field('商家', 'merchant', ex ? ex.merchant : '') +
-        field('金額', 'amount', ex ? ex.amount : '0', 'number') + field('幣別', 'currency', ex ? ex.currency : 'TWD') +
-        field('實際 TWD', 'twd', ex ? ex.twd : '0', 'number') +
+        field('金額（原幣／規劃）', 'amount', ex ? ex.amount : '0', 'number') + field('幣別', 'currency', ex ? ex.currency : 'TWD') +
+        '<div class="field"><label for="f_twd">實際 TWD</label><input class="input" id="f_twd" type="number" value="' +
+        escapeHtml(String(twdDefault)) + '" placeholder="已付後再填"></div>' +
         field('預估 TWD', 'estimateTwd', estDefault, 'number') +
         field('狀態', 'status', st, 'select') +
         field('卡別／付款', 'card', ex ? ex.card : '') + field('備註', 'note', ex ? ex.note : '') +
         '<div class="field"><label class="check-label"><input type="checkbox" id="f_excludeFromEstimate"' +
-        (ex && ex.excludeFromEstimate ? ' checked' : '') + '> 不計入已付與總預估</label></div>',
+        (ex && ex.excludeFromEstimate ? ' checked' : '') + '> 不計入已付與總預估</label></div>' +
+        '<p class="faint" style="margin:0">預計＝只有預估、沒有實際；改成已付時若實際空白會帶入預估。</p>',
         function () {
           if (!val('item').trim()) { toast('請填項目'); return false; }
           const exclEl = $('#f_excludeFromEstimate');
+          const status = val('status');
+          let twd = Number(val('twd'));
+          if (!Number.isFinite(twd)) twd = 0;
+          let estimateTwd = Number(val('estimateTwd'));
+          if (!Number.isFinite(estimateTwd)) estimateTwd = 0;
+          if (status === 'expected') {
+            twd = 0;
+          } else if (status === 'paid') {
+            // switching expected→paid with empty actual: default from estimate
+            if ((!val('twd') || !Number(val('twd'))) && estimateTwd > 0) twd = estimateTwd;
+            if (!estimateTwd && twd) estimateTwd = twd;
+          }
           const data = {
             date: val('date'), item: val('item').trim(), merchant: val('merchant').trim(),
             amount: Number(val('amount')) || 0, currency: val('currency').trim() || 'TWD',
-            twd: Number(val('twd')) || 0,
-            estimateTwd: Number(val('estimateTwd')) || 0,
+            twd: twd,
+            estimateTwd: estimateTwd,
             excludeFromEstimate: !!(exclEl && exclEl.checked),
-            status: val('status'), card: val('card').trim(), note: val('note').trim()
+            status: status, card: val('card').trim(), note: val('note').trim()
           };
           if (ex) { Object.assign(ex, data); touchItem(ex); }
           else { data.id = uid('ex'); touchItem(data); trip.expenses = trip.expenses || []; trip.expenses.push(data); }
@@ -2274,6 +2305,20 @@
         },
         ex ? { onDelete: function () { trip.expenses = trip.expenses.filter(function (x) { return x.id !== ex.id; }); touchTrip(trip); } } : null
       );
+      // live: when status flips to expected, clear actual field display
+      const statusEl = $('#f_status');
+      const twdEl = $('#f_twd');
+      if (statusEl && twdEl) {
+        statusEl.addEventListener('change', function () {
+          if (statusEl.value === 'expected') {
+            twdEl.value = '';
+            twdEl.placeholder = '已付後再填';
+          } else if (!twdEl.value) {
+            const est = Number(($('#f_estimateTwd') || {}).value) || 0;
+            if (est) twdEl.value = String(est);
+          }
+        });
+      }
       return;
     }
     if (action === 'toggle-expense-estimate') {
