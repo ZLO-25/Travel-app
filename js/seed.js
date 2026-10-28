@@ -121,18 +121,67 @@
 
   function detailLoafer() {
     return {
-  "title": "會安訂做樂福鞋",
-  "summary": "Friendly Shoe Shop；建議深棕便士樂福＋橡膠底。下單約 1–1.5 小時，旅期內試穿取鞋。",
+  "title": "會安訂做樂福鞋（第一雙・休閒）",
+  "summary": "Ryan 的第一雙樂福鞋，以日常休閒為主（牛仔褲、卡其、亞麻短褲、棉質襯衫），不是正式皮鞋。Friendly Shoe Shop 建議：深棕便士樂福＋橡膠底（或組合底）——寬容好走、適合會安／峴港步行。下單約 1–1.5 小時，旅期內試穿取鞋。",
   "tips": [
-    "出發前決定規格、量腳、剪趾甲、拍參考照片",
+    "第一雙重點：別選超薄純皮底；優先橡膠底或皮＋橡膠組合底，會安石板路較好走、也較耐雨",
+    "楦頭：中等圓頭、長度別太長；避免尖頭／過長 last（第一雙較好駕馭、日常百搭）",
+    "顏色：深巧克力棕最百搭；可配同色系皮帶；黑色可之後再考慮",
+    "穿搭參考：深藍牛仔褲＋隱形襪、卡其／chino＋棉質襯衫、亞麻短褲＋短袖（見下方示意圖）",
+    "跟師傅說清楚：深棕便士樂福、橡膠底、中等圓頭、休閒楦（casual）、日常走路用——可秀手機裡的參考圖",
+    "出發前：決定規格、量腳（雙腳）、剪趾甲、拍腳／現有鞋內底照片",
+    "新鞋磨合：先室內短時間穿、隱形襪／no-show socks 減少磨腳；熱點貼防水膠布",
     "Trần Phú 淹水時改其他分店；11/6 早上可查 Hội An ngập",
     "留足試穿與修改時間；最晚 11/9 取鞋付尾款",
     "訂鞋時順便問小皮件：識別證皮套（深色牛皮＋紅線）能否同店做"
   ],
   "warnings": [
-    "雨季可能改店／延誤，別拖到最後一天才下單"
+    "雨季可能改店／延誤，別拖到最後一天才下單",
+    "第一雙勿追過尖／過硬正裝楦；走不慣就浪費旅期修改時間",
+    "圖為示意（非店內實品／無品牌授權），實際皮料與楦頭以店內為準"
   ],
-  "images": [],
+  "images": [
+    {
+      "src": "assets/details/loafer-penny-brown-side.webp",
+      "alt": "深棕便士樂福側視示意",
+      "caption": "側視｜深棕便士樂福（示意圖・非實品）"
+    },
+    {
+      "src": "assets/details/loafer-penny-brown-top.webp",
+      "alt": "深棕便士樂福俯視示意",
+      "caption": "俯視｜中等圓頭、penny 帶（示意圖）"
+    },
+    {
+      "src": "assets/details/loafer-penny-brown-threequarter.webp",
+      "alt": "深棕便士樂福三分之四角度示意",
+      "caption": "3/4 角｜橡膠底側緣可見（示意圖）"
+    },
+    {
+      "src": "assets/details/loafer-rubber-sole.webp",
+      "alt": "樂福鞋橡膠大底示意",
+      "caption": "橡膠大底｜第一雙優先（好走、耐濕）示意圖"
+    },
+    {
+      "src": "assets/details/loafer-penny-strap-detail.webp",
+      "alt": "便士帶細節特寫示意",
+      "caption": "Penny 帶細節｜跟師傅對款用（示意圖）"
+    },
+    {
+      "src": "assets/details/loafer-casual-jeans.webp",
+      "alt": "牛仔褲搭配深棕樂福鞋示意",
+      "caption": "休閒穿搭｜牛仔褲＋隱形襪（示意圖）"
+    },
+    {
+      "src": "assets/details/loafer-casual-chinos.webp",
+      "alt": "卡其褲搭配深棕樂福鞋示意",
+      "caption": "休閒穿搭｜卡其／chino＋棉質襯衫（示意圖）"
+    },
+    {
+      "src": "assets/details/loafer-casual-shorts.webp",
+      "alt": "亞麻短褲搭配深棕樂福鞋示意",
+      "caption": "夏日休閒｜亞麻短褲＋短袖（示意圖）"
+    }
+  ],
   "links": []
 };
   }
@@ -419,7 +468,7 @@
           "text": "樂福鞋：決定規格、量腳、剪趾甲、拍照片",
           "done": false,
           "due": "",
-          "note": "深棕便士樂福＋橡膠底建議"
+          "note": "第一雙休閒：深棕便士樂福＋橡膠底"
         },
         {
           "id": "td_esim",
@@ -1000,9 +1049,9 @@
       "id": "sh_loafer",
       "updatedAt": "2026-10-28T10:04:05+08:00",
       "userEdited": false,
-      "text": "訂做樂福鞋",
+      "text": "訂做樂福鞋（第一雙・休閒）",
       "done": false,
-      "note": "Friendly Shoe Shop；規格／尺寸事先決定"
+      "note": "Friendly Shoe Shop；深棕便士＋橡膠底；日常休閒為主"
     },
     {
       "id": "sh_id_badge",

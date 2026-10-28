@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v13';
+const CACHE = 'ryan-travel-v14';
 const ASSETS = [
   './',
   './index.html',
@@ -26,7 +26,23 @@ const ASSETS = [
   './assets/details/thumbs/vibram-kso-evo.webp',
   './assets/details/thumbs/id-badge-vertical-red-stitch.webp',
   './assets/details/thumbs/id-badge-horizontal-red-bar.webp',
-  './assets/details/thumbs/id-badge-bifold-minimal.webp'
+  './assets/details/thumbs/id-badge-bifold-minimal.webp',
+  './assets/details/loafer-penny-brown-side.webp',
+  './assets/details/loafer-penny-brown-top.webp',
+  './assets/details/loafer-penny-brown-threequarter.webp',
+  './assets/details/loafer-rubber-sole.webp',
+  './assets/details/loafer-penny-strap-detail.webp',
+  './assets/details/loafer-casual-jeans.webp',
+  './assets/details/loafer-casual-chinos.webp',
+  './assets/details/loafer-casual-shorts.webp',
+  './assets/details/thumbs/loafer-penny-brown-side.webp',
+  './assets/details/thumbs/loafer-penny-brown-top.webp',
+  './assets/details/thumbs/loafer-penny-brown-threequarter.webp',
+  './assets/details/thumbs/loafer-rubber-sole.webp',
+  './assets/details/thumbs/loafer-penny-strap-detail.webp',
+  './assets/details/thumbs/loafer-casual-jeans.webp',
+  './assets/details/thumbs/loafer-casual-chinos.webp',
+  './assets/details/thumbs/loafer-casual-shorts.webp',
 ];
 
 function isRemoteJson(url) {
