@@ -447,9 +447,42 @@
     return out;
   }
 
+  /* Tombstones: items/goals that were merged into another and must vanish from synced copies. */
+  var REMOVED_IDS = { shopping: { sh_card_sleeve: 'sh_id_badge' } }; // removed id -> fold-into id
+  var GOAL_RENAMES = { '訂做皮製卡片套（跟識別證皮套同店）': '訂做識別證皮套（卡片套）' };
+  var TEXT_RENAMES = { shopping: { sh_id_badge: { '訂做識別證皮套（多款紅黑示意）': '訂做識別證皮套（卡片套・多款紅黑示意）' } } };
+
+  function applyTombstones(trip) {
+    Object.keys(REMOVED_IDS).forEach(function (key) {
+      if (!Array.isArray(trip[key])) return;
+      var map = REMOVED_IDS[key];
+      var gone = trip[key].filter(function (it) { return it && map[it.id]; });
+      trip[key] = trip[key].filter(function (it) { return !(it && map[it.id]); });
+      gone.forEach(function (it) {
+        var target = trip[key].find(function (x) { return x && x.id === map[it.id]; });
+        if (target && it.userEdited && it.done && !target.done) { target.done = true; target.userEdited = true; }
+      });
+    });
+    Object.keys(TEXT_RENAMES).forEach(function (key) {
+      (trip[key] || []).forEach(function (it) {
+        var m = it && TEXT_RENAMES[key][it.id];
+        if (m && m[it.text]) it.text = m[it.text];
+      });
+    });
+    if (Array.isArray(trip.goals)) {
+      var seenG = {};
+      trip.goals = trip.goals.map(function (g) { return GOAL_RENAMES[g] || g; }).filter(function (g) {
+        if (seenG[g]) return false;
+        seenG[g] = true;
+        return true;
+      });
+    }
+  }
+
   /** Collapse same-id / same-fingerprint duplicates inside one trip. */
   function dedupeTrip(trip) {
     if (!trip) return trip;
+    applyTombstones(trip);
     Object.keys(FLAT_KINDS).forEach(function (kind) {
       var key = FLAT_KINDS[kind];
       if (!Array.isArray(trip[key])) return;

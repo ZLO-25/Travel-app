@@ -130,6 +130,13 @@
       .replace(/"/g, '&quot;');
   }
 
+  /** Escape, then turn http(s) URLs into tappable links (stops click bubbling to cards). */
+  function linkifyHtml(s) {
+    return escapeHtml(s).replace(/https?:\/\/[^\s<>"）｜，、；。（]+/g, function (u) {
+      return '<a href="' + u + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">' + u + '</a>';
+    });
+  }
+
 
   /* ---------- Expandable details (compact chip → dialog) ---------- */
   var detailOpener = null;
@@ -219,7 +226,7 @@
     else html += '<h4>重點</h4>';
     html += '<ul>';
     items.forEach(function (t) {
-      html += '<li>' + escapeHtml(t) + '</li>';
+      html += '<li>' + linkifyHtml(t) + '</li>';
     });
     html += '</ul></div>';
     return html;
@@ -227,7 +234,7 @@
 
   function renderDetailBody(details) {
     var html = '';
-    if (details.summary) html += '<p class="detail-summary">' + escapeHtml(details.summary) + '</p>';
+    if (details.summary) html += '<p class="detail-summary">' + linkifyHtml(details.summary) + '</p>';
     html += listHtml(details.tips, '');
     html += listHtml(details.warnings, 'warn');
     if (details.images && details.images.length) {
@@ -704,7 +711,7 @@
         '<div><strong>' + escapeHtml(b.title) + '</strong>' +
         '<div class="muted">' + escapeHtml(b.detail || '') + '</div>' +
         (b.ref ? '<div class="faint">代號／備註：' + escapeHtml(b.ref) + '</div>' : '') +
-        (b.note ? '<div class="faint">' + escapeHtml(b.note) + '</div>' : '') +
+        (b.note ? '<div class="faint">' + linkifyHtml(b.note) + '</div>' : '') +
         '</div><div class="stack" style="align-items:flex-end">' +
         '<span class="badge ' + escapeHtml(b.status || 'todo') + '">' + escapeHtml(STATUS_LABEL[b.status] || b.status) + '</span>' +
         '<div class="actions">' + (hasDetails(b) ? detailChipHtml(b.details, 'booking', b.id) : '') +
