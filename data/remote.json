@@ -1077,7 +1077,7 @@
         },
         {
           "id": "pl_friendly_shoe",
-          "updatedAt": "2026-10-29T17:30:00+08:00",
+          "updatedAt": "2026-10-29T17:35:00+08:00",
           "userEdited": false,
           "name": "Friendly Shoe Shop（會安）",
           "category": "購物",
@@ -1090,6 +1090,7 @@
             "tips": [
               "薄膠底：跟店家說要「薄型橡膠底／gum sole／city rubber」（低側緣、不要登山鞋那種厚 lug）；比全皮底更耐濕、比厚膠底更輕。若店內只有厚膠底，可問能否做薄一點或改 city sole／半膠組合底",
               "雷根底（Vibram 類波紋厚膠底）＝休閒、美式復古、較年輕有份量；優點防滑耐走、適合峴港會安多走路與雨天；缺點較不正式、鞋型顯厚重；若要兼顧正式可選薄雷根底或與先前薄膠底版本比較（見下方雷根底示意圖）",
+              "休閒（非西裝）首推：深咖啡或黑色便士樂福（penny loafer）＋中等厚度雷根底，穿搭牛仔褲、卡其褲、短褲都好搭（見下方「休閒穿搭 10 款（AI 生成）」）",
               "會安訂做（含 Friendly）一般可選皮底、橡膠底或組合；下單前請店家拿出底樣確認厚度與車縫（優先車縫／縫底，避免只貼膠）",
               "年輕不老氣：避免過圓、過厚、過長的「老派」鞋頭；選中等修身、略收尖但不尖頭的杏仁頭、apron 線條乾淨、車線少而整齊",
               "顏色：深巧克力棕仍最百搭；可問有無再深一點、接近黑的巧克力／espresso；同色系皮帶更好搭",
@@ -1197,6 +1198,56 @@
                 "src": "assets/details/loafer-lug-sole-outfit.webp",
                 "alt": "白亞麻襯衫、米色卡其褲搭配棕色雷根底樂福鞋，會安街景",
                 "caption": "雷根底穿搭示意（AI 生成）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-01.webp",
+                "alt": "樂福鞋休閒穿搭示意：白 T＋淺色牛仔褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜1. 白 T＋淺色牛仔褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-02.webp",
+                "alt": "樂福鞋休閒穿搭示意：Polo＋卡其短褲（海邊）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜2. Polo＋卡其短褲（海邊）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-03.webp",
+                "alt": "樂福鞋休閒穿搭示意：全黑＋白襪（黑鞋）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜3. 全黑＋白襪（黑鞋）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-04.webp",
+                "alt": "樂福鞋休閒穿搭示意：軍綠襯衫外套＋原色牛仔",
+                "caption": "休閒穿搭 10 款（AI 生成）｜4. 軍綠襯衫外套＋原色牛仔"
+              },
+              {
+                "src": "assets/details/loafer-outfit-05.webp",
+                "alt": "樂福鞋休閒穿搭示意：針織 Polo＋灰打褶褲（會安）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜5. 針織 Polo＋灰打褶褲（會安）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-06.webp",
+                "alt": "樂福鞋休閒穿搭示意：牛津襯衫＋白褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜6. 牛津襯衫＋白褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-07.webp",
+                "alt": "樂福鞋休閒穿搭示意：帽 T＋牛仔外套（雨天，黑鞋）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜7. 帽 T＋牛仔外套（雨天，黑鞋）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-08.webp",
+                "alt": "樂福鞋休閒穿搭示意：條紋上衣＋卡其褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜8. 條紋上衣＋卡其褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-09.webp",
+                "alt": "樂福鞋休閒穿搭示意：古巴領印花襯衫＋亞麻褲（度假）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜9. 古巴領印花襯衫＋亞麻褲（度假）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-10.webp",
+                "alt": "樂福鞋休閒穿搭示意：黑毛衣＋深灰牛仔（夜晚）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜10. 黑毛衣＋深灰牛仔（夜晚）"
               }
             ],
             "links": []
@@ -1492,7 +1543,7 @@
         },
         {
           "id": "sh_loafer",
-          "updatedAt": "2026-10-29T17:30:00+08:00",
+          "updatedAt": "2026-10-29T17:35:00+08:00",
           "userEdited": false,
           "text": "訂做樂福鞋（第一雙・休閒）",
           "done": false,
@@ -1503,6 +1554,7 @@
             "tips": [
               "薄膠底：跟店家說要「薄型橡膠底／gum sole／city rubber」（低側緣、不要登山鞋那種厚 lug）；比全皮底更耐濕、比厚膠底更輕。若店內只有厚膠底，可問能否做薄一點或改 city sole／半膠組合底",
               "雷根底（Vibram 類波紋厚膠底）＝休閒、美式復古、較年輕有份量；優點防滑耐走、適合峴港會安多走路與雨天；缺點較不正式、鞋型顯厚重；若要兼顧正式可選薄雷根底或與先前薄膠底版本比較（見下方雷根底示意圖）",
+              "休閒（非西裝）首推：深咖啡或黑色便士樂福（penny loafer）＋中等厚度雷根底，穿搭牛仔褲、卡其褲、短褲都好搭（見下方「休閒穿搭 10 款（AI 生成）」）",
               "會安訂做（含 Friendly）一般可選皮底、橡膠底或組合；下單前請店家拿出底樣確認厚度與車縫（優先車縫／縫底，避免只貼膠）",
               "年輕不老氣：避免過圓、過厚、過長的「老派」鞋頭；選中等修身、略收尖但不尖頭的杏仁頭、apron 線條乾淨、車線少而整齊",
               "顏色：深巧克力棕仍最百搭；可問有無再深一點、接近黑的巧克力／espresso；同色系皮帶更好搭",
@@ -1610,6 +1662,56 @@
                 "src": "assets/details/loafer-lug-sole-outfit.webp",
                 "alt": "白亞麻襯衫、米色卡其褲搭配棕色雷根底樂福鞋，會安街景",
                 "caption": "雷根底穿搭示意（AI 生成）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-01.webp",
+                "alt": "樂福鞋休閒穿搭示意：白 T＋淺色牛仔褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜1. 白 T＋淺色牛仔褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-02.webp",
+                "alt": "樂福鞋休閒穿搭示意：Polo＋卡其短褲（海邊）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜2. Polo＋卡其短褲（海邊）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-03.webp",
+                "alt": "樂福鞋休閒穿搭示意：全黑＋白襪（黑鞋）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜3. 全黑＋白襪（黑鞋）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-04.webp",
+                "alt": "樂福鞋休閒穿搭示意：軍綠襯衫外套＋原色牛仔",
+                "caption": "休閒穿搭 10 款（AI 生成）｜4. 軍綠襯衫外套＋原色牛仔"
+              },
+              {
+                "src": "assets/details/loafer-outfit-05.webp",
+                "alt": "樂福鞋休閒穿搭示意：針織 Polo＋灰打褶褲（會安）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜5. 針織 Polo＋灰打褶褲（會安）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-06.webp",
+                "alt": "樂福鞋休閒穿搭示意：牛津襯衫＋白褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜6. 牛津襯衫＋白褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-07.webp",
+                "alt": "樂福鞋休閒穿搭示意：帽 T＋牛仔外套（雨天，黑鞋）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜7. 帽 T＋牛仔外套（雨天，黑鞋）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-08.webp",
+                "alt": "樂福鞋休閒穿搭示意：條紋上衣＋卡其褲",
+                "caption": "休閒穿搭 10 款（AI 生成）｜8. 條紋上衣＋卡其褲"
+              },
+              {
+                "src": "assets/details/loafer-outfit-09.webp",
+                "alt": "樂福鞋休閒穿搭示意：古巴領印花襯衫＋亞麻褲（度假）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜9. 古巴領印花襯衫＋亞麻褲（度假）"
+              },
+              {
+                "src": "assets/details/loafer-outfit-10.webp",
+                "alt": "樂福鞋休閒穿搭示意：黑毛衣＋深灰牛仔（夜晚）",
+                "caption": "休閒穿搭 10 款（AI 生成）｜10. 黑毛衣＋深灰牛仔（夜晚）"
               }
             ],
             "links": []
@@ -2349,7 +2451,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/29 10:10（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-10-29T17:30:00+08:00",
+      "updatedAt": "2026-10-29T17:35:00+08:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
