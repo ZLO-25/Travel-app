@@ -180,6 +180,10 @@
       var p = (trip.places || []).find(function (x) { return x.id === id; });
       return p && p.details ? p.details : null;
     }
+    if (kind === 'booking') {
+      var bk = (trip.bookings || []).find(function (x) { return x.id === id; });
+      return bk && bk.details ? bk.details : null;
+    }
     if (kind === 'todo') {
       var groups = trip.todoGroups || [];
       for (var i = 0; i < groups.length; i++) {
@@ -703,7 +707,8 @@
         (b.note ? '<div class="faint">' + escapeHtml(b.note) + '</div>' : '') +
         '</div><div class="stack" style="align-items:flex-end">' +
         '<span class="badge ' + escapeHtml(b.status || 'todo') + '">' + escapeHtml(STATUS_LABEL[b.status] || b.status) + '</span>' +
-        '<div class="actions"><button type="button" class="icon-btn" data-action="edit-booking" data-id="' + b.id + '" aria-label="編輯">✏️</button>' +
+        '<div class="actions">' + (hasDetails(b) ? detailChipHtml(b.details, 'booking', b.id) : '') +
+        '<button type="button" class="icon-btn" data-action="edit-booking" data-id="' + b.id + '" aria-label="編輯">✏️</button>' +
         '<button type="button" class="icon-btn" data-action="del-booking" data-id="' + b.id + '" aria-label="刪除">🗑️</button></div>' +
         '</div></div>';
     });

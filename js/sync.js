@@ -68,6 +68,7 @@
     remoteArr = Array.isArray(remoteArr) ? remoteArr : [];
     var byId = {};
     var usedLocal = {};
+    var idRemap = {};
     var result = [];
 
     localArr.forEach(function (it) {
@@ -97,17 +98,21 @@
       }
       usedLocal[loc.id] = true;
       var merged;
+      // Fingerprint match with a different id: adopt the stable remote id so the
+      // pair stays linked after Notion edits the text (root cause of duplicates).
+      // Journal keeps local ids (photos in IndexedDB are keyed by entry).
+      var adoptId = loc.id;
+      if (kind !== 'journal' && remoteItem.id && loc.id !== remoteItem.id && !byId[remoteItem.id]) {
+        adoptId = remoteItem.id;
+      }
       if (localWins(loc, remoteItem)) {
         merged = clone(loc);
-        // Keep stable remote id when fingerprint-matched with different ids
-        if (remoteItem.id && loc.id !== remoteItem.id && !loc.userEdited) {
-          // Prefer local id always to avoid breaking local references; fingerprint already linked
-        }
       } else {
         merged = clone(remoteItem);
-        merged.id = loc.id; // preserve local id
         if (loc.userEdited) merged.userEdited = true;
       }
+      merged.id = adoptId;
+      if (adoptId !== loc.id) idRemap[loc.id] = adoptId;
       if (typeof nestMerge === 'function') {
         merged = nestMerge(merged, loc, remoteItem);
       }
@@ -144,7 +149,8 @@
       localArr.forEach(function (loc) {
         if (!loc) return;
         var m = null;
-        if (loc.id && byId[loc.id]) m = byId[loc.id];
+        if (loc.id && idRemap[loc.id] && byId[idRemap[loc.id]]) m = byId[idRemap[loc.id]];
+        else if (loc.id && byId[loc.id]) m = byId[loc.id];
         else {
           var fp = fingerprint(kind, loc);
           if (fp && byFp[fp]) m = byFp[fp];
@@ -191,10 +197,41 @@
     return mergeDetailsField(merged, loc, rem);
   }
 
+  /**
+   * Remote children that already live in a *different* local container
+   * (user drag-moved a block to another day / todo to another group) must not
+   * be re-added to their remote container, or they show up twice.
+   */
+  function filterCrossContainer(localContainers, childKey, kind, thisLocal, remoteChildren) {
+    var ids = {};
+    var fps = {};
+    (localContainers || []).forEach(function (c) {
+      if (!c || c === thisLocal) return;
+      (c[childKey] || []).forEach(function (it) {
+        if (!it) return;
+        if (it.id) ids[it.id] = true;
+        var fp = fingerprint(kind, it);
+        if (fp) fps[fp] = true;
+      });
+    });
+    var mine = (thisLocal && thisLocal[childKey]) || [];
+    return (remoteChildren || []).filter(function (rit) {
+      if (!rit) return false;
+      var fp = fingerprint(kind, rit);
+      var inThis = mine.some(function (li) {
+        return li && ((rit.id && li.id === rit.id) || fingerprint(kind, li) === fp);
+      });
+      if (inThis) return true;
+      if (rit.id && ids[rit.id]) return false;
+      if (fp && fps[fp]) return false;
+      return true;
+    });
+  }
+
   function mergeTodoGroups(localGroups, remoteGroups) {
     return mergeList(localGroups, remoteGroups, 'todoGroup', function (merged, loc, rem) {
       var localItems = (loc && loc.items) || [];
-      var remoteItems = (rem && rem.items) || [];
+      var remoteItems = filterCrossContainer(localGroups, 'items', 'todo', loc, (rem && rem.items) || []);
       // If group-level local wins, still merge items so new remote todos appear
       merged.items = mergeList(localItems, remoteItems, 'todo', withDetailsMerge);
       if (localWins(loc, rem)) {
@@ -209,7 +246,7 @@
   function mergeDays(localDays, remoteDays) {
     return mergeList(localDays, remoteDays, 'day', function (merged, loc, rem) {
       var localBlocks = (loc && loc.blocks) || [];
-      var remoteBlocks = (rem && rem.blocks) || [];
+      var remoteBlocks = filterCrossContainer(localDays, 'blocks', 'block', loc, (rem && rem.blocks) || []);
       merged.blocks = mergeList(localBlocks, remoteBlocks, 'block', withDetailsMerge);
       if (localWins(loc, rem)) {
         merged.date = loc.date;
@@ -257,6 +294,343 @@
       }
       return merged;
     });
+  }
+
+  /* ---------- Duplicate cleanup (one-time + every load; idempotent) ---------- */
+
+  /**
+   * Old-seed / old-Notion texts (random ids from the first app version) mapped
+   * to the stable remote id that replaced them. Key = fingerprint().
+   */
+  var LEGACY_ALIASES = {
+      "booking:hotel|royal lotus": "bk_hotel",
+      "booking:insurance|富邦旅平險": "bk_insurance",
+      "booking:esim|越南 esim": "bk_esim",
+      "booking:lounge|機場貴賓室": "bk_lounge",
+      "deadline:回程接送預約（建議最晚）|2026-11-02": "dl_return_transfer",
+      "todoGroup:這幾天先做": "tg_now",
+      "todo:看醫生拿常備藥（腸胃／止痛／感冒＋ok繃）": "td_meds",
+      "todoGroup:出發前到 11/4": "tg_week_before",
+      "todo:台灣先裝好 esim": "td_esim",
+      "todo:投保旅平險（富邦）": "td_insurance",
+      "block:下午／晚|it585 抵達 → grab／接駁到 royal lotus（約 20:00）": "bl_1105_2",
+      "block:晚|安頓、附近簡單用餐、休息": "bl_1105_2",
+      "block:白天|樂福鞋店洽談／量腳（視預約）": "bl_1106_2",
+      "block:彈性|flow store 問五指鞋；市區散步": "bl_1107_2",
+      "block:白天|五行山（marble mountains）": "bl_1106_1",
+      "block:可選|帝王洗頭或spa": "bl_1108_1",
+      "block:整天|購物（除疤膏等）、海灘或咖啡、視情況補鞋進度": "bl_1108_2",
+      "block:晚|blends／waves 演出表確認後決定": "bl_1107_3",
+      "block:白天|晚退房（若飯店同意）／取鞋／最後採買": "bl_1110_1",
+      "block:晚|前往機場 → it552 → 桃園 → 接送回台中": "bl_1110_3",
+      "place:royal lotus": "pl_royal_lotus",
+      "place:五行山 marble mountains": "pl_marble",
+      "place:樂福鞋訂製店": "pl_friendly_shoe",
+      "place:帝王洗頭": "pl_luxury_barber",
+      "place:blends": "pl_blends",
+      "place:waves": "pl_waves",
+      "shop:訂做樂福鞋": "sh_loafer",
+      "shop:五指鞋": "sh_fivefinger",
+      "shop:除疤膏": "sh_scar",
+      "shop:其他伴手／消耗品": "sh_snacks",
+      "packItem:信用卡／一些現金 vnd": "pi_cash",
+      "packItem:短袖／輕便長褲": "pi_clothes_sets",
+      "packItem:涼鞋或透氣鞋": "pi_sandals",
+      "packItem:薄外套（機艙／晚上）": "pi_rain",
+      "packItem:手機＋充電器／行動電源": "pi_phone",
+      "packItem:轉接頭／充電線": "pi_adapter",
+      "packItem:耳機": "pi_phone",
+      "packItem:常備藥（腸胃／止痛／感冒）": "pi_meds",
+      "packItem:ok繃／小急救": "pi_meds",
+      "packItem:防曬／牙刷盥洗": "pi_skincare",
+      "packItem:量腳資料／鞋款照片（給訂製店）": "pi_foot_measure",
+      "expense:機票（虎航去回）|tigerair": "ex_flights",
+      "expense:飯店 royal lotus|booking／官網": "ex_hotel",
+      "expense:旅平險|富邦": "ex_insurance",
+      "expense:回程託運 15kg|tigerair": "ex_baggage",
+      "expense:回程接送 桃園→台中|全鋒等": "ex_transfer_back",
+      "expense:樂福鞋訂做|現地": "ex_loafer",
+      "expense:五指鞋／除疤膏等|現地": "ex_fivefinger",
+      "expense:餐飲與交通（概估）|現地": "ex_meals_misc",
+      "block:23:15|桃園落地 → 滙豐接送回台中（約 02:00 到家）": "bl_1110_3",
+      "block:09:00|肯驛接送台中→小港 → 報到、南苑貴賓室 → it585 17:20 起飛": "bl_1105_1",
+      "shop:訂做識別證皮套（台積電紅＋深色牛皮）": "sh_id_badge"
+  };
+
+  var FLAT_KINDS = { booking: 'bookings', deadline: 'deadlines', place: 'places', shop: 'shopping', expense: 'expenses' };
+  var NESTED_KINDS = {
+    todo: { list: 'todoGroups', parentKind: 'todoGroup', child: 'items' },
+    block: { list: 'days', parentKind: 'day', child: 'blocks' },
+    packItem: { list: 'packing', parentKind: 'packCat', child: 'items' }
+  };
+
+  function richness(it) {
+    if (!it) return -1;
+    var n = 0;
+    Object.keys(it).forEach(function (k) {
+      var v = it[k];
+      if (v === '' || v == null || v === false) return;
+      if (Array.isArray(v) && !v.length) return;
+      n += 1;
+    });
+    if (it.details) n += 5;
+    if (it.userEdited) n += 100;
+    return n;
+  }
+
+  /** Pick the record to keep; fold the other's user state into it. */
+  function foldDuplicate(keep, drop) {
+    var winner = richness(drop) > richness(keep) ? drop : keep;
+    var loser = winner === keep ? drop : keep;
+    var out = clone(winner);
+    out.id = keep.id;
+    if (loser.userEdited && !winner.userEdited) {
+      if ('done' in loser) out.done = loser.done;
+      out.userEdited = true;
+    } else if (loser.userEdited && 'done' in loser && loser.done && !out.done) {
+      out.done = true;
+    }
+    if (!out.details && loser.details) out.details = clone(loser.details);
+    if (!out.note && loser.note) out.note = loser.note;
+    return out;
+  }
+
+  function dedupeArray(arr, kind, useFp, seenIds) {
+    var out = [];
+    var byFp = {};
+    seenIds = seenIds || {};
+    (arr || []).forEach(function (it) {
+      if (!it) return;
+      if (it.id && seenIds[it.id]) {
+        var hit = seenIds[it.id];
+        var idx = hit.arr.indexOf(hit.item);
+        var merged = foldDuplicate(hit.item, it);
+        if (idx >= 0) hit.arr[idx] = merged;
+        seenIds[it.id] = { arr: hit.arr, item: merged };
+        return;
+      }
+      var fp = useFp ? fingerprint(kind, it) : '';
+      if (fp && byFp[fp]) {
+        var prev = byFp[fp];
+        var i2 = out.indexOf(prev);
+        var m2 = foldDuplicate(prev, it);
+        out[i2] = m2;
+        byFp[fp] = m2;
+        if (m2.id) seenIds[m2.id] = { arr: out, item: m2 };
+        return;
+      }
+      out.push(it);
+      if (fp) byFp[fp] = it;
+      if (it.id) seenIds[it.id] = { arr: out, item: it };
+    });
+    return out;
+  }
+
+  /** Same-id / same-key containers (two "11/5" days, two groups with one name): union children. */
+  function dedupeContainers(list, kind, childKey) {
+    var out = [];
+    var byKey = {};
+    (list || []).forEach(function (c) {
+      if (!c) return;
+      var k1 = c.id ? 'id:' + c.id : '';
+      var k2 = fingerprint(kind, c);
+      var prev = (k1 && byKey[k1]) || (k2 && byKey[k2]);
+      if (prev) {
+        prev[childKey] = (prev[childKey] || []).concat(c[childKey] || []);
+        if (c.userEdited && !prev.userEdited) prev.userEdited = true;
+        return;
+      }
+      out.push(c);
+      if (k1) byKey[k1] = c;
+      if (k2) byKey[k2] = c;
+    });
+    return out;
+  }
+
+  /** Collapse same-id / same-fingerprint duplicates inside one trip. */
+  function dedupeTrip(trip) {
+    if (!trip) return trip;
+    Object.keys(FLAT_KINDS).forEach(function (kind) {
+      var key = FLAT_KINDS[kind];
+      if (!Array.isArray(trip[key])) return;
+      // expenses: same item+merchant can be legit (two Grab rides) → id only
+      trip[key] = dedupeArray(trip[key], kind, kind !== 'expense');
+    });
+    Object.keys(NESTED_KINDS).forEach(function (kind) {
+      var cfg = NESTED_KINDS[kind];
+      if (!Array.isArray(trip[cfg.list])) return;
+      trip[cfg.list] = dedupeContainers(trip[cfg.list], cfg.parentKind, cfg.child);
+      var seen = {};
+      var fpSeen = {};
+      trip[cfg.list].forEach(function (c) {
+        c[cfg.child] = dedupeArray(c[cfg.child] || [], kind, true, seen);
+        // todos / packing: same text in two containers is a duplicate too
+        if (kind === 'block') return;
+        c[cfg.child] = c[cfg.child].filter(function (it) {
+          var fp = fingerprint(kind, it);
+          if (!fp) return true;
+          if (fpSeen[fp] && fpSeen[fp] !== it) {
+            var o = fpSeen[fp];
+            if (it.userEdited && !o.userEdited && 'done' in it) { o.done = it.done; o.userEdited = true; }
+            return false;
+          }
+          fpSeen[fp] = it;
+          return true;
+        });
+      });
+    });
+    if (Array.isArray(trip.journal)) trip.journal = dedupeArray(trip.journal, 'journal', false);
+    return trip;
+  }
+
+  function indexRemote(remoteTrip) {
+    var idx = { ids: {}, fps: {}, parentOf: {} };
+    function add(kind, it, parentId) {
+      if (!it || !it.id) return;
+      idx.ids[kind + '|' + it.id] = true;
+      var fp = fingerprint(kind, it);
+      if (fp && !idx.fps[fp]) idx.fps[fp] = it.id;
+      if (parentId) idx.parentOf[kind + '|' + it.id] = parentId;
+    }
+    Object.keys(FLAT_KINDS).forEach(function (kind) {
+      (remoteTrip[FLAT_KINDS[kind]] || []).forEach(function (it) { add(kind, it); });
+    });
+    Object.keys(NESTED_KINDS).forEach(function (kind) {
+      var cfg = NESTED_KINDS[kind];
+      (remoteTrip[cfg.list] || []).forEach(function (c) {
+        add(cfg.parentKind, c);
+        (c[cfg.child] || []).forEach(function (it) { add(kind, it, c.id); });
+      });
+    });
+    return idx;
+  }
+
+  function resolveAlias(idx, kind, it) {
+    if (!it) return null;
+    if (it.id && idx.ids[kind + '|' + it.id]) return null; // already canonical
+    var fp = fingerprint(kind, it);
+    if (!fp) return null;
+    if (idx.fps[fp]) return { id: idx.fps[fp], how: 'fp' };
+    var legacy = LEGACY_ALIASES[fp];
+    if (legacy && idx.ids[kind + '|' + legacy]) return { id: legacy, how: 'legacy' };
+    return null;
+  }
+
+  function moneyOf(e) {
+    return (Number(e && e.twd) || 0) + (Number(e && e.amount) || 0) + (Number(e && e.estimateTwd) || 0);
+  }
+
+  /**
+   * Before merging, rewrite local items that are really copies of a remote item
+   * (old random id, or old seed text) onto the stable remote id. Copies that can't
+   * simply be re-id'd are dropped and their user state (done/checked) is carried
+   * onto the remote record after the merge. Returns { trip, carry }.
+   */
+  function canonicalizeLocalTrip(localTrip, remoteTrip) {
+    var trip = clone(localTrip);
+    var idx = indexRemote(remoteTrip);
+    var carry = {};
+
+    function addCarry(kind, id, it) {
+      if (!it || !it.userEdited || !('done' in it)) return;
+      var k = kind + '|' + id;
+      if (!carry[k]) carry[k] = { done: !!it.done };
+      else carry[k].done = carry[k].done && !!it.done;
+    }
+
+    // Containers (days / todo groups / packing categories) first
+    Object.keys(NESTED_KINDS).forEach(function (kind) {
+      var cfg = NESTED_KINDS[kind];
+      var list = trip[cfg.list];
+      if (!Array.isArray(list)) return;
+      var out = [];
+      list.forEach(function (c) {
+        if (!c) return;
+        var r = resolveAlias(idx, cfg.parentKind, c);
+        if (!r) { out.push(c); return; }
+        var target = out.find(function (o) { return o.id === r.id; }) ||
+          list.find(function (o) { return o && o !== c && o.id === r.id; });
+        if (target) {
+          target[cfg.child] = (target[cfg.child] || []).concat(c[cfg.child] || []);
+          if (out.indexOf(target) < 0 && list.indexOf(target) < 0) out.push(target);
+          return;
+        }
+        c.id = r.id;
+        if (r.how === 'legacy' && !c.userEdited) delete c.updatedAt; // let remote name win
+        out.push(c);
+      });
+      trip[cfg.list] = out;
+    });
+
+    function localIdsOf(kind) {
+      var ids = {};
+      if (FLAT_KINDS[kind]) {
+        (trip[FLAT_KINDS[kind]] || []).forEach(function (it) { if (it && it.id) ids[it.id] = true; });
+      } else {
+        var cfg = NESTED_KINDS[kind];
+        (trip[cfg.list] || []).forEach(function (c) {
+          (c[cfg.child] || []).forEach(function (it) { if (it && it.id) ids[it.id] = true; });
+        });
+      }
+      return ids;
+    }
+
+    function processList(kind, arr, containerId) {
+      var ids = present[kind];
+      return (arr || []).filter(function (it) {
+        if (!it) return false;
+        var r = resolveAlias(idx, kind, it);
+        if (!r) return true;
+        // Keep user-entered money rows rather than lose them
+        if (kind === 'expense' && it.userEdited && moneyOf(it) > 0) return true;
+        var sameContainer = !NESTED_KINDS[kind] || idx.parentOf[kind + '|' + r.id] === containerId;
+        if (r.how === 'fp' && !ids[r.id] && sameContainer) {
+          delete ids[it.id];
+          it.id = r.id;
+          ids[r.id] = true;
+          return true;
+        }
+        addCarry(kind, r.id, it);
+        return false;
+      });
+    }
+
+    var present = {};
+    Object.keys(FLAT_KINDS).concat(Object.keys(NESTED_KINDS)).forEach(function (k) { present[k] = localIdsOf(k); });
+    Object.keys(FLAT_KINDS).forEach(function (kind) {
+      var key = FLAT_KINDS[kind];
+      if (Array.isArray(trip[key])) trip[key] = processList(kind, trip[key]);
+    });
+    Object.keys(NESTED_KINDS).forEach(function (kind) {
+      var cfg = NESTED_KINDS[kind];
+      (trip[cfg.list] || []).forEach(function (c) {
+        c[cfg.child] = processList(kind, c[cfg.child], c.id);
+      });
+    });
+    return { trip: dedupeTrip(trip), carry: carry };
+  }
+
+  function applyCarry(trip, carry) {
+    if (!trip || !carry) return trip;
+    var now = new Date().toISOString();
+    function touch(kind, it) {
+      var c = it && it.id && carry[kind + '|' + it.id];
+      if (!c || it.userEdited) return;
+      if (!!it.done === c.done) return;
+      it.done = c.done;
+      it.userEdited = true;
+      it.updatedAt = now;
+    }
+    Object.keys(FLAT_KINDS).forEach(function (kind) {
+      (trip[FLAT_KINDS[kind]] || []).forEach(function (it) { touch(kind, it); });
+    });
+    Object.keys(NESTED_KINDS).forEach(function (kind) {
+      var cfg = NESTED_KINDS[kind];
+      (trip[cfg.list] || []).forEach(function (c) {
+        (c[cfg.child] || []).forEach(function (it) { touch(kind, it); });
+      });
+    });
+    return trip;
   }
 
   var OLD_DANANG_TITLES = { '2026 峴港': true, '2026峴港': true };
@@ -486,12 +860,14 @@
 
   function mergeTrip(localTrip, remoteTrip) {
     if (!localTrip) return clone(remoteTrip);
-    if (!remoteTrip) return clone(localTrip);
+    if (!remoteTrip) return dedupeTrip(clone(localTrip));
+    var prep = canonicalizeLocalTrip(localTrip, remoteTrip);
+    localTrip = prep.trip;
     var out = { id: localTrip.id || remoteTrip.id };
     mergeTripScalars(localTrip, remoteTrip, out);
     out.deadlines = mergeList(localTrip.deadlines, remoteTrip.deadlines, 'deadline');
     out.todoGroups = mergeTodoGroups(localTrip.todoGroups, remoteTrip.todoGroups);
-    out.bookings = mergeList(localTrip.bookings, remoteTrip.bookings, 'booking');
+    out.bookings = mergeList(localTrip.bookings, remoteTrip.bookings, 'booking', withDetailsMerge);
     out.days = mergeDays(localTrip.days, remoteTrip.days);
     out.places = mergeList(localTrip.places, remoteTrip.places, 'place', withDetailsMerge);
     out.shopping = mergeList(localTrip.shopping, remoteTrip.shopping, 'shop', withDetailsMerge);
@@ -534,7 +910,8 @@
     } else if (localTrip.routeMap) {
       out.routeMap = clone(localTrip.routeMap);
     }
-    return out;
+    applyCarry(out, prep.carry);
+    return dedupeTrip(out);
   }
 
   function mergeStates(localState, remoteState) {
@@ -542,7 +919,7 @@
       if (!localState) return null;
       var localOnly = clone(localState);
       (localOnly.trips || []).forEach(function (t) {
-        if (t) t.expenses = sanitizeExpenses(t.expenses);
+        if (t) { dedupeTrip(t); t.expenses = sanitizeExpenses(t.expenses); }
       });
       return localOnly;
     }
@@ -573,7 +950,7 @@
     localState.trips.forEach(function (lt) {
       if (!lt) return;
       if (lt.id && used[lt.id]) return;
-      trips.push(clone(lt));
+      trips.push(dedupeTrip(clone(lt)));
     });
 
     trips.forEach(function (t) {
@@ -640,7 +1017,7 @@
       console.warn('remote sync skipped', err);
       if (local && Array.isArray(local.trips) && local.trips.length) {
         (local.trips || []).forEach(function (t) {
-          if (t) t.expenses = sanitizeExpenses(t.expenses);
+          if (t) { dedupeTrip(t); t.expenses = sanitizeExpenses(t.expenses); }
         });
         return local;
       }
@@ -658,6 +1035,8 @@
     localWins: localWins,
     loadMergedState: loadMergedState,
     fingerprint: fingerprint,
+    dedupeTrip: dedupeTrip,
+    canonicalizeLocalTrip: canonicalizeLocalTrip,
     sanitizeExpenses: sanitizeExpenses,
     isJunkPlaceholderExpense: isJunkPlaceholderExpense
   };
