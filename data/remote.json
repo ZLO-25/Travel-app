@@ -152,7 +152,7 @@
             },
             {
               "id": "td_lounge",
-              "updatedAt": "2026-10-29T13:30:00+08:00",
+              "updatedAt": "2026-10-29T12:25:00+08:00",
               "userEdited": false,
               "text": "貴賓室 QR code（LoungeKey）",
               "done": true,
@@ -520,7 +520,7 @@
         },
         {
           "id": "bk_transfer_out",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "type": "transfer",
           "title": "去程接送 台中→小港",
@@ -554,7 +554,7 @@
         },
         {
           "id": "bk_transfer_back",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "type": "transfer",
           "title": "回程接送 桃園→台中",
@@ -618,7 +618,7 @@
         },
         {
           "id": "bk_lounge",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "type": "lounge",
           "title": "機場貴賓室 LoungeKey",
@@ -676,7 +676,7 @@
           "blocks": [
             {
               "id": "bl_1105_1",
-              "updatedAt": "2026-10-29T13:30:00+08:00",
+              "updatedAt": "2026-10-29T12:25:00+08:00",
               "userEdited": false,
               "time": "09:00",
               "text": "肯驛接送台中→高雄市區找朋友＋丹丹漢堡（訂單 F15528953）",
@@ -967,7 +967,7 @@
             },
             {
               "id": "bl_1110_2",
-              "updatedAt": "2026-10-29T13:30:00+08:00",
+              "updatedAt": "2026-10-29T12:25:00+08:00",
               "userEdited": false,
               "time": "17:00 前",
               "text": "到峴港機場：退稅（如有）→ 託運 → 貴賓室 → IT552",
@@ -1014,7 +1014,7 @@
             },
             {
               "id": "bl_1110_3",
-              "updatedAt": "2026-10-29T13:30:00+08:00",
+              "updatedAt": "2026-10-29T12:25:00+08:00",
               "userEdited": false,
               "time": "23:15",
               "text": "桃園落地 → 全鋒接機回台中 D3953684（司機依實際落地、免費等90分；前1小時簡訊司機資料；帶身分證＋匯豐卡）",
@@ -2316,7 +2316,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/29 10:10（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-10-29T13:30:00+08:00",
+      "updatedAt": "2026-10-29T12:25:00+08:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2374,7 +2374,7 @@
       }
     }
   ],
-  "syncedAt": "2026-10-29T13:30:00+08:00",
+  "syncedAt": "2026-10-29T12:25:00+08:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-10-29T13:30:00+08:00"
+  "remoteSyncedAt": "2026-10-29T12:25:00+08:00"
 }

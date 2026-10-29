@@ -547,7 +547,7 @@
         },
         {
           "id": "td_lounge",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "text": "貴賓室 QR code（LoungeKey）",
           "done": true,
@@ -815,7 +815,7 @@
     },
     {
       "id": "bk_transfer_out",
-      "updatedAt": "2026-10-29T13:30:00+08:00",
+      "updatedAt": "2026-10-29T12:25:00+08:00",
       "userEdited": false,
       "type": "transfer",
       "title": "去程接送 台中→小港",
@@ -849,7 +849,7 @@
     },
     {
       "id": "bk_transfer_back",
-      "updatedAt": "2026-10-29T13:30:00+08:00",
+      "updatedAt": "2026-10-29T12:25:00+08:00",
       "userEdited": false,
       "type": "transfer",
       "title": "回程接送 桃園→台中",
@@ -913,7 +913,7 @@
     },
     {
       "id": "bk_lounge",
-      "updatedAt": "2026-10-29T13:30:00+08:00",
+      "updatedAt": "2026-10-29T12:25:00+08:00",
       "userEdited": false,
       "type": "lounge",
       "title": "機場貴賓室 LoungeKey",
@@ -971,7 +971,7 @@
       "blocks": [
         {
           "id": "bl_1105_1",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "time": "09:00",
           "text": "肯驛接送台中→高雄市區找朋友＋丹丹漢堡（訂單 F15528953）",
@@ -1162,7 +1162,7 @@
         },
         {
           "id": "bl_1110_2",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "time": "17:00 前",
           "text": "到峴港機場：退稅（如有）→ 託運 → 貴賓室 → IT552",
@@ -1209,7 +1209,7 @@
         },
         {
           "id": "bl_1110_3",
-          "updatedAt": "2026-10-29T13:30:00+08:00",
+          "updatedAt": "2026-10-29T12:25:00+08:00",
           "userEdited": false,
           "time": "23:15",
           "text": "桃園落地 → 全鋒接機回台中 D3953684（司機依實際落地、免費等90分；前1小時簡訊司機資料；帶身分證＋匯豐卡）",
