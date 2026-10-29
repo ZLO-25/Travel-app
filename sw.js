@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v25';
+const CACHE = 'ryan-travel-v26';
 const ASSETS = [
   './',
   './index.html',
@@ -61,6 +61,8 @@ const ASSETS = [
   './assets/details/loafer-casual-young-jeans.webp',
   './assets/details/loafer-casual-young-linen.webp',
   './assets/details/loafer-casual-young-shorts.webp',
+  './assets/details/loafer-lug-sole-product.webp',
+  './assets/details/loafer-lug-sole-outfit.webp',
   './assets/details/thumbs/loafer-thin-sole-closeup.webp',
   './assets/details/thumbs/loafer-thin-sole-edge.webp',
   './assets/details/thumbs/loafer-thin-sole-profile.webp',
@@ -69,6 +71,8 @@ const ASSETS = [
   './assets/details/thumbs/loafer-casual-young-jeans.webp',
   './assets/details/thumbs/loafer-casual-young-linen.webp',
   './assets/details/thumbs/loafer-casual-young-shorts.webp',
+  './assets/details/thumbs/loafer-lug-sole-product.webp',
+  './assets/details/thumbs/loafer-lug-sole-outfit.webp',
 ];
 
 function isRemoteJson(url) {
