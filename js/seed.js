@@ -430,11 +430,11 @@
     },
     {
       "id": "dl_return_transfer",
-      "updatedAt": "2026-10-28T10:04:05+08:00",
+      "updatedAt": "2026-10-29T11:50:00+08:00",
       "userEdited": false,
-      "label": "回程接送預約（建議最晚）",
+      "label": "回程接送預約（已完成）",
       "date": "2026-11-02",
-      "note": "全鋒／桃園→台中｜IT552"
+      "note": "已訂 D3953684（全鋒）"
     },
     {
       "id": "dl_dad_lounge",
@@ -538,12 +538,12 @@
         },
         {
           "id": "td_transfer_back",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-10-29T11:50:00+08:00",
           "userEdited": false,
           "text": "預約 11/10 桃園→台中接送（全鋒）",
-          "done": false,
+          "done": true,
           "due": "建議 11/2 前",
-          "note": "IT552 23:15；可能夜間加價"
+          "note": "已訂 D3953684；夜間加成 NT$200 已付（匯豐••6401）"
         },
         {
           "id": "td_lounge",
@@ -787,14 +787,14 @@
     },
     {
       "id": "bk_transfer_back",
-      "updatedAt": "2026-10-28T10:04:05+08:00",
+      "updatedAt": "2026-10-29T11:50:00+08:00",
       "userEdited": false,
       "type": "transfer",
       "title": "回程接送 桃園→台中",
-      "detail": "建議全鋒｜配合 IT552 23:15",
-      "ref": "",
-      "status": "todo",
-      "note": "建議 11/2 前預約；夜間可能加價 NT$200"
+      "detail": "全鋒｜IT552 桃園T1 23:15 → 台中西屯國安一路51號之8（6樓1）｜四人座",
+      "ref": "D3953684",
+      "status": "confirmed",
+      "note": "匯豐旅人無限 V-LIMO 權益免車資；夜間加成 NT$200 已付。司機依實際落地時間，免費等候90分，之後 NT$300/時；延誤≥4小時視同取消退款。改/取消需24小時前撥 0800-860-929；帶身分證與卡"
     },
     {
       "id": "bk_insurance",
@@ -1026,10 +1026,10 @@
         },
         {
           "id": "bl_1110_3",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-10-29T11:50:00+08:00",
           "userEdited": false,
           "time": "23:15",
-          "text": "桃園落地 → 滙豐接送回台中（約 02:00 到家）",
+          "text": "桃園落地 → 全鋒接機回台中 D3953684（司機依實際落地、免費等90分；前1小時簡訊司機資料；帶身分證＋匯豐卡）",
           "place": "桃園 T1"
         }
       ]
@@ -1525,17 +1525,17 @@
     },
     {
       "id": "ex_transfer_back",
-      "updatedAt": "2026-10-28T20:22:00+08:00",
+      "updatedAt": "2026-10-29T11:50:00+08:00",
       "userEdited": false,
-      "date": "2026-11-10",
+      "date": "2026-10-29",
       "item": "桃園→台中接送（夜間加價）",
       "merchant": "全鋒",
       "amount": 200,
       "currency": "TWD",
-      "twd": 0,
-      "status": "expected",
-      "card": "滙豐旅人",
-      "note": "尚未預約",
+      "twd": 200,
+      "status": "paid",
+      "card": "匯豐••6401",
+      "note": "D3953684；ECPay 綠界；車資權益免費",
       "estimateTwd": 200,
       "excludeFromEstimate": false
     },
