@@ -28,11 +28,11 @@
         },
         {
           "id": "dl_hotel_free_cancel",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-10-31T12:05:00+08:00",
           "userEdited": false,
-          "label": "Royal Lotus 免費取消截止",
+          "label": "Royal Lotus 免費取消截止（已過）",
           "date": "2026-10-30",
-          "note": "越南時間 23:59"
+          "note": "越南時間 10/30 23:59 已過，訂房維持不變"
         },
         {
           "id": "dl_return_transfer",
@@ -2459,7 +2459,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/29 10:10（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-10-30T12:10:00+08:00",
+      "updatedAt": "2026-10-31T12:05:00+08:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2517,7 +2517,7 @@
       }
     }
   ],
-  "syncedAt": "2026-10-30T12:10:00+08:00",
+  "syncedAt": "2026-10-31T12:05:00+08:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-10-30T12:10:00+08:00"
+  "remoteSyncedAt": "2026-10-31T12:05:00+08:00"
 }
