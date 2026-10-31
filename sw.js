@@ -1,5 +1,5 @@
 /* Ryan Travel App service worker — cache shell for offline */
-const CACHE = 'ryan-travel-v27';
+const CACHE = 'ryan-travel-v28';
 const ASSETS = [
   './',
   './index.html',
@@ -83,6 +83,22 @@ const ASSETS = [
   './assets/details/thumbs/loafer-outfit-08.webp',
   './assets/details/thumbs/loafer-outfit-09.webp',
   './assets/details/thumbs/loafer-outfit-10.webp',
+  './assets/details/thumbs/loafer-ref-black-01.webp',
+  './assets/details/thumbs/loafer-ref-black-02.webp',
+  './assets/details/thumbs/loafer-ref-black-03.webp',
+  './assets/details/thumbs/loafer-ref-black-04.webp',
+  './assets/details/thumbs/loafer-ref-black-05.webp',
+  './assets/details/thumbs/loafer-ref-black-06.webp',
+  './assets/details/thumbs/loafer-ref-black-07.webp',
+  './assets/details/thumbs/loafer-ref-black-08.webp',
+  './assets/details/thumbs/loafer-ref-navy-01.webp',
+  './assets/details/thumbs/loafer-ref-navy-02.webp',
+  './assets/details/thumbs/loafer-ref-navy-03.webp',
+  './assets/details/thumbs/loafer-ref-navy-04.webp',
+  './assets/details/thumbs/loafer-ref-navy-05.webp',
+  './assets/details/thumbs/loafer-ref-navy-06.webp',
+  './assets/details/thumbs/loafer-ref-navy-07.webp',
+  './assets/details/thumbs/loafer-ref-navy-08.webp',
   './assets/details/loafer-outfit-01.webp',
   './assets/details/loafer-outfit-02.webp',
   './assets/details/loafer-outfit-03.webp',
@@ -93,6 +109,22 @@ const ASSETS = [
   './assets/details/loafer-outfit-08.webp',
   './assets/details/loafer-outfit-09.webp',
   './assets/details/loafer-outfit-10.webp',
+  './assets/details/loafer-ref-black-01.webp',
+  './assets/details/loafer-ref-black-02.webp',
+  './assets/details/loafer-ref-black-03.webp',
+  './assets/details/loafer-ref-black-04.webp',
+  './assets/details/loafer-ref-black-05.webp',
+  './assets/details/loafer-ref-black-06.webp',
+  './assets/details/loafer-ref-black-07.webp',
+  './assets/details/loafer-ref-black-08.webp',
+  './assets/details/loafer-ref-navy-01.webp',
+  './assets/details/loafer-ref-navy-02.webp',
+  './assets/details/loafer-ref-navy-03.webp',
+  './assets/details/loafer-ref-navy-04.webp',
+  './assets/details/loafer-ref-navy-05.webp',
+  './assets/details/loafer-ref-navy-06.webp',
+  './assets/details/loafer-ref-navy-07.webp',
+  './assets/details/loafer-ref-navy-08.webp',
 ];
 
 function isRemoteJson(url) {
