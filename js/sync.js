@@ -480,9 +480,38 @@
   }
 
   /** Collapse same-id / same-fingerprint duplicates inside one trip. */
+  /* One-time pins: owner-requested priority todos moved to the top (11/1 22:06: 常備藥＋VISA 影印 = 11/2 第一優先).
+     Marker `pinMig` makes it run once per item, so later drag-reorders stick. */
+  var PRIORITY_PINS = { rev: 'p1102', ids: ['td_meds', 'td_print_visa'], due: '11/2', group: 'tg_now', at: '2026-11-01T22:10:00+08:00' };
+
+  function applyPriorityPins(trip) {
+    if (!trip || trip.id !== 'trip_danang_2026' || !Array.isArray(trip.todoGroups) || !trip.todoGroups.length) return;
+    var pending = [];
+    PRIORITY_PINS.ids.forEach(function (id) {
+      trip.todoGroups.forEach(function (g) {
+        if (!g || !Array.isArray(g.items)) return;
+        g.items = g.items.filter(function (it) {
+          if (it && it.id === id && it.pinMig !== PRIORITY_PINS.rev) { pending.push(it); return false; }
+          return true;
+        });
+      });
+    });
+    if (!pending.length) return;
+    var target = trip.todoGroups.find(function (g) { return g && g.id === PRIORITY_PINS.group; }) || trip.todoGroups[0];
+    target.items = target.items || [];
+    pending.forEach(function (it) {
+      it.priority = 'high';
+      it.due = PRIORITY_PINS.due;
+      it.pinMig = PRIORITY_PINS.rev;
+      if (ts(it.updatedAt) < ts(PRIORITY_PINS.at)) it.updatedAt = PRIORITY_PINS.at;
+    });
+    target.items = pending.concat(target.items);
+  }
+
   function dedupeTrip(trip) {
     if (!trip) return trip;
     applyTombstones(trip);
+    applyPriorityPins(trip);
     Object.keys(FLAT_KINDS).forEach(function (kind) {
       var key = FLAT_KINDS[kind];
       if (!Array.isArray(trip[key])) return;

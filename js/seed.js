@@ -532,14 +532,14 @@
       if (!item) return;
       if (item.id === 'sh_scar') applyDetails(item, scar, ts);
       else if (item.id === 'sh_fivefinger') applyDetails(item, five, ts);
-      else if (item.id === 'sh_loafer') applyDetails(item, loafer, '2026-10-31T18:25:00+08:00');
+      else if (item.id === 'sh_loafer') applyDetails(item, loafer, '2026-11-01T22:10:00+08:00');
       else if (item.id === 'sh_id_badge') applyDetails(item, badge, ts);
     });
     (trip.places || []).forEach(function (p) {
       if (!p) return;
       if (p.id === 'pl_long_chau') applyDetails(p, scar, ts);
       else if (p.id === 'pl_flow') applyDetails(p, five, ts);
-      else if (p.id === 'pl_friendly_shoe') applyDetails(p, loafer, '2026-10-31T18:25:00+08:00');
+      else if (p.id === 'pl_friendly_shoe') applyDetails(p, loafer, '2026-11-01T22:10:00+08:00');
     });
     (trip.days || []).forEach(function (day) {
       (day.blocks || []).forEach(function (bl) {
@@ -638,8 +638,30 @@
     {
       "id": "tg_now",
       "name": "現在就做",
-      "updatedAt": "2026-10-28T10:04:05+08:00",
+      "updatedAt": "2026-11-01T22:10:00+08:00",
       "items": [
+        {
+          "id": "td_meds",
+          "updatedAt": "2026-11-01T22:10:00+08:00",
+          "userEdited": false,
+          "text": "常備藥（腸胃／止痛／感冒＋OK繃）",
+          "done": false,
+          "due": "11/2",
+          "note": "",
+          "priority": "high",
+          "pinMig": "p1102"
+        },
+        {
+          "id": "td_print_visa",
+          "updatedAt": "2026-11-01T22:10:00+08:00",
+          "userEdited": false,
+          "text": "印 e-Visa、貴賓室 QR 截圖",
+          "done": false,
+          "due": "11/2",
+          "note": "",
+          "priority": "high",
+          "pinMig": "p1102"
+        },
         {
           "id": "td_visa",
           "updatedAt": "2026-10-28T10:04:05+08:00",
@@ -763,17 +785,8 @@
     {
       "id": "tg_week_before",
       "name": "出發前一週",
-      "updatedAt": "2026-10-28T10:04:05+08:00",
+      "updatedAt": "2026-11-01T22:10:00+08:00",
       "items": [
-        {
-          "id": "td_meds",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "userEdited": false,
-          "text": "常備藥（腸胃／止痛／感冒＋OK繃）",
-          "done": false,
-          "due": "急迫",
-          "note": ""
-        },
         {
           "id": "td_loafer_spec",
           "updatedAt": "2026-10-28T10:04:05+08:00",
@@ -836,15 +849,6 @@
           "done": false,
           "due": "",
           "note": "+84 878 268 468／Zalo"
-        },
-        {
-          "id": "td_print_visa",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "userEdited": false,
-          "text": "印 e-Visa、貴賓室 QR 截圖",
-          "done": false,
-          "due": "",
-          "note": ""
         },
         {
           "id": "td_passport_check",
@@ -2193,7 +2197,7 @@
   "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/29 10:10（台北）。",
   "archived": false,
   "createdAt": "2026-10-28T00:00:00+08:00",
-  "updatedAt": "2026-10-31T18:25:00+08:00",
+  "updatedAt": "2026-11-01T22:10:00+08:00",
   "userEdited": false
 };
     trip.routeMap = {

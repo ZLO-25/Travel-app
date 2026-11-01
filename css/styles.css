@@ -361,6 +361,24 @@ a { color: var(--teal); }
 }
 .check-item.drag-over-before::before { top: -1px; }
 .check-item.drag-over-after::after { bottom: -1px; }
+.check-item.prio-high {
+  background: #fff1ef;
+  box-shadow: inset 3px 0 0 #e63946;
+  border-radius: 8px;
+}
+.prio-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #b42318;
+  background: #fde2df;
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-right: 2px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.todo-group-card.drag-over,
 .pack-cat-card.drag-over {
   outline: 2px solid var(--accent-deep, #2a9d8f);
   outline-offset: 2px;

@@ -673,10 +673,11 @@
   function renderTodos(trip) {
     const el = $('#view-todos');
     let html = '<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">待辦</h2>' +
-      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-todo-group">＋ 群組</button></div></div>';
+      '<button type="button" class="btn btn-secondary btn-sm" data-action="add-todo-group">＋ 群組</button></div>' +
+      '<p class="faint" style="margin:8px 0 0">拖 ⠿ 可調整順序，或拖到其他群組</p></div>';
 
     (trip.todoGroups || []).forEach(function (g) {
-      html += '<div class="card"><div class="group-title"><span contenteditable="false">' + escapeHtml(g.name) +
+      html += '<div class="card todo-group-card" data-todo-drop="' + g.id + '"><div class="group-title"><span contenteditable="false">' + escapeHtml(g.name) +
         '</span><div class="row">' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="rename-group" data-gid="' + g.id + '">改名</button>' +
         '<button type="button" class="btn btn-ghost btn-sm" data-action="add-todo" data-gid="' + g.id + '">＋ 項目</button>' +
@@ -684,9 +685,11 @@
         '</div></div>';
       if (!g.items || !g.items.length) html += '<p class="muted">尚無項目</p>';
       (g.items || []).forEach(function (item) {
-        html += '<div class="check-item' + (item.done ? ' done' : '') + '">' +
+        var hi = item.priority === 'high';
+        html += '<div class="check-item' + (item.done ? ' done' : '') + (hi ? ' prio-high' : '') + '" draggable="true" data-todo-id="' + item.id + '" data-todo-gid="' + g.id + '">' +
+          '<span class="drag-handle" title="拖曳排序／換群組" aria-hidden="true">⠿</span>' +
           '<input type="checkbox" ' + (item.done ? 'checked' : '') + ' data-action="toggle-todo" data-gid="' + g.id + '" data-id="' + item.id + '" aria-label="完成">' +
-          '<div class="body"><div>' + escapeHtml(item.text) + '</div>' +
+          '<div class="body"><div>' + (hi ? '<span class="prio-badge">🔴 第一優先</span> ' : '') + escapeHtml(item.text) + '</div>' +
           ((item.due || item.note) ? '<div class="faint">' + (item.due ? escapeHtml(item.due) : '') + (item.due && item.note ? ' · ' : '') + (item.note ? escapeHtml(item.note) : '') + '</div>' : '') +
           '</div><div class="actions">' +
           (hasDetails(item) ? detailChipHtml(item.details, 'todo', item.id) : '') +
@@ -694,7 +697,7 @@
           '<button type="button" class="icon-btn" data-action="del-todo" data-gid="' + g.id + '" data-id="' + item.id + '" aria-label="刪除">🗑️</button>' +
           '</div></div>';
       });
-      html += '</div>';
+      html += '<div class="pack-drop-zone" data-todo-drop="' + g.id + '" aria-hidden="true"></div></div>';
     });
     el.innerHTML = html;
   }
@@ -871,10 +874,10 @@
 
 
   /* ---------- Shopping / Packing / Expenses DnD ---------- */
-  var listDrag = null; // { kind: 'shop'|'pack'|'expense', id, fromCatId? }
+  var listDrag = null; // { kind: 'shop'|'pack'|'todo'|'expense', id, fromCatId? }
 
   function clearListDragUI() {
-    $$('.check-item.drag-over-before, .check-item.drag-over-after, .check-item.dragging, .pack-cat-card.drag-over, .expense-row.drag-over-before, .expense-row.drag-over-after, .expense-row.dragging').forEach(function (el) {
+    $$('.check-item.drag-over-before, .check-item.drag-over-after, .check-item.dragging, .pack-cat-card.drag-over, .todo-group-card.drag-over, .expense-row.drag-over-before, .expense-row.drag-over-after, .expense-row.dragging').forEach(function (el) {
       el.classList.remove('drag-over-before', 'drag-over-after', 'dragging', 'drag-over');
     });
   }
@@ -938,6 +941,36 @@
     toast(fromCatId === toCatId ? '已調整順序' : '已移到其他分類');
   }
 
+  function moveTodoItem(fromGid, itemId, toGid, beforeId) {
+    var trip = activeTrip();
+    if (!trip || !itemId || !toGid) return;
+    var fromG = (trip.todoGroups || []).find(function (g) { return g.id === fromGid; });
+    var toG = (trip.todoGroups || []).find(function (g) { return g.id === toGid; });
+    if (!fromG || !toG) return;
+    fromG.items = fromG.items || [];
+    toG.items = toG.items || [];
+    var idx = fromG.items.findIndex(function (x) { return x.id === itemId; });
+    if (idx < 0) return;
+    var insertAt = toG.items.length;
+    if (beforeId) {
+      var bi = toG.items.findIndex(function (x) { return x.id === beforeId; });
+      if (bi >= 0) insertAt = bi;
+    }
+    if (fromGid === toGid) {
+      if (insertAt > idx) insertAt -= 1;
+      if (insertAt === idx) return;
+    }
+    var item = fromG.items.splice(idx, 1)[0];
+    toG.items.splice(insertAt, 0, item);
+    touchItem(item);
+    touchItem(fromG);
+    touchItem(toG);
+    touchTrip(trip);
+    persist(true);
+    renderView();
+    toast(fromGid === toGid ? '已調整順序' : '已移到其他群組');
+  }
+
   function moveExpenseItem(itemId, beforeId) {
     var trip = activeTrip();
     if (!trip) return;
@@ -967,6 +1000,13 @@
     if (packRow) {
       listDrag = { kind: 'pack', id: packRow.dataset.packId, fromCatId: packRow.dataset.packCid };
       packRow.classList.add('dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', listDrag.id || ''); } catch (err) {}
+      return;
+    }
+    var todoRow = e.target.closest && e.target.closest('#view-todos .check-item[draggable="true"]');
+    if (todoRow) {
+      listDrag = { kind: 'todo', id: todoRow.dataset.todoId, fromCatId: todoRow.dataset.todoGid };
+      todoRow.classList.add('dragging');
       try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', listDrag.id || ''); } catch (err) {}
       return;
     }
@@ -1017,6 +1057,25 @@
         var prect = pover.getBoundingClientRect();
         if (e.clientY < prect.top + prect.height / 2) pover.classList.add('drag-over-before');
         else pover.classList.add('drag-over-after');
+      }
+      return;
+    }
+    if (listDrag.kind === 'todo') {
+      var tview = e.target.closest && e.target.closest('#view-todos');
+      if (!tview) return;
+      var tcard = e.target.closest('.todo-group-card');
+      if (!tcard) return;
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (err) {}
+      clearListDragUI();
+      var tdrag = tview.querySelector('.check-item[data-todo-id="' + listDrag.id + '"]');
+      if (tdrag) tdrag.classList.add('dragging');
+      tcard.classList.add('drag-over');
+      var tover = e.target.closest('.check-item[data-todo-id]');
+      if (tover && tover.dataset.todoId !== listDrag.id) {
+        var trect = tover.getBoundingClientRect();
+        if (e.clientY < trect.top + trect.height / 2) tover.classList.add('drag-over-before');
+        else tover.classList.add('drag-over-after');
       }
       return;
     }
@@ -1088,6 +1147,33 @@
       movePackItem(fromCatId, itemId, toCatId, beforeId);
       return;
     }
+    if (listDrag.kind === 'todo') {
+      var tview = e.target.closest && e.target.closest('#view-todos');
+      if (!tview) return;
+      var tcard = e.target.closest('.todo-group-card');
+      if (!tcard) return;
+      e.preventDefault();
+      var toGid = tcard.getAttribute('data-todo-drop');
+      var fromGid = listDrag.fromCatId;
+      var tid = listDrag.id;
+      var tbefore = null;
+      var tover = e.target.closest('.check-item[data-todo-id]');
+      if (tover && tover.dataset.todoId === tid) {
+        listDrag = null; clearListDragUI(); return;
+      }
+      if (tover) {
+        var trect = tover.getBoundingClientRect();
+        if (e.clientY < trect.top + trect.height / 2) tbefore = tover.dataset.todoId;
+        else {
+          var tnext = tover.nextElementSibling;
+          while (tnext && !tnext.classList.contains('check-item')) tnext = tnext.nextElementSibling;
+          tbefore = tnext && tnext.dataset.todoId ? tnext.dataset.todoId : null;
+        }
+      }
+      listDrag = null; clearListDragUI();
+      moveTodoItem(fromGid, tid, toGid, tbefore);
+      return;
+    }
     if (listDrag.kind === 'expense') {
       var eview = e.target.closest && e.target.closest('#view-expenses');
       if (!eview) return;
@@ -1109,6 +1195,56 @@
       listDrag = null; clearListDragUI();
       moveExpenseItem(eid, beforeId);
     }
+  }
+
+
+  /* ---------- Touch fallback for ⠿ handles (phones: HTML5 DnD is unreliable) ---------- */
+  var touchDrag = null;
+
+  function touchFakeEvent(target, x, y) {
+    return { target: target, clientX: x, clientY: y, dataTransfer: null, preventDefault: function () {} };
+  }
+
+  function onHandleTouchStart(e) {
+    var h = e.target && e.target.closest && e.target.closest('.drag-handle');
+    if (!h || !e.touches || e.touches.length !== 1) return;
+    if (!h.closest('[draggable="true"]')) return;
+    var t = e.touches[0];
+    var ev = touchFakeEvent(h, t.clientX, t.clientY);
+    onItineraryDragStart(ev);
+    onListDragStart(ev);
+    if (!itineraryDrag && !listDrag) return;
+    touchDrag = { last: null };
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function onHandleTouchMove(e) {
+    if (!touchDrag) return;
+    var t = e.touches && e.touches[0];
+    if (!t) return;
+    if (e.cancelable) e.preventDefault();
+    var el = document.elementFromPoint(t.clientX, t.clientY);
+    if (!el) return;
+    touchDrag.last = { el: el, x: t.clientX, y: t.clientY };
+    var ev = touchFakeEvent(el, t.clientX, t.clientY);
+    onItineraryDragOver(ev);
+    onListDragOver(ev);
+    var edge = 70;
+    if (t.clientY < edge) window.scrollBy(0, -14);
+    else if (t.clientY > window.innerHeight - edge) window.scrollBy(0, 14);
+  }
+
+  function onHandleTouchEnd() {
+    if (!touchDrag) return;
+    var last = touchDrag.last;
+    touchDrag = null;
+    if (last) {
+      var ev = touchFakeEvent(last.el, last.x, last.y);
+      onItineraryDrop(ev);
+      onListDrop(ev);
+    }
+    if (itineraryDrag) onItineraryDragEnd();
+    if (listDrag) onListDragEnd();
   }
 
 
@@ -2052,14 +2188,17 @@
       if (!g) return;
       const item = action === 'edit-todo' ? g.items.find(function (i) { return i.id === t.dataset.id; }) : null;
       openModal(item ? '編輯待辦' : '新增待辦',
-        field('內容', 'text', item ? item.text : '') + field('期限提示', 'due', item ? item.due : '') + field('備註', 'note', item ? item.note : ''),
+        field('內容', 'text', item ? item.text : '') + field('期限提示', 'due', item ? item.due : '') + field('備註', 'note', item ? item.note : '') +
+        field('優先度', 'priority', '<option value="">一般</option><option value="high"' + (item && item.priority === 'high' ? ' selected' : '') + '>🔴 第一優先</option>', 'select'),
         function () {
           if (!val('text').trim()) { toast('請填內容'); return false; }
           if (item) {
             item.text = val('text').trim(); item.due = val('due').trim(); item.note = val('note').trim();
+            if (val('priority') === 'high') item.priority = 'high'; else delete item.priority;
             touchItem(item);
           } else {
             var nt = { id: uid('td'), text: val('text').trim(), done: false, due: val('due').trim(), note: val('note').trim() };
+            if (val('priority') === 'high') nt.priority = 'high';
             touchItem(nt);
             g.items.push(nt);
           }
@@ -2389,6 +2528,10 @@
       onItineraryDrop(e);
       onListDrop(e);
     });
+    document.addEventListener('touchstart', onHandleTouchStart, { passive: false });
+    document.addEventListener('touchmove', onHandleTouchMove, { passive: false });
+    document.addEventListener('touchend', onHandleTouchEnd);
+    document.addEventListener('touchcancel', onHandleTouchEnd);
     document.addEventListener('dragleave', function (e) {
       if (itineraryDrag) {
         const card = e.target.closest && e.target.closest('.day-card');
@@ -2397,6 +2540,10 @@
       if (listDrag && listDrag.kind === 'pack') {
         const pcard = e.target.closest && e.target.closest('.pack-cat-card');
         if (pcard && !pcard.contains(e.relatedTarget)) pcard.classList.remove('drag-over');
+      }
+      if (listDrag && listDrag.kind === 'todo') {
+        const tcard = e.target.closest && e.target.closest('.todo-group-card');
+        if (tcard && !tcard.contains(e.relatedTarget)) tcard.classList.remove('drag-over');
       }
     });
     document.addEventListener('change', function (e) {
