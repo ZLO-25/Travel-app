@@ -73,14 +73,61 @@
           "label": "回程日",
           "date": "2026-11-10",
           "note": "IT552 約 23:15 抵桃園"
+        },
+        {
+          "id": "dl_prearrival",
+          "updatedAt": "2026-11-03T07:10:00+08:00",
+          "userEdited": false,
+          "label": "越南線上入境申報（建議最晚）",
+          "date": "2026-11-04",
+          "note": "免費；抵達前 72 小時內才能填；官方 prearrival.immigration.gov.vn"
         }
       ],
       "todoGroups": [
         {
           "id": "tg_now",
           "name": "現在就做",
-          "updatedAt": "2026-11-01T22:10:00+08:00",
+          "updatedAt": "2026-11-03T07:10:00+08:00",
           "items": [
+            {
+              "id": "td_prearrival",
+              "updatedAt": "2026-11-03T07:10:00+08:00",
+              "userEdited": false,
+              "text": "🚨 填越南線上入境申報（Pre-Arrival，免費）",
+              "done": false,
+              "due": "11/3–11/4",
+              "priority": "high",
+              "note": "電子簽證不能取代，兩個都要。只能抵達前 72 小時內填（台灣時間 11/2 20:00 起開放），建議 11/3 或 11/4 填完；填完截圖存 QR code 和確認碼。備妥護照照片檔、航班 IT585、Royal Lotus 地址（120A Nguyễn Văn Thoại）、離境日 11/10。",
+              "details": {
+                "title": "越南線上入境申報（Pre-Arrival）",
+                "summary": "免費。只有官方網址是 prearrival.immigration.gov.vn，收費的都是代辦。峴港是否強制各來源說法不一，免費又快，當作要填。",
+                "tips": [
+                  "11/5 越南時間 19:00 抵達 → 台灣時間 11/2 20:00 窗口開啟",
+                  "填完截圖存 QR code 和確認碼（手機相簿，機場可能沒網路）",
+                  "備妥：護照照片檔、航班 IT585、Royal Lotus 住址、離境日 11/10"
+                ],
+                "warnings": [
+                  "電子簽證不能取代這個申報，兩個都要",
+                  "只認官方網址，不要用收費代辦"
+                ],
+                "images": [],
+                "links": [
+                  {
+                    "label": "官方入境申報網站（免費）",
+                    "url": "http://prearrival.immigration.gov.vn"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "td_visa_confirm",
+              "updatedAt": "2026-11-03T07:10:00+08:00",
+              "userEdited": false,
+              "text": "確認電子簽證核准信已收到、PDF 已印紙本",
+              "done": false,
+              "due": "",
+              "note": ""
+            },
             {
               "id": "td_meds",
               "updatedAt": "2026-11-01T22:10:00+08:00",
@@ -2672,10 +2719,10 @@
           "excludeFromEstimate": true
         }
       ],
-      "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/10/29 10:10（台北）。",
+      "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 🚨 11/3 或 11/4 前填越南線上入境申報（prearrival.immigration.gov.vn，免費；電子簽證不能取代）。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/2（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-02T12:10:00+08:00",
+      "updatedAt": "2026-11-03T07:10:00+08:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2733,7 +2780,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-02T12:10:00+08:00",
+  "syncedAt": "2026-11-03T07:10:00+08:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-02T12:10:00+08:00"
+  "remoteSyncedAt": "2026-11-03T07:10:00+08:00"
 }
