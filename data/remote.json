@@ -52,11 +52,11 @@
         },
         {
           "id": "dl_checkin",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "userEdited": false,
-          "label": "線上報到選位",
-          "date": "2026-11-04",
-          "note": "虎航"
+          "label": "去程報到（小港櫃台）",
+          "date": "2026-11-05",
+          "note": "14:50 前到小港；Trip.com 查不到線上報到"
         },
         {
           "id": "dl_depart",
@@ -76,28 +76,281 @@
         },
         {
           "id": "dl_prearrival",
-          "updatedAt": "2026-11-03T07:10:00+08:00",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "userEdited": false,
-          "label": "越南線上入境申報（建議最晚）",
+          "label": "越南線上入境申報（已完成）",
           "date": "2026-11-04",
-          "note": "免費；抵達前 72 小時內才能填；官方 prearrival.immigration.gov.vn"
+          "note": "11/3 提交成功，GIUU4TXX"
         }
       ],
       "todoGroups": [
         {
           "id": "tg_now",
-          "name": "現在就做",
-          "updatedAt": "2026-11-03T07:10:00+08:00",
+          "name": "出發前還要做",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
+          "items": [
+            {
+              "id": "td_baggage",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "加購回程託運 15kg（虎航管理預訂約 NT$1,000）",
+              "done": false,
+              "due": "起飛前 4 小時",
+              "note": "訂位代號 R5JVRS／N6D5RP＋姓氏；機場買要 1,600",
+              "priority": "high"
+            },
+            {
+              "id": "td_print_visa",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "印 e-Visa 紙本＋手機存檔；入境申報、貴賓室 QR 截圖存相簿",
+              "done": false,
+              "due": "11/4",
+              "note": "",
+              "priority": "high",
+              "pinMig": "p1102"
+            },
+            {
+              "id": "td_meds",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "常備藥（腸胃／止痛／感冒＋OK繃）",
+              "done": false,
+              "due": "11/4",
+              "note": "",
+              "priority": "high",
+              "pinMig": "p1102"
+            },
+            {
+              "id": "td_checkin",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "去程 IT585 報到：預設小港櫃台",
+              "done": false,
+              "due": "11/5 14:50 前",
+              "note": "11/4 確認 Trip.com 查不到線上報到；櫃台約起飛前 2.5 小時開～45 分前截止；想自選座位要先付費選位（TWD 299 起）"
+            },
+            {
+              "id": "td_flow_stock",
+              "updatedAt": "2026-10-28T13:40:00+08:00",
+              "userEdited": false,
+              "text": "問 Flow Store 五指鞋現貨",
+              "done": false,
+              "due": "",
+              "note": "+84 878 268 468／Zalo",
+              "details": {
+                "title": "Vibram 五指鞋（KSO EVO）",
+                "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
+                "tips": [
+                  "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
+                  "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
+                  "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
+                  "試穿 2：不穿襪子試（除非打算配五趾襪）",
+                  "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
+                  "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
+                  "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
+                  "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
+                  "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
+                  "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
+                  "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
+                  "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
+                  "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
+                  "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
+                  "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
+                ],
+                "warnings": [
+                  "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
+                  "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
+                  "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
+                ],
+                "images": [
+                  {
+                    "src": "assets/details/vibram-flow-mens-lineup.webp",
+                    "alt": "Flow Store Vibram 男款選擇",
+                    "caption": "Flow Store 男款選擇（官網價 2026/10）"
+                  },
+                  {
+                    "src": "assets/details/vibram-kso-evo-product.webp",
+                    "alt": "Vibram KSO EVO 產品圖",
+                    "caption": "KSO EVO（首選）"
+                  },
+                  {
+                    "src": "assets/details/vibram-alt-models.webp",
+                    "alt": "Vibram 其他型號",
+                    "caption": "其他型號"
+                  },
+                  {
+                    "src": "assets/details/vibram-kso-evo.webp",
+                    "alt": "Vibram FiveFingers KSO EVO 參考卡",
+                    "caption": "參考卡（非實品照片）· Flow Store 峴港"
+                  }
+                ],
+                "links": [
+                  {
+                    "label": "Flow Store 官網",
+                    "url": "https://flowstore.com.vn"
+                  },
+                  {
+                    "label": "Vibram 尺寸／試穿指南",
+                    "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "td_loafer_spec",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "樂福鞋：決定規格、量腳、剪趾甲、拍照片",
+              "done": false,
+              "due": "",
+              "note": "最終規格（10/31）：深咖啡便士樂福＋薄雷根底；確認圖卡在購物→訂做樂福鞋"
+            },
+            {
+              "id": "td_hotel_email",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "寫信 Royal Lotus（約 20:00 到、11/10 晚退房、鞋店送鞋請櫃台通知）",
+              "done": false,
+              "due": "",
+              "note": ""
+            },
+            {
+              "id": "td_vnd_grab",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "換越南盾＋Grab 綁卡",
+              "done": false,
+              "due": "",
+              "note": "五行山只收現金"
+            },
+            {
+              "id": "td_offline_maps",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "離線地圖＋飯店地址進 Grab",
+              "done": false,
+              "due": "",
+              "note": ""
+            },
+            {
+              "id": "td_live_schedule",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "查看 BLENDS、Waves 演出表",
+              "done": false,
+              "due": "",
+              "note": ""
+            },
+            {
+              "id": "td_pack",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "打包",
+              "done": false,
+              "due": "",
+              "note": ""
+            },
+            {
+              "id": "td_passport_check",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "核對護照資料與訂位一致",
+              "done": false,
+              "due": "",
+              "note": "勿在 App 貼護照號"
+            },
+            {
+              "id": "td_weather",
+              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "userEdited": false,
+              "text": "看颱風／淹水資訊",
+              "done": false,
+              "due": "",
+              "note": "搜尋 Hội An ngập"
+            }
+          ]
+        },
+        {
+          "id": "tg_onsite",
+          "name": "旅途中",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
+          "items": [
+            {
+              "id": "td_buy_onsite",
+              "updatedAt": "2026-10-28T13:40:00+08:00",
+              "userEdited": false,
+              "text": "買除疤膏、五指鞋、訂做樂福鞋",
+              "done": false,
+              "due": "",
+              "note": "",
+              "details": {
+                "title": "除疤膏（Dermatix Ultra／Contractubex）",
+                "summary": "首選 Dermatix Ultra 7g（約 VND 210,000／NT$250）；備案 Contractubex 10g（約 VND 164,500）。Long Châu 65 Nguyễn Văn Thoại（跟 Royal Lotus 同一條路）。",
+                "tips": [
+                  "買哪一款：凸起偏硬癢痛 → Dermatix Ultra（矽膠）；新疤深紅/褐 → 兩款可、Contractubex 較便宜；不確定 → Dermatix Ultra 7g",
+                  "哪裡買：Long Châu 65 Nguyễn Văn Thoại；連鎖藥局（Long Châu／Pharmacity／An Khang）較可靠；營業約 06:00–23:00（以現場為準）",
+                  "驗貨：外盒封膜完整 → 管身鋁箔封口完好 → 盒上越南文標籤或登記號（Contractubex 10g：VN-23121-22）→ 批號效期與管身一致 → 要收據並拍盒子與批號",
+                  "使用：傷口完全癒合才能擦；先手臂內側測試；疤痕怕曬白天防曬；Dermatix 至少約 2 個月才見效",
+                  "台灣對照：倍舒痕 Dermatix 7g 約 NT$945（momo），越南約 NT$250 划算很多"
+                ],
+                "warnings": [
+                  "不要買：會安古城、韓市場、夜市、Grab 代買（仿冒／保存風險）",
+                  "痘疤凹洞型兩款效果有限",
+                  "店內價格以現場為準"
+                ],
+                "images": [
+                  {
+                    "src": "assets/details/dermatix-ultra-7g.webp",
+                    "alt": "Dermatix Ultra 7g 外盒與軟管",
+                    "caption": "Dermatix Ultra 7g（來源：Long Châu 商品圖）"
+                  },
+                  {
+                    "src": "assets/details/contractubex-10g.webp",
+                    "alt": "Contractubex 10g 外盒",
+                    "caption": "Contractubex 10g（來源：Long Châu 商品圖）"
+                  }
+                ],
+                "links": [
+                  {
+                    "label": "Long Châu 比較文",
+                    "url": "https://nhathuoclongchau.com.vn/bai-viet/so-sanh-kem-tri-seo-contractubex-va-dermatix-cai-nao-tot-hon-49098.html"
+                  },
+                  {
+                    "label": "Pharmacity Dermatix Ultra 7g",
+                    "url": "https://www.pharmacity.vn/gel-tri-seo-dermatix-ultra-7g.html"
+                  },
+                  {
+                    "label": "Long Châu 店（65 Nguyễn Văn Thoại）",
+                    "url": "https://nhathuoclongchau.com.vn/he-thong-cua-hang/65-nguyen-van-thoai-p-an-hai-dong-q-son-tra-tp-da-nang"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "td_checkin_back",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "userEdited": false,
+              "text": "回程 IT552：11/8 越南 19:50（台灣 20:50）起試線上報到",
+              "done": false,
+              "due": "11/8",
+              "note": "不行就機場櫃台"
+            }
+          ]
+        },
+        {
+          "id": "tg_done",
+          "name": "已完成",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "items": [
             {
               "id": "td_prearrival",
-              "updatedAt": "2026-11-03T07:10:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
-              "text": "🚨 填越南線上入境申報（Pre-Arrival，免費）",
-              "done": false,
+              "text": "越南線上入境申報（Pre-Arrival）",
+              "done": true,
               "due": "11/3–11/4",
-              "priority": "high",
-              "note": "電子簽證不能取代，兩個都要。只能抵達前 72 小時內填（台灣時間 11/2 20:00 起開放），建議 11/3 或 11/4 填完；填完截圖存 QR code 和確認碼。備妥護照照片檔、航班 IT585、Royal Lotus 地址（120A Nguyễn Văn Thoại）、離境日 11/10。",
+              "note": "11/3 21:40 提交成功，編號 GIUU4TXX；QR 截圖存相簿",
               "details": {
                 "title": "越南線上入境申報（Pre-Arrival）",
                 "summary": "免費。只有官方網址是 prearrival.immigration.gov.vn，收費的都是代辦。峴港是否強制各來源說法不一，免費又快，當作要填。",
@@ -121,34 +374,12 @@
             },
             {
               "id": "td_visa_confirm",
-              "updatedAt": "2026-11-03T07:10:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
-              "text": "確認電子簽證核准信已收到、PDF 已印紙本",
-              "done": false,
+              "text": "電子簽證核准（10/23 確認）",
+              "done": true,
               "due": "",
-              "note": ""
-            },
-            {
-              "id": "td_meds",
-              "updatedAt": "2026-11-01T22:10:00+08:00",
-              "userEdited": false,
-              "text": "常備藥（腸胃／止痛／感冒＋OK繃）",
-              "done": false,
-              "due": "11/2",
-              "note": "",
-              "priority": "high",
-              "pinMig": "p1102"
-            },
-            {
-              "id": "td_print_visa",
-              "updatedAt": "2026-11-01T22:10:00+08:00",
-              "userEdited": false,
-              "text": "印 e-Visa、貴賓室 QR 截圖",
-              "done": false,
-              "due": "11/2",
-              "note": "",
-              "priority": "high",
-              "pinMig": "p1102"
+              "note": "單次入境、11/5–11/24、Tourist"
             },
             {
               "id": "td_visa",
@@ -177,22 +408,6 @@
               "due": "",
               "note": "接送／貴賓室資格"
             },
-            {
-              "id": "td_baggage",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "虎航加購回程託運（建議 15kg）",
-              "done": false,
-              "due": "出發前",
-              "note": "PNR：N6D5RP／R5JVRS；官網管理預訂約 NT$1,000"
-            }
-          ]
-        },
-        {
-          "id": "tg_book_by_nov2",
-          "name": "11/2 前完成預約",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "items": [
             {
               "id": "td_insurance",
               "updatedAt": "2026-10-28T10:04:05+08:00",
@@ -267,22 +482,6 @@
                   }
                 ]
               }
-            }
-          ]
-        },
-        {
-          "id": "tg_week_before",
-          "name": "出發前一週",
-          "updatedAt": "2026-11-01T22:10:00+08:00",
-          "items": [
-            {
-              "id": "td_loafer_spec",
-              "updatedAt": "2026-10-28T23:10:00+08:00",
-              "userEdited": false,
-              "text": "樂福鞋：決定規格、量腳、剪趾甲、拍照片",
-              "done": false,
-              "due": "",
-              "note": "第一雙休閒：深棕便士樂福＋橡膠底"
             },
             {
               "id": "td_esim",
@@ -293,159 +492,6 @@
               "due": "",
               "note": "訂單 26KK259044234；可先裝好"
             },
-            {
-              "id": "td_vnd_grab",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "換越南盾＋Grab 綁卡",
-              "done": false,
-              "due": "",
-              "note": "五行山只收現金"
-            },
-            {
-              "id": "td_hotel_email",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "寫信 Royal Lotus（約 20:00 到、11/10 晚退房、鞋店送鞋請櫃台通知）",
-              "done": false,
-              "due": "",
-              "note": ""
-            },
-            {
-              "id": "td_live_schedule",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "查看 BLENDS、Waves 演出表",
-              "done": false,
-              "due": "",
-              "note": ""
-            },
-            {
-              "id": "td_pack",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "打包",
-              "done": false,
-              "due": "",
-              "note": ""
-            },
-            {
-              "id": "td_flow_stock",
-              "updatedAt": "2026-10-28T13:40:00+08:00",
-              "userEdited": false,
-              "text": "問 Flow Store 五指鞋現貨",
-              "done": false,
-              "due": "",
-              "note": "+84 878 268 468／Zalo",
-              "details": {
-                "title": "Vibram 五指鞋（KSO EVO）",
-                "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
-                "tips": [
-                  "為什麼選走路也能穿的款：練足弓靠每天累積的穿著時間（走路、站著、在家），只在健身時穿太少；KSO EVO 兩種場合都能用",
-                  "型號對照（官網價，男款 EU 40–46）：\nKSO EVO ⭐首選｜3,599,000｜走路、室內訓練、入門\nGraspifier｜3,499,000｜重訓、功能性訓練（分段鞋底）\nGroundsplay｜4,899,000｜深蹲硬舉高強度（2026 新款，4.5 mm、綁帶）\nV-Run／Spidr Walk／Trailope｜4,899,000–4,999,000｜跑步／戶外越野，現在不需要",
-                  "試穿 1：先赤腳在店裡走 1–2 分鐘，讓腳放鬆（整體約 30–45 分鐘）",
-                  "試穿 2：不穿襪子試（除非打算配五趾襪）",
-                  "試穿 3：鬆開魔鬼氈／鞋帶，腳跟先放好，用手指把每根腳趾送進趾套；一格只放一趾，小趾最容易跑錯格",
-                  "試穿 4 合腳標準：最長腳趾剛好碰到趾套前端或差一點；腳趾不彎不擠，像第二層皮膚。腳會滑動＝太大（起水泡）；趾套前還有空間＝小一號；腳趾被擠彎＝大一號",
-                  "試穿 5 動作測試：硬地走 5 分鐘、深蹲 10 下、弓箭步、提踵、單腳站 30 秒（兩腳）、快速轉身；看後跟滑不滑、腳背綁帶壓不壓、縫線磨不磨",
-                  "試穿 6：兩款都試；同款至少試兩個尺寸；不同款尺寸可能不同",
-                  "試穿 7：問店家退換規則（官網收到 7 天內可換）、退稅、有沒有折扣",
-                  "導入 第 1–2 週：每天 15–30 分鐘走路或在家穿；健身先做低重量動作",
-                  "導入 第 3–4 週：每隔幾天增加 10–15 分鐘",
-                  "導入 1 個月後：感覺穩定才短距離慢跑（從 1 km 開始）",
-                  "11/1 剛跑完 29K：旅途中只穿短時間，不要穿去長時間逛街",
-                  "清洗：冷水手洗或洗衣機輕柔模式，自然風乾；不要烘乾、不要曬太陽",
-                  "店家 Flow Store：268 Dương Đình Nghệ, An Hải（離 Royal Lotus ~2.5 km，Grab 約 8 分）；週一至六 09:00–20:30、週日公休；電話 +84 878 268 468；先問現貨尺寸（有 45 號以上）；一雙超過 200 萬越盾可退稅，結帳前問「có hoàn thuế VAT không?」"
-                ],
-                "warnings": [
-                  "腳背、腳跟或阿基里斯腱痛到隔天還在 → 退回上一階段；腳背持續痛要特別小心（可能是壓力性骨折警訊）",
-                  "平常穿穩定鞋、扁平足或容易內倒 → 導入要更慢",
-                  "週日公休；價格以店內為準；只買授權通路（Flow Store），慎防仿品"
-                ],
-                "images": [
-                  {
-                    "src": "assets/details/vibram-flow-mens-lineup.webp",
-                    "alt": "Flow Store Vibram 男款選擇",
-                    "caption": "Flow Store 男款選擇（官網價 2026/10）"
-                  },
-                  {
-                    "src": "assets/details/vibram-kso-evo-product.webp",
-                    "alt": "Vibram KSO EVO 產品圖",
-                    "caption": "KSO EVO（首選）"
-                  },
-                  {
-                    "src": "assets/details/vibram-alt-models.webp",
-                    "alt": "Vibram 其他型號",
-                    "caption": "其他型號"
-                  },
-                  {
-                    "src": "assets/details/vibram-kso-evo.webp",
-                    "alt": "Vibram FiveFingers KSO EVO 參考卡",
-                    "caption": "參考卡（非實品照片）· Flow Store 峴港"
-                  }
-                ],
-                "links": [
-                  {
-                    "label": "Flow Store 官網",
-                    "url": "https://flowstore.com.vn"
-                  },
-                  {
-                    "label": "Vibram 尺寸／試穿指南",
-                    "url": "https://www.vibram.com/cn/en/sizing-guide-navigation/fitting-guide.html"
-                  }
-                ]
-              }
-            },
-            {
-              "id": "td_passport_check",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "核對護照資料與訂位一致",
-              "done": false,
-              "due": "",
-              "note": "勿在 App 貼護照號"
-            }
-          ]
-        },
-        {
-          "id": "tg_1_2_days",
-          "name": "出發前 1–2 天",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "items": [
-            {
-              "id": "td_checkin",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "11/4 線上報到選位",
-              "done": false,
-              "due": "2026-11-04",
-              "note": ""
-            },
-            {
-              "id": "td_weather",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "看颱風／淹水資訊",
-              "done": false,
-              "due": "",
-              "note": "搜尋 Hội An ngập"
-            },
-            {
-              "id": "td_offline_maps",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "text": "離線地圖＋飯店地址進 Grab",
-              "done": false,
-              "due": "",
-              "note": ""
-            }
-          ]
-        },
-        {
-          "id": "tg_done",
-          "name": "已完成／可參考",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "items": [
             {
               "id": "td_mofa",
               "updatedAt": "2026-10-28T10:04:05+08:00",
@@ -463,64 +509,6 @@
               "done": true,
               "due": "",
               "note": ""
-            }
-          ]
-        },
-        {
-          "id": "tg_onsite",
-          "name": "現地／之後",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "items": [
-            {
-              "id": "td_buy_onsite",
-              "updatedAt": "2026-10-28T13:40:00+08:00",
-              "userEdited": false,
-              "text": "買除疤膏、五指鞋、訂做樂福鞋",
-              "done": false,
-              "due": "",
-              "note": "",
-              "details": {
-                "title": "除疤膏（Dermatix Ultra／Contractubex）",
-                "summary": "首選 Dermatix Ultra 7g（約 VND 210,000／NT$250）；備案 Contractubex 10g（約 VND 164,500）。Long Châu 65 Nguyễn Văn Thoại（跟 Royal Lotus 同一條路）。",
-                "tips": [
-                  "買哪一款：凸起偏硬癢痛 → Dermatix Ultra（矽膠）；新疤深紅/褐 → 兩款可、Contractubex 較便宜；不確定 → Dermatix Ultra 7g",
-                  "哪裡買：Long Châu 65 Nguyễn Văn Thoại；連鎖藥局（Long Châu／Pharmacity／An Khang）較可靠；營業約 06:00–23:00（以現場為準）",
-                  "驗貨：外盒封膜完整 → 管身鋁箔封口完好 → 盒上越南文標籤或登記號（Contractubex 10g：VN-23121-22）→ 批號效期與管身一致 → 要收據並拍盒子與批號",
-                  "使用：傷口完全癒合才能擦；先手臂內側測試；疤痕怕曬白天防曬；Dermatix 至少約 2 個月才見效",
-                  "台灣對照：倍舒痕 Dermatix 7g 約 NT$945（momo），越南約 NT$250 划算很多"
-                ],
-                "warnings": [
-                  "不要買：會安古城、韓市場、夜市、Grab 代買（仿冒／保存風險）",
-                  "痘疤凹洞型兩款效果有限",
-                  "店內價格以現場為準"
-                ],
-                "images": [
-                  {
-                    "src": "assets/details/dermatix-ultra-7g.webp",
-                    "alt": "Dermatix Ultra 7g 外盒與軟管",
-                    "caption": "Dermatix Ultra 7g（來源：Long Châu 商品圖）"
-                  },
-                  {
-                    "src": "assets/details/contractubex-10g.webp",
-                    "alt": "Contractubex 10g 外盒",
-                    "caption": "Contractubex 10g（來源：Long Châu 商品圖）"
-                  }
-                ],
-                "links": [
-                  {
-                    "label": "Long Châu 比較文",
-                    "url": "https://nhathuoclongchau.com.vn/bai-viet/so-sanh-kem-tri-seo-contractubex-va-dermatix-cai-nao-tot-hon-49098.html"
-                  },
-                  {
-                    "label": "Pharmacity Dermatix Ultra 7g",
-                    "url": "https://www.pharmacity.vn/gel-tri-seo-dermatix-ultra-7g.html"
-                  },
-                  {
-                    "label": "Long Châu 店（65 Nguyễn Văn Thoại）",
-                    "url": "https://nhathuoclongchau.com.vn/he-thong-cua-hang/65-nguyen-van-thoai-p-an-hai-dong-q-son-tra-tp-da-nang"
-                  }
-                ]
-              }
             }
           ]
         }
@@ -765,18 +753,18 @@
             },
             {
               "id": "bl_1105_4",
-              "updatedAt": "2026-10-28T13:16:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "14:50",
-              "text": "到小港機場報到、進入南苑貴賓室（登機前 2.5 小時；IT585 17:20 起飛）",
+              "text": "14:50 前到小港 → 櫃台報到 → 南苑貴賓室（國泰卡）→ IT585 17:20 起飛",
               "place": "小港機場"
             },
             {
               "id": "bl_1105_2",
-              "updatedAt": "2026-10-28T13:16:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "19:00",
-              "text": "峴港落地 → Grab 到 Royal Lotus（約 6 km／15–20 分）→ 安頓／按摩",
+              "text": "峴港落地 → 入境出示護照＋e-Visa＋入境申報 QR → 數據切 eSIM → Grab 到 Royal Lotus（約 6 km／15–20 分）→ 按摩",
               "place": "Royal Lotus"
             },
             {
@@ -839,10 +827,10 @@
           "blocks": [
             {
               "id": "bl_1106_rain",
-              "updatedAt": "2026-10-30T12:10:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "07:00",
-              "text": "⚠️ 10/30 更新：越南媒體預報 11/3–11/6 中部再有一波陣雨雷雨、局部大雨（沒點名會安）。早上 7 點照「雨天調整規則」判斷；Lạc Long Quân 濱海路一下雨易積水，必要時請 Grab 司機走內陸路線",
+              "text": "11/4 預報：11/6 是這幾天天氣最好的一天。早上 7 點仍照「雨天調整規則」判斷；濱海路 Lạc Long Quân 下雨易積水，請 Grab 司機走內陸",
               "place": "峴港"
             },
             {
@@ -855,10 +843,10 @@
             },
             {
               "id": "bl_1106_2",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "12:00",
-              "text": "會安午餐 → 13:30 Friendly Shoe Shop 樂福鞋下單（約 1–1.5 小時）",
+              "text": "會安午餐 → 13:30 Friendly Shoe Shop 樂福鞋下單＋問識別證皮套；跟店家約 11/8 送飯店試穿",
               "place": "會安"
             },
             {
@@ -887,10 +875,10 @@
             },
             {
               "id": "bl_1107_2",
-              "updatedAt": "2026-10-28T13:40:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "下午",
-              "text": "Flow Store 試穿五指鞋（約 30–45 分；週日公休）",
+              "text": "Flow Store 試穿五指鞋（約 30–45 分；週日公休，今天一定要去）；預約明天 Luxury Barber",
               "place": "Flow Store",
               "details": {
                 "title": "Vibram 五指鞋（KSO EVO）",
@@ -964,8 +952,8 @@
         {
           "id": "day_20261108",
           "date": "2026-11-08",
-          "title": "留白",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "title": "留白（樂福鞋盡量取鞋）",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "blocks": [
             {
               "id": "bl_1108_1",
@@ -977,10 +965,10 @@
             },
             {
               "id": "bl_1108_2",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "白天",
-              "text": "做臉／除黑頭；樂福鞋第一次試穿（店家送飯店）",
+              "text": "做臉／除黑頭；樂福鞋試穿（送飯店），能改完就今天取鞋、付尾款（11/9 起大雨）",
               "place": "Royal Lotus"
             },
             {
@@ -996,31 +984,31 @@
         {
           "id": "day_20261109",
           "date": "2026-11-09",
-          "title": "留白",
-          "updatedAt": "2026-11-02T12:10:00+08:00",
+          "title": "留白（預報大雨）",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "blocks": [
             {
               "id": "bl_1109_rain",
-              "updatedAt": "2026-11-02T12:10:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "提醒",
-              "text": "⚠️ 11/2 更新：兩個預報都說 11/9–11/10 雷陣雨／中到大雨（官方：11/9 雷陣雨、11/10 中雨；Thoitiet.vn：11/9 大雨）。建議 11/6 下單時跟店家約「最終試穿送到飯店」，最好排 11/8 晚上或 11/9 白天，不要拖到 11/9 晚上；11/9 遺產列車選配可考慮放棄",
+              "text": "⚠️ 11/4 越南官方：11/8–11/12 大雨到特大雨，最強 11/9–11/11（局部可能超過 500 mm）→ 今天以室內為主",
               "place": "峴港"
             },
             {
               "id": "bl_1109_1",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "白天",
-              "text": "按摩 → 午餐 buffet；樂福鞋最終試穿、付尾款、取鞋（最晚今晚）",
+              "text": "按摩 → 午餐 All Seasons buffet；樂福鞋最晚今天白天取鞋（不要拖到晚上）",
               "place": ""
             },
             {
               "id": "bl_1109_2",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "彈性",
-              "text": "韓市場買伴手禮；選配遺產列車已移到之後再去",
+              "text": "伴手禮：雨不大去韓市場；大雨改去 Lotte Mart（室內）",
               "place": ""
             }
           ]
@@ -1028,8 +1016,8 @@
         {
           "id": "day_20261110",
           "date": "2026-11-10",
-          "title": "退房＋回程",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "title": "退房＋回程（預報大雨）",
+          "updatedAt": "2026-11-04T08:45:00+08:00",
           "blocks": [
             {
               "id": "bl_1110_1",
@@ -1041,10 +1029,10 @@
             },
             {
               "id": "bl_1110_2",
-              "updatedAt": "2026-10-29T12:25:00+08:00",
+              "updatedAt": "2026-11-04T08:45:00+08:00",
               "userEdited": false,
               "time": "17:00 前",
-              "text": "到峴港機場：退稅（如有）→ 託運 → 貴賓室 → IT552",
+              "text": "到峴港機場（大雨就 16:00 出發）：退稅先找海關 → 託運 → 貴賓室（Vanda／CIP Orchid）→ IT552 19:50",
               "place": "峴港機場",
               "details": {
                 "title": "LoungeKey 貴賓室 QR（滙豐旅人無限卡）",
@@ -2722,7 +2710,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 🚨 11/3 或 11/4 前填越南線上入境申報（prearrival.immigration.gov.vn，免費；電子簽證不能取代）。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/2（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-03T07:10:00+08:00",
+      "updatedAt": "2026-11-04T08:45:00+08:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2780,7 +2768,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-03T07:10:00+08:00",
+  "syncedAt": "2026-11-04T08:45:00+08:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-03T07:10:00+08:00"
+  "remoteSyncedAt": "2026-11-04T08:45:00+08:00"
 }

@@ -1368,3 +1368,13 @@ body.locked .app { visibility: hidden; pointer-events: none; }
 .filter-chip { border: 1px solid rgba(127,127,127,.35); background: transparent; color: inherit; border-radius: 999px; padding: 5px 12px; font-size: .85rem; cursor: pointer; }
 .filter-chip.active { background: var(--accent, #2563eb); border-color: var(--accent, #2563eb); color: #fff; font-weight: 600; }
 .expense-filter-count { font-size: .8rem; margin-left: 4px; }
+
+/* Collapsible sections (past deadlines, fully-done todo groups) */
+details.fold { margin-top: 8px; }
+details.fold > summary { cursor: pointer; padding: 6px 0; list-style: none; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: '▸ '; }
+details.fold[open] > summary::before { content: '▾ '; }
+.mini-block { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line, rgba(0,0,0,.08)); font-size: .95em; }
+.mini-block:first-of-type { border-top: 0; }
+.mini-block .time { font-weight: 600; color: var(--accent, #e76f51); }

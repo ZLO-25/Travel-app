@@ -508,6 +508,64 @@
     target.items = pending.concat(target.items);
   }
 
+  /* One-time todo regroup (11/4, owner asked to put what matters first):
+     open items → 「出發前還要做」, done items → 「已完成」(collapsed in UI), stale date-based
+     groups removed. Done/checked state is kept as-is; only grouping and order change.
+     Marker trip.layoutRev makes the regroup run once, so later drags stick. Empty stale
+     groups are removed on every load (a remote copy could re-add them). */
+  var LAYOUT_REV = {
+    rev: 'L1104',
+    nowGroup: { id: 'tg_now', name: '出發前還要做' },
+    onsiteGroup: { id: 'tg_onsite', name: '旅途中' },
+    doneGroup: { id: 'tg_done', name: '已完成' },
+    staleGroups: ['tg_book_by_nov2', 'tg_week_before', 'tg_1_2_days'],
+    onsiteIds: ['td_buy_onsite', 'td_checkin_back'],
+    order: ['td_baggage', 'td_print_visa', 'td_meds', 'td_checkin', 'td_flow_stock', 'td_loafer_spec',
+      'td_hotel_email', 'td_vnd_grab', 'td_offline_maps', 'td_live_schedule', 'td_pack',
+      'td_passport_check', 'td_weather']
+  };
+
+  function applyLayoutRev(trip) {
+    if (!trip || trip.id !== 'trip_danang_2026' || !Array.isArray(trip.todoGroups)) return;
+    var L = LAYOUT_REV;
+    if (trip.layoutRev !== L.rev) {
+      var known = {};
+      [L.nowGroup.id, L.onsiteGroup.id, L.doneGroup.id].concat(L.staleGroups).forEach(function (id) { known[id] = true; });
+      var open = [], onsite = [], done = [], others = [];
+      trip.todoGroups.forEach(function (g) {
+        if (!g) return;
+        if (!known[g.id]) { others.push(g); return; } // user-made group: leave alone
+        (g.items || []).forEach(function (it) {
+          if (!it) return;
+          if (it.done) done.push(it);
+          else if (L.onsiteIds.indexOf(it.id) >= 0) onsite.push(it);
+          else open.push(it);
+        });
+      });
+      open.sort(function (a, b) {
+        var ia = L.order.indexOf(a.id), ib = L.order.indexOf(b.id);
+        if (ia < 0) ia = 999;
+        if (ib < 0) ib = 999;
+        return ia - ib;
+      });
+      function group(def, items) {
+        var prev = trip.todoGroups.find(function (g) { return g && g.id === def.id; }) || {};
+        var g = clone(prev);
+        g.id = def.id;
+        g.name = def.name;
+        g.items = items;
+        return g;
+      }
+      trip.todoGroups = [group(L.nowGroup, open), group(L.onsiteGroup, onsite)]
+        .concat(others)
+        .concat([group(L.doneGroup, done)]);
+      trip.layoutRev = L.rev;
+    }
+    trip.todoGroups = trip.todoGroups.filter(function (g) {
+      return !(g && L.staleGroups.indexOf(g.id) >= 0 && !(g.items || []).length);
+    });
+  }
+
   function dedupeTrip(trip) {
     if (!trip) return trip;
     applyTombstones(trip);
@@ -542,6 +600,7 @@
       });
     });
     if (Array.isArray(trip.journal)) trip.journal = dedupeArray(trip.journal, 'journal', false);
+    applyLayoutRev(trip);
     return trip;
   }
 
@@ -920,13 +979,47 @@
     return out;
   }
 
+  /** Before the one-time regroup: move local todos into the container the remote copy now
+      uses (remote moved them between groups), so item-level merge still applies remote edits. */
+  function alignTodosToRemote(localTrip, remoteTrip) {
+    if (!localTrip || !remoteTrip || !Array.isArray(localTrip.todoGroups) || !Array.isArray(remoteTrip.todoGroups)) return;
+    var known = {};
+    [LAYOUT_REV.nowGroup.id, LAYOUT_REV.onsiteGroup.id, LAYOUT_REV.doneGroup.id].concat(LAYOUT_REV.staleGroups)
+      .forEach(function (id) { known[id] = true; });
+    var remoteHome = {};
+    remoteTrip.todoGroups.forEach(function (g) {
+      (g && g.items || []).forEach(function (it) { if (it && it.id) remoteHome[it.id] = g; });
+    });
+    var moved = [];
+    localTrip.todoGroups.forEach(function (g) {
+      if (!g || !known[g.id]) return;
+      g.items = (g.items || []).filter(function (it) {
+        var home = it && remoteHome[it.id];
+        if (home && home.id !== g.id) { moved.push({ it: it, home: home }); return false; }
+        return true;
+      });
+    });
+    moved.forEach(function (m) {
+      var target = localTrip.todoGroups.find(function (g) { return g && g.id === m.home.id; });
+      if (!target) {
+        target = clone(m.home);
+        target.items = [];
+        localTrip.todoGroups.push(target);
+      }
+      target.items.push(m.it);
+    });
+  }
+
   function mergeTrip(localTrip, remoteTrip) {
     if (!localTrip) return clone(remoteTrip);
     if (!remoteTrip) return dedupeTrip(clone(localTrip));
+    var origLayoutRev = localTrip.layoutRev;
     var prep = canonicalizeLocalTrip(localTrip, remoteTrip);
     localTrip = prep.trip;
+    if (!origLayoutRev && localTrip.id === 'trip_danang_2026') alignTodosToRemote(localTrip, remoteTrip);
     var out = { id: localTrip.id || remoteTrip.id };
     mergeTripScalars(localTrip, remoteTrip, out);
+    if (origLayoutRev) out.layoutRev = origLayoutRev; // regroup runs on the merged result, once
     out.deadlines = mergeList(localTrip.deadlines, remoteTrip.deadlines, 'deadline');
     out.todoGroups = mergeTodoGroups(localTrip.todoGroups, remoteTrip.todoGroups);
     out.bookings = mergeList(localTrip.bookings, remoteTrip.bookings, 'booking', withDetailsMerge);

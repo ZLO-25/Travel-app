@@ -586,6 +586,50 @@
   }
 
   /* ---------- Overview ---------- */
+  function localIsoDate(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  /** 「接下來要做」: first open todos in list order (high priority first), max 6. */
+  function nextTodosCard(trip) {
+    var open = [];
+    (trip.todoGroups || []).forEach(function (g) {
+      (g.items || []).forEach(function (it) { if (it && !it.done) open.push({ g: g, it: it }); });
+    });
+    if (!open.length) return '';
+    var hi = open.filter(function (x) { return x.it.priority === 'high'; });
+    var rest = open.filter(function (x) { return x.it.priority !== 'high'; });
+    var list = hi.concat(rest).slice(0, 6);
+    return '<div class="card">' +
+      '<div class="row" style="justify-content:space-between"><h3 style="margin:0">接下來要做</h3>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-action="nav" data-view="todos">全部 ' + open.length + ' 項 →</button></div>' +
+      list.map(function (x) {
+        var it = x.it;
+        return '<div class="check-item' + (it.priority === 'high' ? ' prio-high' : '') + '">' +
+          '<input type="checkbox" data-action="toggle-todo" data-gid="' + x.g.id + '" data-id="' + it.id + '" aria-label="完成">' +
+          '<div class="body"><div>' + escapeHtml(it.text) + '</div>' +
+          ((it.due || it.note) ? '<div class="faint">' + (it.due ? escapeHtml(it.due) : '') + (it.due && it.note ? ' · ' : '') + (it.note ? escapeHtml(it.note) : '') + '</div>' : '') +
+          '</div></div>';
+      }).join('') +
+      '</div>';
+  }
+
+  /** Today's plan during the trip, or the first trip day before departure. */
+  function nextDayCard(trip, todayIso) {
+    var days = (trip.days || []).slice().sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    var day = days.find(function (d) { return String(d.date) >= todayIso; });
+    if (!day || !(day.blocks || []).length) return '';
+    var label = day.date === todayIso ? '今天行程' : '下一個行程日';
+    return '<div class="card">' +
+      '<div class="row" style="justify-content:space-between"><h3 style="margin:0">' + label + ' · ' + fmtDate(day.date) + '</h3>' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-action="nav" data-view="itinerary">完整行程 →</button></div>' +
+      '<div class="faint" style="margin:4px 0 6px">' + escapeHtml(day.title || '') + '</div>' +
+      day.blocks.map(function (bl) {
+        return '<div class="mini-block"><div class="time">' + escapeHtml(bl.time || '—') + '</div><div>' + escapeHtml(bl.text || '') + '</div></div>';
+      }).join('') +
+      '</div>';
+  }
+
   function renderOverview(trip) {
     const el = $('#view-overview');
     const cd = countdownParts(trip.startDate);
@@ -617,6 +661,16 @@
     const deadlines = (trip.deadlines || []).slice().sort(function (a, b) {
       return String(a.date).localeCompare(String(b.date));
     });
+    const todayIso = localIsoDate(new Date());
+    function deadlineDone(d) { return (d.date && String(d.date) < todayIso) || /已完成/.test(String(d.label || '')); }
+    const upcomingDeadlines = deadlines.filter(function (d) { return !deadlineDone(d); });
+    const pastDeadlines = deadlines.filter(deadlineDone);
+    function deadlineRow(d) {
+      return '<div class="check-item"><div class="body"><strong>' + escapeHtml(d.label) + '</strong>' +
+        '<div class="faint">' + fmtDate(d.date) + (d.note ? ' · ' + escapeHtml(d.note) : '') + '</div></div>' +
+        '<div class="actions"><button type="button" class="icon-btn" data-action="edit-deadline" data-id="' + d.id + '" aria-label="編輯">✏️</button>' +
+        '<button type="button" class="icon-btn" data-action="del-deadline" data-id="' + d.id + '" aria-label="刪除">🗑️</button></div></div>';
+    }
 
     el.innerHTML =
       '<div class="card">' +
@@ -634,22 +688,21 @@
         '<div class="progress-bar"><span style="width:' + pct + '%"></span></div>' +
         '<div class="muted" style="margin-top:8px">未完成待辦：' + openTodos + ' 項</div>' +
       '</div>' +
+      nextTodosCard(trip) +
+      nextDayCard(trip, todayIso) +
+      '<div class="card">' +
+        '<div class="row" style="justify-content:space-between"><h3 style="margin:0">關鍵期限</h3>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-action="add-deadline">＋ 新增</button></div>' +
+        (upcomingDeadlines.length ? upcomingDeadlines.map(deadlineRow).join('') : '<p class="muted">接下來沒有期限</p>') +
+        (pastDeadlines.length ? '<details class="fold"><summary class="faint">已過或已完成（' + pastDeadlines.length + '）</summary>' +
+          pastDeadlines.map(deadlineRow).join('') + '</details>' : '') +
+      '</div>' +
       '<div class="card">' +
         '<h3>目標</h3>' +
         (trip.goals && trip.goals.length
           ? '<div class="goals">' + trip.goals.map(function (g) { return '<span class="goal-chip">' + escapeHtml(g) + '</span>'; }).join('') + '</div>'
           : '<p class="muted">尚無目標</p>') +
         '<button type="button" class="btn btn-ghost btn-sm" style="margin-top:10px" data-action="edit-goals">編輯目標</button>' +
-      '</div>' +
-      '<div class="card">' +
-        '<div class="row" style="justify-content:space-between"><h3 style="margin:0">關鍵期限</h3>' +
-        '<button type="button" class="btn btn-ghost btn-sm" data-action="add-deadline">＋ 新增</button></div>' +
-        (deadlines.length ? deadlines.map(function (d) {
-          return '<div class="check-item"><div class="body"><strong>' + escapeHtml(d.label) + '</strong>' +
-            '<div class="faint">' + fmtDate(d.date) + (d.note ? ' · ' + escapeHtml(d.note) : '') + '</div></div>' +
-            '<div class="actions"><button type="button" class="icon-btn" data-action="edit-deadline" data-id="' + d.id + '" aria-label="編輯">✏️</button>' +
-            '<button type="button" class="icon-btn" data-action="del-deadline" data-id="' + d.id + '" aria-label="刪除">🗑️</button></div></div>';
-        }).join('') : '<p class="muted">尚無期限</p>') +
       '</div>' +
       journalOverviewTeaser(trip) +
       '<div class="card">' +
@@ -684,6 +737,8 @@
         '<button type="button" class="btn btn-ghost btn-sm" data-action="del-group" data-gid="' + g.id + '">刪群組</button>' +
         '</div></div>';
       if (!g.items || !g.items.length) html += '<p class="muted">尚無項目</p>';
+      var allDone = !!(g.items && g.items.length) && g.items.every(function (i) { return i && i.done; });
+      if (allDone) html += '<details class="fold"><summary class="faint">全部完成，展開 ' + g.items.length + ' 項</summary>';
       (g.items || []).forEach(function (item) {
         var hi = item.priority === 'high';
         html += '<div class="check-item' + (item.done ? ' done' : '') + (hi ? ' prio-high' : '') + '" draggable="true" data-todo-id="' + item.id + '" data-todo-gid="' + g.id + '">' +
@@ -697,6 +752,7 @@
           '<button type="button" class="icon-btn" data-action="del-todo" data-gid="' + g.id + '" data-id="' + item.id + '" aria-label="刪除">🗑️</button>' +
           '</div></div>';
       });
+      if (allDone) html += '</details>';
       html += '<div class="pack-drop-zone" data-todo-drop="' + g.id + '" aria-hidden="true"></div></div>';
     });
     el.innerHTML = html;
