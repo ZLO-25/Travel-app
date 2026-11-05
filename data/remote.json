@@ -837,10 +837,10 @@
           "blocks": [
             {
               "id": "bl_1106_rain",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
-              "time": "早上",
-              "text": "早餐 → 看要不要回房再睡一下",
+              "time": "08:00",
+              "text": "早餐 → 想睡就回房睡到 09:30。帶：確認卡、穿卻爾西靴＋隱形襪、現金（越盾＋美金）、折價券、員工證、雨衣",
               "place": "峴港"
             },
             {
@@ -853,18 +853,18 @@
             },
             {
               "id": "bl_1106_2",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
               "time": "12:30",
-              "text": "會安午餐 → 13:30 Friendly Shoe Shop：樂福鞋下單＋識別證皮套 3 款各 2 個（給店家看確認卡）",
+              "text": "會安午餐 → 13:15 Friendly Shoe Shop（18 Trần Phú，每天 09:00–20:30）問價 → 13:45 Be Bi Leather（104 Trần Phú）問價：總價、皮料、縫線鞋底、能否 11/8（或 11/9）送飯店試穿 → 14:15 選一家下單（含識別證皮套 3 款各 2 個）",
               "place": "會安"
             },
             {
               "id": "bl_1106_3",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
-              "time": "15:00",
-              "text": "古城散步、咖啡 → 17:15 Grab 回峴港（約 40–50 分；濱海路下雨請走內陸）",
+              "time": "15:30",
+              "text": "古城散步、咖啡；16:00 打電話訂晚餐（Sushimaru／Yen 訂 19:30）→ 17:15 Grab 直接設 Flow Store（約 40–50 分；濱海路下雨請走內陸）",
               "place": "會安古城"
             },
             {
@@ -881,29 +881,36 @@
               "userEdited": false,
               "time": "19:15",
               "text": "晚餐三選一：Mộc Quán Seafood（26 Tô Hiến Thành，每天 10:30–22:30，離 Flow Store 近）／Yen Yakiniku 燒肉 buffet（Hòa Cường；平日 17:00–22:30；19:00 後常客滿，+84 903 559 447）／Sushimaru 鮨まる 壽司（Thái Phiên, Hải Châu；每天 17:00–22:00；吧台 9 位，先打 +84 787 530 546）"
+            },
+            {
+              "id": "bl_1106_6",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
+              "userEdited": false,
+              "time": "備案",
+              "text": "19:45 前到不了 Flow Store → 直接吃晚餐，五指鞋改 11/7；會安淹水 → 洗頭後先去 Flow Store，會安改 11/7"
             }
           ]
         },
         {
           "id": "day_20261107",
           "date": "2026-11-07",
-          "title": "五行山＋Live bar",
-          "updatedAt": "2026-11-06T00:20:00+07:00",
+          "title": "五行山 → 漢市場（換錢、買包）→ Live bar",
+          "updatedAt": "2026-11-06T00:30:00+07:00",
           "blocks": [
             {
               "id": "bl_1107_1",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
-              "time": "上午",
-              "text": "睡飽 → 五行山地獄洞（07:00–17:30，最後入洞 17:00；只收現金）",
+              "time": "08:45",
+              "text": "Grab → 五行山（07:00–17:30，最後入洞 17:00，只收現金）：先看地獄洞（另買 2 萬），再電梯上水山、玄空洞（9–11 點有光束）",
               "place": ""
             },
             {
               "id": "bl_1107_2",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
-              "time": "下午",
-              "text": "11/6 沒買到五指鞋就再去 Flow Store（週日公休，今天是最後機會）；有空逛運動鞋店",
+              "time": "11:45",
+              "text": "Grab → 漢市場一帶（約 25 分）→ 午餐 → 13:15 金行換錢：Tiệm Vàng Đại Hòa（129 Trần Phú，市場隔壁）；帶平整的 100 美元鈔票",
               "place": "Flow Store",
               "details": {
                 "title": "Vibram 五指鞋（KSO EVO）",
@@ -965,8 +972,22 @@
               }
             },
             {
+              "id": "bl_1107_4",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
+              "userEdited": false,
+              "time": "14:00",
+              "text": "漢市場（119 Trần Phú；每天 06:00–19:00）2 樓買包；攤商 12–14 點常午休；先比 2–3 攤再殺價；名牌包多半非正品，當普通包價買"
+            },
+            {
+              "id": "bl_1107_5",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
+              "userEdited": false,
+              "time": "15:30",
+              "text": "回飯店休息；11/6 沒買到五指鞋就去 Flow Store（20:30 關門，週日公休）"
+            },
+            {
               "id": "bl_1107_3",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
               "time": "晚",
               "text": "An Thuong live bar（週六最熱鬧）→ 按摩",
@@ -1157,11 +1178,11 @@
         },
         {
           "id": "pl_friendly_shoe",
-          "updatedAt": "2026-10-31T18:25:00+08:00",
+          "updatedAt": "2026-11-06T00:30:00+07:00",
           "userEdited": false,
           "name": "Friendly Shoe Shop（會安）",
           "category": "購物",
-          "note": "第一雙休閒樂福；多個分店；Trần Phú 淹水時改分店",
+          "note": "18 Trần Phú（另有 44 Phan Bội Châu、15B Hoàng Diệu）；每天 09:00–20:30；縫線鞋底、6 個月不滿意退款；11/6 13:15",
           "url": "",
           "mapsUrl": "",
           "details": {
@@ -1634,6 +1655,36 @@
           "note": "Thái Phiên, Hải Châu；每天 11:00–14:00、17:00–22:00；吧台只有 9 位，先打 +84 787 530 546；11/6 晚餐三選一",
           "url": "",
           "mapsUrl": "https://maps.app.goo.gl/Pn97dtGzXZ8XfKGJ6"
+        },
+        {
+          "id": "pl_bebi",
+          "updatedAt": "2026-11-06T00:30:00+07:00",
+          "userEdited": false,
+          "name": "Be Bi Leather（會安）",
+          "category": "購物",
+          "note": "104 Trần Phú（Be Bi II：4 Trần Quý Cáp）；照片照做、可議價，訂做約 50 美元；11/6 跟 Friendly 比價",
+          "url": "",
+          "mapsUrl": ""
+        },
+        {
+          "id": "pl_han_market",
+          "updatedAt": "2026-11-06T00:30:00+07:00",
+          "userEdited": false,
+          "name": "漢市場 Chợ Hàn",
+          "category": "購物",
+          "note": "119 Trần Phú, Hải Châu；每天 06:00–19:00；包包衣服在 2 樓；12–14 點攤商常午休；11/7 下午",
+          "url": "",
+          "mapsUrl": ""
+        },
+        {
+          "id": "pl_gold_daihoa",
+          "updatedAt": "2026-11-06T00:30:00+07:00",
+          "userEdited": false,
+          "name": "Tiệm Vàng Đại Hòa（金行換錢）",
+          "category": "換錢",
+          "note": "129 Trần Phú（漢市場隔壁）；帶平整 100 美元鈔；附近金行匯率差不多；11/7 13:15",
+          "url": "",
+          "mapsUrl": ""
         }
       ],
       "shopping": [
@@ -2765,7 +2816,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- ⚠️ 越南官方預報 11/8–11/12 大雨到特大雨（最強 11/9–11/11；11/5 查仍維持）：樂福鞋提前到 11/8 試穿取鞋，11/10 大雨提早去機場。11/5–11/7 零星陣雨、約 24–32°C，11/6 最好；會安古城目前沒有淹水報導。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/5（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-06T00:15:00+07:00",
+      "updatedAt": "2026-11-06T00:30:00+07:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2823,7 +2874,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-06T00:15:00+07:00",
+  "syncedAt": "2026-11-06T00:30:00+07:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-06T00:15:00+07:00"
+  "remoteSyncedAt": "2026-11-06T00:30:00+07:00"
 }
