@@ -10,8 +10,8 @@
       "endDate": "2026-11-10",
       "goals": [
         "會安訂做樂福鞋（加分：高筒靴）",
-        "Vibram 五指鞋（Flow Store）",
-        "五行山地獄洞 Âm Phủ",
+        "Vibram 五指鞋（Flow Store，11/6 晚）",
+        "五行山地獄洞 Âm Phủ（11/7）",
         "Luxury Barber 帝王洗頭（折價券）",
         "買除疤膏",
         "好好放鬆（按摩、除黑頭、吃好吃的）",
@@ -832,63 +832,78 @@
         {
           "id": "day_20261106",
           "date": "2026-11-06",
-          "title": "★ 任務日：五行山 → 會安",
-          "updatedAt": "2026-10-30T12:10:00+08:00",
+          "title": "★ 任務日：帝王洗頭 → 會安做鞋 → Flow Store → 晚餐",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
           "blocks": [
             {
               "id": "bl_1106_rain",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
-              "time": "07:00",
-              "text": "11/4 預報：11/6 是這幾天天氣最好的一天。早上 7 點仍照「雨天調整規則」判斷；濱海路 Lạc Long Quân 下雨易積水，請 Grab 司機走內陸",
+              "time": "早上",
+              "text": "早餐 → 看要不要回房再睡一下",
               "place": "峴港"
             },
             {
               "id": "bl_1106_1",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
-              "time": "08:00",
-              "text": "出發 → 08:20 五行山：先看地獄洞，再電梯上水山看玄空洞",
-              "place": "五行山"
+              "time": "10:00",
+              "text": "Luxury Barber 帝王洗頭（408 Võ Nguyên Giáp；每天 08:00–22:00；LUX 約 90 分，帶 40 萬折價券）→ 11:45 直接 Grab 去會安（約 35–40 分）",
+              "place": "Luxury Barber"
             },
             {
               "id": "bl_1106_2",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
-              "time": "12:00",
-              "text": "會安午餐 → 13:30 Friendly Shoe Shop 樂福鞋下單＋問識別證皮套；跟店家約 11/8 送飯店試穿",
+              "time": "12:30",
+              "text": "會安午餐 → 13:30 Friendly Shoe Shop：樂福鞋下單＋識別證皮套 3 款各 2 個（給店家看確認卡）",
               "place": "會安"
             },
             {
               "id": "bl_1106_3",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
               "time": "15:00",
-              "text": "古城散步、咖啡、購物；太累則五行山改 11/8",
+              "text": "古城散步、咖啡 → 17:15 Grab 回峴港（約 40–50 分；濱海路下雨請走內陸）",
               "place": "會安古城"
+            },
+            {
+              "id": "bl_1106_4",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "userEdited": false,
+              "time": "18:15",
+              "text": "Flow Store 試穿五指鞋（268 Dương Đình Nghệ；週一至六 09:00–20:30，週日公休）— 20:30 關門，所以排在晚餐前",
+              "place": "Flow Store"
+            },
+            {
+              "id": "bl_1106_5",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "userEdited": false,
+              "time": "19:15",
+              "text": "晚餐二選一：Mộc Quán Seafood（26 Tô Hiến Thành，每天 10:30–22:30，離 Flow Store 近）或 Yen Yakiniku 燒肉 buffet（Bình Minh 6, Hòa Cường；平日 17:00–22:30；19:00 後常客滿，先打 +84 903 559 447）"
             }
           ]
         },
         {
           "id": "day_20261107",
           "date": "2026-11-07",
-          "title": "★ 五指鞋＋Live bar",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "title": "五行山＋Live bar",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
           "blocks": [
             {
               "id": "bl_1107_1",
-              "updatedAt": "2026-10-28T13:40:00+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
-              "time": "白天",
-              "text": "睡飽、海邊散步",
+              "time": "上午",
+              "text": "睡飽 → 五行山地獄洞（07:00–17:30，最後入洞 17:00；只收現金）",
               "place": ""
             },
             {
               "id": "bl_1107_2",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
               "time": "下午",
-              "text": "Flow Store 試穿五指鞋（約 30–45 分；週日公休，今天一定要去）；預約明天 Luxury Barber",
+              "text": "11/6 沒買到五指鞋就再去 Flow Store（週日公休，今天是最後機會）；有空逛運動鞋店",
               "place": "Flow Store",
               "details": {
                 "title": "Vibram 五指鞋（KSO EVO）",
@@ -967,10 +982,10 @@
           "blocks": [
             {
               "id": "bl_1108_1",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
+              "updatedAt": "2026-11-06T00:20:00+07:00",
               "userEdited": false,
               "time": "早上",
-              "text": "Luxury Barber 帝王洗頭（週日忙，前一天預約）",
+              "text": "睡飽 → 做臉／除黑頭（帝王洗頭已在 11/6 做完）",
               "place": "Luxury Barber"
             },
             {
@@ -1422,13 +1437,13 @@
         },
         {
           "id": "pl_flow",
-          "updatedAt": "2026-10-28T13:40:00+08:00",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
           "userEdited": false,
           "name": "Flow Store",
           "category": "購物",
-          "note": "268 Dương Đình Nghệ；五指鞋正品；週日公休",
+          "note": "268 Dương Đình Nghệ；週一至六 09:00–20:30、週日公休；11/6 18:15 去",
           "url": "https://flowstore.com.vn",
-          "mapsUrl": "",
+          "mapsUrl": "https://maps.app.goo.gl/ZPNgCgcLTqiotQy88",
           "details": {
             "title": "Vibram 五指鞋（KSO EVO）",
             "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
@@ -1490,13 +1505,13 @@
         },
         {
           "id": "pl_luxury_barber",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
           "userEdited": false,
           "name": "Luxury Barber（帝王洗頭）",
           "category": "體驗",
-          "note": "408 Võ Nguyên Giáp；帶折價券；週日先預約",
+          "note": "408 Võ Nguyên Giáp；每天 08:00–22:00；11/6 10:00 去，帶折價券",
           "url": "",
-          "mapsUrl": ""
+          "mapsUrl": "https://maps.app.goo.gl/XoH4dztLvGPtaBQn7"
         },
         {
           "id": "pl_long_chau",
@@ -1589,6 +1604,26 @@
           "note": "31 Nguyễn Văn Thoại；跟飯店同街",
           "url": "",
           "mapsUrl": ""
+        },
+        {
+          "id": "pl_moc_quan",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
+          "userEdited": false,
+          "name": "Mộc Quán Seafood",
+          "category": "餐廳",
+          "note": "26 Tô Hiến Thành, An Hải；每天 10:30–22:30；海鮮秤重計價；KakaoTalk「다낭 목식당」可訂位；11/6 晚餐二選一",
+          "url": "",
+          "mapsUrl": "https://maps.app.goo.gl/gMHLsc3jd2WzUrBy5"
+        },
+        {
+          "id": "pl_yen_yakiniku",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
+          "userEdited": false,
+          "name": "Yen Yakiniku 燒肉 buffet",
+          "category": "餐廳",
+          "note": "khu B2.2 Bình Minh 6, Hòa Cường；週一至五 11:00–15:00、17:00–22:30（週末到 23:00）；buffet 約 249k–399k；19:00 後常客滿，電話 +84 903 559 447；11/6 晚餐二選一",
+          "url": "",
+          "mapsUrl": "https://maps.app.goo.gl/Y8VFG25iQNo3EXtw5"
         }
       ],
       "shopping": [
@@ -1644,11 +1679,11 @@
         },
         {
           "id": "sh_fivefinger",
-          "updatedAt": "2026-10-28T13:40:00+08:00",
+          "updatedAt": "2026-11-06T00:20:00+07:00",
           "userEdited": false,
           "text": "Vibram 五指鞋（KSO EVO 首選）",
           "done": false,
-          "note": "Flow Store；約 VND 3,599,000",
+          "note": "Flow Store；約 VND 3,599,000；改 11/6 18:15 去（20:30 關門）",
           "details": {
             "title": "Vibram 五指鞋（KSO EVO）",
             "summary": "主要目的：練足弓、健身。首選 KSO EVO（VND 3,599,000 ≈ NT$4,300），Flow Store（越南獨家經銷）正品；鞋底不到 5 mm，走路＋室內訓練都能穿。以重訓為主改選 Graspifier；重訓量大且預算夠可選 Groundsplay。",
@@ -2720,7 +2755,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- ⚠️ 越南官方預報 11/8–11/12 大雨到特大雨（最強 11/9–11/11；11/5 查仍維持）：樂福鞋提前到 11/8 試穿取鞋，11/10 大雨提早去機場。11/5–11/7 零星陣雨、約 24–32°C，11/6 最好；會安古城目前沒有淹水報導。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/5（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-05T12:10:00+08:00",
+      "updatedAt": "2026-11-06T00:20:00+07:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2778,7 +2813,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-05T12:10:00+08:00",
+  "syncedAt": "2026-11-06T00:20:00+07:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-05T12:10:00+08:00"
+  "remoteSyncedAt": "2026-11-06T00:20:00+07:00"
 }
