@@ -877,10 +877,10 @@
             },
             {
               "id": "bl_1106_5",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
+              "updatedAt": "2026-11-06T00:15:00+07:00",
               "userEdited": false,
               "time": "19:15",
-              "text": "晚餐二選一：Mộc Quán Seafood（26 Tô Hiến Thành，每天 10:30–22:30，離 Flow Store 近）或 Yen Yakiniku 燒肉 buffet（Bình Minh 6, Hòa Cường；平日 17:00–22:30；19:00 後常客滿，先打 +84 903 559 447）"
+              "text": "晚餐三選一：Mộc Quán Seafood（26 Tô Hiến Thành，每天 10:30–22:30，離 Flow Store 近）／Yen Yakiniku 燒肉 buffet（Hòa Cường；平日 17:00–22:30；19:00 後常客滿，+84 903 559 447）／Sushimaru 鮨まる 壽司（Thái Phiên, Hải Châu；每天 17:00–22:00；吧台 9 位，先打 +84 787 530 546）"
             }
           ]
         },
@@ -1607,23 +1607,33 @@
         },
         {
           "id": "pl_moc_quan",
-          "updatedAt": "2026-11-06T00:20:00+07:00",
+          "updatedAt": "2026-11-06T00:15:00+07:00",
           "userEdited": false,
           "name": "Mộc Quán Seafood",
           "category": "餐廳",
-          "note": "26 Tô Hiến Thành, An Hải；每天 10:30–22:30；海鮮秤重計價；KakaoTalk「다낭 목식당」可訂位；11/6 晚餐二選一",
+          "note": "26 Tô Hiến Thành, An Hải；每天 10:30–22:30；海鮮秤重計價；KakaoTalk「다낭 목식당」可訂位；11/6 晚餐三選一",
           "url": "",
           "mapsUrl": "https://maps.app.goo.gl/gMHLsc3jd2WzUrBy5"
         },
         {
           "id": "pl_yen_yakiniku",
-          "updatedAt": "2026-11-06T00:20:00+07:00",
+          "updatedAt": "2026-11-06T00:15:00+07:00",
           "userEdited": false,
           "name": "Yen Yakiniku 燒肉 buffet",
           "category": "餐廳",
-          "note": "khu B2.2 Bình Minh 6, Hòa Cường；週一至五 11:00–15:00、17:00–22:30（週末到 23:00）；buffet 約 249k–399k；19:00 後常客滿，電話 +84 903 559 447；11/6 晚餐二選一",
+          "note": "khu B2.2 Bình Minh 6, Hòa Cường；週一至五 11:00–15:00、17:00–22:30（週末到 23:00）；buffet 約 249k–399k；19:00 後常客滿，電話 +84 903 559 447；11/6 晚餐三選一",
           "url": "",
           "mapsUrl": "https://maps.app.goo.gl/Y8VFG25iQNo3EXtw5"
+        },
+        {
+          "id": "pl_sushimaru",
+          "updatedAt": "2026-11-06T00:15:00+07:00",
+          "userEdited": false,
+          "name": "Sushimaru 鮨まる 壽司",
+          "category": "餐廳",
+          "note": "Thái Phiên, Hải Châu；每天 11:00–14:00、17:00–22:00；吧台只有 9 位，先打 +84 787 530 546；11/6 晚餐三選一",
+          "url": "",
+          "mapsUrl": "https://maps.app.goo.gl/Pn97dtGzXZ8XfKGJ6"
         }
       ],
       "shopping": [
@@ -2755,7 +2765,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- ⚠️ 越南官方預報 11/8–11/12 大雨到特大雨（最強 11/9–11/11；11/5 查仍維持）：樂福鞋提前到 11/8 試穿取鞋，11/10 大雨提早去機場。11/5–11/7 零星陣雨、約 24–32°C，11/6 最好；會安古城目前沒有淹水報導。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/5（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-06T00:20:00+07:00",
+      "updatedAt": "2026-11-06T00:15:00+07:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2813,7 +2823,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-06T00:20:00+07:00",
+  "syncedAt": "2026-11-06T00:15:00+07:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-06T00:20:00+07:00"
+  "remoteSyncedAt": "2026-11-06T00:15:00+07:00"
 }
