@@ -883,6 +883,13 @@
               "text": "晚餐三選一：Mộc Quán Seafood（26 Tô Hiến Thành，每天 10:30–22:30，離 Flow Store 近）／Yen Yakiniku 燒肉 buffet（Hòa Cường；平日 17:00–22:30；19:00 後常客滿，+84 903 559 447）／Sushimaru 鮨まる 壽司（Thái Phiên, Hải Châu；每天 17:00–22:00；吧台 9 位，先打 +84 787 530 546）"
             },
             {
+              "id": "bl_1106_massage",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
+              "userEdited": false,
+              "time": "21:00",
+              "text": "💆 按摩：Herbal Spa（201 Dương Đình Nghệ，跟 Flow Store 同條路；每天 09:00–22:30；四手 60 分約 68 萬）；太累改飯店同條街 Charm Spa Grand"
+            },
+            {
               "id": "bl_1106_6",
               "updatedAt": "2026-11-06T00:30:00+07:00",
               "userEdited": false,
@@ -987,10 +994,10 @@
             },
             {
               "id": "bl_1107_3",
-              "updatedAt": "2026-11-06T00:30:00+07:00",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
               "userEdited": false,
-              "time": "晚",
-              "text": "An Thuong live bar（週六最熱鬧）→ 按摩",
+              "time": "18:00",
+              "text": "💆 按摩（Charm Spa Grand 或 Herbal Spa）→ 19:30 晚餐 → 20:30 An Thuong live bar（週六最熱鬧）；先按摩再喝酒",
               "place": "An Thuong"
             }
           ]
@@ -1024,6 +1031,13 @@
               "time": "晚",
               "text": "咖啡店看書 → omakase 或 CHAR Grill House",
               "place": ""
+            },
+            {
+              "id": "bl_1108_massage",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
+              "userEdited": false,
+              "time": "21:00",
+              "text": "💆 按摩：Charm Spa Grand（飯店同條街）；今天除過黑頭，跟師傅說臉不要按（không massage mặt）"
             }
           ]
         },
@@ -1043,10 +1057,10 @@
             },
             {
               "id": "bl_1109_1",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
               "userEdited": false,
               "time": "白天",
-              "text": "按摩 → 午餐 All Seasons buffet；樂福鞋最晚今天白天取鞋（不要拖到晚上）",
+              "text": "室內為主：午餐 All Seasons buffet；樂福鞋最晚今天白天取鞋（不要拖到晚上）",
               "place": ""
             },
             {
@@ -1056,6 +1070,13 @@
               "time": "彈性",
               "text": "伴手禮：雨不大去韓市場；大雨改去 Lotte Mart（室內）",
               "place": ""
+            },
+            {
+              "id": "bl_1109_massage",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
+              "userEdited": false,
+              "time": "20:00",
+              "text": "💆 按摩：大雨就去飯店同條街 Charm Spa Grand；最後一晚可做 90 分"
             }
           ]
         },
@@ -1072,6 +1093,13 @@
               "time": "白天",
               "text": "申請晚退房 → 午餐、咖啡",
               "place": "Royal Lotus"
+            },
+            {
+              "id": "bl_1110_massage",
+              "updatedAt": "2026-11-06T00:40:00+07:00",
+              "userEdited": false,
+              "time": "13:30",
+              "text": "（選配）💆 退房後按摩，15:30 前結束 → 回飯店拿行李去機場"
             },
             {
               "id": "bl_1110_2",
@@ -2816,7 +2844,7 @@
       "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$14,754；預期尚未付款約 NT$20,388；全程預估約 NT$35,142（含選配高筒靴約 38,714）。匯率參考：1 TWD ≈ 797 VND。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- ⚠️ 越南官方預報 11/8–11/12 大雨到特大雨（最強 11/9–11/11；11/5 查仍維持）：樂福鞋提前到 11/8 試穿取鞋，11/10 大雨提早去機場。11/5–11/7 零星陣雨、約 24–32°C，11/6 最好；會安古城目前沒有淹水報導。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/6 早上查 Hội An ngập；Flow Store 週日公休。\n\nNotion 來源頁最後更新：2026/11/5（台北）。",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-06T00:30:00+07:00",
+      "updatedAt": "2026-11-06T00:40:00+07:00",
       "userEdited": false,
       "routeMap": {
         "title": "主要動線",
@@ -2874,7 +2902,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-06T00:30:00+07:00",
+  "syncedAt": "2026-11-06T00:40:00+07:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-06T00:30:00+07:00"
+  "remoteSyncedAt": "2026-11-06T00:40:00+07:00"
 }
