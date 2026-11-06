@@ -800,12 +800,13 @@
       (day.blocks || []).forEach(function (bl) {
         html += '<div class="block-row" draggable="true" data-block-id="' + bl.id + '" data-day-id="' + day.id + '">' +
           '<span class="drag-handle" title="拖曳換日／排序" aria-hidden="true">⠿</span>' +
+          '<div class="block-meta">' +
           '<div class="time">' + escapeHtml(bl.time || '—') + '</div>' +
-          '<div>' + escapeHtml(bl.text || '') + (bl.place ? '<div class="faint">📍 ' + escapeHtml(bl.place) + '</div>' : '') + '</div>' +
           '<div class="actions">' +
           (hasDetails(bl) ? detailChipHtml(bl.details, 'block', bl.id, day.id) : '') +
           '<button type="button" class="icon-btn" data-action="edit-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="編輯">✏️</button>' +
-          '<button type="button" class="icon-btn" data-action="del-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="刪除">🗑️</button></div></div>';
+          '<button type="button" class="icon-btn" data-action="del-block" data-day="' + day.id + '" data-id="' + bl.id + '" aria-label="刪除">🗑️</button></div></div>' +
+          '<div class="block-body">' + escapeHtml(bl.text || '') + (bl.place ? '<div class="faint">📍 ' + escapeHtml(bl.place) + '</div>' : '') + '</div></div>';
       });
       html += '<div class="block-drop-zone" data-day-drop="' + day.id + '" aria-hidden="true"></div></div>';
     });

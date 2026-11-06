@@ -478,13 +478,53 @@ a { color: var(--teal); }
 }
 .block-row {
   display: grid;
-  grid-template-columns: 22px 72px 1fr auto;
+  grid-template-columns: 22px auto 1fr;
   gap: 8px;
   padding: 8px 0;
   border-top: 1px dashed var(--border);
   align-items: start;
   position: relative;
   transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.block-row .block-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+.block-row .block-body {
+  min-width: 0;
+}
+.block-row .actions {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0;
+}
+.block-row .actions .icon-btn {
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+.block-row .actions .detail-chip {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 10px;
+}
+.block-row .actions .detail-chip img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+.block-row .actions .detail-chip-info {
+  font-size: 0.9rem;
 }
 .block-row .drag-handle {
   cursor: grab;
@@ -1145,12 +1185,11 @@ body.locked .app { visibility: hidden; pointer-events: none; }
   outline: none;
   box-shadow: 0 0 0 2px var(--accent);
 }
-.check-item .actions,
-.block-row .actions {
+.check-item .actions {
   align-items: center;
 }
 .block-row {
-  grid-template-columns: 22px 72px 1fr auto;
+  grid-template-columns: 22px auto 1fr;
 }
 
 .detail-dialog {
