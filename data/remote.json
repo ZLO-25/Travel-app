@@ -1032,23 +1032,47 @@
         {
           "id": "day_20261108",
           "date": "2026-11-08",
-          "title": "14:00 飯店試鞋",
-          "updatedAt": "2026-11-06T19:50:00+07:00",
+          "title": "韓市場伴手禮 → 做臉 → 14:00 飯店試鞋",
+          "updatedAt": "2026-11-07T15:31:51+07:00",
           "blocks": [
             {
+              "id": "bl_1108_han_grab",
+              "time": "07:30",
+              "text": "🚕 Royal Lotus → 韓市場 Chợ Hàn（119 Trần Phú）；Grab 車程估 10–15 分，雨天預留 20–25 分",
+              "place": "韓市場",
+              "userEdited": true,
+              "updatedAt": "2026-11-07T15:31:51+07:00"
+            },
+            {
+              "id": "bl_1108_han_shop",
+              "time": "07:45–09:30",
+              "text": "🛍️ 韓市場買伴手禮：咖啡、腰果、果乾、乾貨在 1 樓；2 樓主要衣服、布料、紀念品。每天 06:00–19:00（各攤不同）；先比價、禮貌議價，早市避免強硬殺價；帶越盾現金與購物袋、檢查封裝效期。預算 500k／約 NT$627。地圖：https://www.google.com/maps/search/?api=1&query=Ch%E1%BB%A3+H%C3%A0n+Da+Nang ；營業時間來源：https://danangvisitorcenter.com/en/mua-sam/cho-han",
+              "place": "韓市場",
+              "userEdited": true,
+              "updatedAt": "2026-11-07T15:31:51+07:00"
+            },
+            {
+              "id": "bl_1108_han_return",
+              "time": "09:30",
+              "text": "🚕 Grab 回 Royal Lotus 放伴手禮，約 09:45–10:00 抵達",
+              "place": "Royal Lotus",
+              "userEdited": true,
+              "updatedAt": "2026-11-07T15:31:51+07:00"
+            },
+            {
               "id": "bl_1108_1",
-              "updatedAt": "2026-11-06T00:20:00+07:00",
-              "userEdited": false,
-              "time": "早上",
-              "text": "睡飽 → 做臉／除黑頭（帝王洗頭已在 11/6 做完）",
-              "place": "Luxury Barber"
+              "updatedAt": "2026-11-07T15:31:51+07:00",
+              "userEdited": true,
+              "time": "10:00 後",
+              "text": "做臉／除黑頭（市場後；尚未訂時段）；13:45 前回飯店。帝王洗頭已在 11/6 做完",
+              "place": ""
             },
             {
               "id": "bl_1108_2",
-              "updatedAt": "2026-11-06T19:52:00+07:00",
-              "userEdited": false,
-              "time": "上午",
-              "text": "上午自由（海邊散步、咖啡）；13:45 前回飯店等鞋店",
+              "updatedAt": "2026-11-07T15:31:51+07:00",
+              "userEdited": true,
+              "time": "做臉後",
+              "text": "有空再海邊散步、咖啡；13:45 前回飯店等鞋店",
               "place": "Royal Lotus"
             },
             {
@@ -1073,7 +1097,8 @@
               "time": "21:00",
               "text": "💆 按摩：Charm Spa Grand（飯店同條街）；今天除過黑頭，跟師傅說臉不要按（không massage mặt）"
             }
-          ]
+          ],
+          "userEdited": true
         },
         {
           "id": "day_20261109",
@@ -2822,17 +2847,17 @@
         },
         {
           "id": "ex_souvenirs",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T15:31:51+07:00",
           "userEdited": true,
-          "date": "2026-11-09",
+          "date": "2026-11-08",
           "item": "伴手禮",
-          "merchant": "韓市場／Lotte",
+          "merchant": "韓市場",
           "amount": 500000,
           "currency": "VND",
           "twd": 0,
           "status": "expected",
           "card": "現金",
-          "note": "",
+          "note": "11/8 早上韓市場；估算：G7 100 包約 VND 219,000（頁面）＋零食約 280k",
           "estimateTwd": 627,
           "excludeFromEstimate": false
         },
