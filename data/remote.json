@@ -91,30 +91,30 @@
           "items": [
             {
               "id": "td_esim_setup",
-              "updatedAt": "2026-11-04T23:10:00+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "text": "eSIM：出發前確認已安裝（落地後切行動數據）",
-              "done": false,
+              "done": true,
               "due": "11/5 前",
               "note": "KKday Vinaphone，訂單 26KK259044234；台灣先安裝顯示「啟動失敗」正常、不要刪除",
               "priority": "high"
             },
             {
               "id": "td_baggage",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "text": "加購回程託運 15kg（虎航管理預訂約 NT$1,000）",
               "done": false,
               "due": "起飛前 4 小時",
-              "note": "訂位代號 R5JVRS／N6D5RP＋姓氏；機場買要 1,600",
+              "note": "尚在猶豫，未購買；手提＋個人物品總共10kg；11/10 15:50（越南）線上截止；管理預訂約NT$1,000，機場NT$1,600",
               "priority": "high"
             },
             {
               "id": "td_print_visa",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "text": "印 e-Visa 紙本＋手機存檔；入境申報、貴賓室 QR 截圖存相簿",
-              "done": false,
+              "done": true,
               "due": "11/4",
               "note": "",
               "priority": "high",
@@ -133,10 +133,10 @@
             },
             {
               "id": "td_checkin",
-              "updatedAt": "2026-11-04T08:45:00+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "text": "去程 IT585 報到：預設小港櫃台",
-              "done": false,
+              "done": true,
               "due": "11/5 14:50 前",
               "note": "11/4 確認 Trip.com 查不到線上報到；櫃台約起飛前 2.5 小時開～45 分前截止；想自選座位要先付費選位（TWD 299 起）"
             },
@@ -169,10 +169,10 @@
             },
             {
               "id": "td_pack",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "text": "打包",
-              "done": false,
+              "done": true,
               "due": "",
               "note": ""
             },
@@ -567,14 +567,14 @@
         },
         {
           "id": "bk_baggage",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
-          "userEdited": false,
+          "updatedAt": "2026-11-07T22:01:22+07:00",
+          "userEdited": true,
           "type": "other",
           "title": "回程託運 15kg",
           "detail": "虎航官網管理預訂加購（約 NT$1,000）",
           "ref": "PNR：N6D5RP／R5JVRS",
           "status": "todo",
-          "note": "起飛前 4 小時截止"
+          "note": "尚在猶豫、未加購；11/10 15:50（越南）線上截止；出發前總重約6.8kg，購物後秤重"
         },
         {
           "id": "bk_hotel",
@@ -1032,48 +1032,48 @@
         {
           "id": "day_20261108",
           "date": "2026-11-08",
-          "title": "韓市場伴手禮 → 做臉 → 14:00 飯店試鞋",
-          "updatedAt": "2026-11-07T15:31:51+07:00",
+          "title": "早餐 → 10:00健身 → 韓市場 → 14:00試鞋 → 做臉 → 18:00Yen（待確認）",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "blocks": [
             {
+              "id": "bl_1108_2",
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
+              "time": "早餐後",
+              "text": "飯店早餐、消化休息後約10:00健身；不是07:30出發去市場的新計畫",
+              "place": "Royal Lotus"
+            },
+            {
+              "id": "bl_1108_gym",
+              "time": "10:00–11:30",
+              "text": "🏋️ Mobifit360 Gym & Fitness，4–6 Hồ Xuân Hương；05:00–16:00單次160k（約NT$201），24/7營業；含小毛巾／置物櫃／淋浴，不含桑拿冰浴；飯店出發估1.5–2km／Grab5–8分。https://maps.app.goo.gl/Vhs1kJ59cMTJLAet9",
+              "place": "Mobifit360 Gym & Fitness",
+              "userEdited": true,
+              "updatedAt": "2026-11-07T22:00:34+07:00"
+            },
+            {
               "id": "bl_1108_han_grab",
-              "time": "07:30",
-              "text": "🚕 Royal Lotus → 韓市場 Chợ Hàn（119 Trần Phú）；Grab 車程估 10–15 分，雨天預留 20–25 分",
+              "time": "11:30",
+              "text": "🚕 健身淋浴後 Mobifit360 → 韓市場（119 Trần Phú）；估5–6km／Grab15–20分，雨天更久",
               "place": "韓市場",
               "userEdited": true,
-              "updatedAt": "2026-11-07T15:31:51+07:00"
+              "updatedAt": "2026-11-07T22:00:34+07:00"
             },
             {
               "id": "bl_1108_han_shop",
-              "time": "07:45–09:30",
-              "text": "🛍️ 韓市場買伴手禮：咖啡、腰果、果乾、乾貨在 1 樓；2 樓主要衣服、布料、紀念品。每天 06:00–19:00（各攤不同）；先比價、禮貌議價，早市避免強硬殺價；帶越盾現金與購物袋、檢查封裝效期。預算 500k／約 NT$627。地圖：https://www.google.com/maps/search/?api=1&query=Ch%E1%BB%A3+H%C3%A0n+Da+Nang ；營業時間來源：https://danangvisitorcenter.com/en/mua-sam/cho-han",
+              "time": "11:50–13:00",
+              "text": "🛍️ 韓市場買伴手禮：咖啡、腰果、果乾、乾貨在 1 樓；2 樓主要衣服、布料、紀念品。每天 06:00–19:00（各攤不同）；先比價、禮貌議價，早市避免強硬殺價；帶越盾現金與購物袋、檢查封裝效期。預算 500k／約 NT$627。地圖：https://www.google.com/maps/search/?api=1&query=Ch%E1%BB%A3+H%C3%A0n+Da+Nang ；營業時間來源：https://danangvisitorcenter.com/en/mua-sam/cho-han；已替代07:45早市計畫；中午部分攤午休，先買必買品，未開攤改11/9備案。",
               "place": "韓市場",
               "userEdited": true,
-              "updatedAt": "2026-11-07T15:31:51+07:00"
+              "updatedAt": "2026-11-07T22:00:34+07:00"
             },
             {
               "id": "bl_1108_han_return",
-              "time": "09:30",
-              "text": "🚕 Grab 回 Royal Lotus 放伴手禮，約 09:45–10:00 抵達",
+              "time": "13:00–13:30",
+              "text": "🚕 Grab 回 Royal Lotus 放伴手禮、簡單午餐；13:45前到飯店等14:00試鞋",
               "place": "Royal Lotus",
               "userEdited": true,
-              "updatedAt": "2026-11-07T15:31:51+07:00"
-            },
-            {
-              "id": "bl_1108_1",
-              "updatedAt": "2026-11-07T15:31:51+07:00",
-              "userEdited": true,
-              "time": "10:00 後",
-              "text": "做臉／除黑頭（市場後；尚未訂時段）；13:45 前回飯店。帝王洗頭已在 11/6 做完",
-              "place": ""
-            },
-            {
-              "id": "bl_1108_2",
-              "updatedAt": "2026-11-07T15:31:51+07:00",
-              "userEdited": true,
-              "time": "做臉後",
-              "text": "有空再海邊散步、咖啡；13:45 前回飯店等鞋店",
-              "place": "Royal Lotus"
+              "updatedAt": "2026-11-07T22:00:34+07:00"
             },
             {
               "id": "bl_1108_fitting",
@@ -1083,12 +1083,20 @@
               "text": "⏰ 鞋店來飯店試鞋（樂福鞋）：13:45 前回飯店；帶隱形襪、尾款現金；檢查長度、腳背、後跟、縫線、彎折前掌；要改就約好交貨（最晚 11/9 白天）"
             },
             {
+              "id": "bl_1108_1",
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
+              "time": "15:30–17:00",
+              "text": "做臉／除黑頭：由上午移到試鞋後，避免健身／市場衝突；尚未選店或訂位，預留交通緩衝，17:30前結束回飯店，18:00晚餐",
+              "place": "待選Spa"
+            },
+            {
               "id": "bl_1108_3",
-              "updatedAt": "2026-10-28T10:04:05+08:00",
-              "userEdited": false,
-              "time": "晚",
-              "text": "咖啡店看書 → omakase 或 CHAR Grill House",
-              "place": ""
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
+              "time": "18:00",
+              "text": "Yen Yakiniku Nguyễn Văn Thoại店（191 Nguyễn Văn Thoại），1人，未訂位；官網buffet299k–499k限2人起，需先確認單人例外或改單點，399k僅餐費暫估。訂位：https://yenyakiniku.vn/en/reservations/；+84 903 559 447按1。Sushi-Bê不去、CHAR替代取消。",
+              "place": "Yen Yakiniku Nguyễn Văn Thoại"
             },
             {
               "id": "bl_1108_massage",
@@ -1104,7 +1112,7 @@
           "id": "day_20261109",
           "date": "2026-11-09",
           "title": "留白（預報大雨）",
-          "updatedAt": "2026-11-07T17:12:46+08:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "blocks": [
             {
               "id": "bl_1109_rain",
@@ -1116,18 +1124,18 @@
             },
             {
               "id": "bl_1109_1",
-              "updatedAt": "2026-11-06T00:40:00+07:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "time": "白天",
-              "text": "室內為主：午餐 All Seasons buffet；樂福鞋最晚今天白天取鞋（不要拖到晚上）",
+              "text": "室內自由活動，午餐留白（All Seasons已於11/7吃過）；樂福鞋最晚今天白天取鞋，不要拖到晚上",
               "place": ""
             },
             {
               "id": "bl_1109_2",
-              "updatedAt": "2026-11-07T17:12:46+08:00",
-              "userEdited": false,
+              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "userEdited": true,
               "time": "彈性",
-              "text": "伴手禮已排 11/8 早上韓市場；11/9 僅作漏買補貨備案，大雨改去 Lotte Mart（室內）",
+              "text": "伴手禮已排 11/8 健身後韓市場；11/9 僅作漏買補貨備案，大雨改去 Lotte Mart（室內）",
               "place": ""
             },
             {
@@ -1137,7 +1145,8 @@
               "time": "20:00",
               "text": "💆 按摩：大雨就去飯店同條街 Charm Spa Grand；最後一晚可做 90 分"
             }
-          ]
+          ],
+          "userEdited": true
         },
         {
           "id": "day_20261110",
@@ -1725,13 +1734,13 @@
         },
         {
           "id": "pl_yen_yakiniku",
-          "updatedAt": "2026-11-06T00:15:00+07:00",
-          "userEdited": false,
-          "name": "Yen Yakiniku 燒肉 buffet",
+          "updatedAt": "2026-11-07T22:01:22+07:00",
+          "userEdited": true,
+          "name": "Yen Yakiniku Nguyễn Văn Thoại店",
           "category": "餐廳",
-          "note": "khu B2.2 Bình Minh 6, Hòa Cường；週一至五 11:00–15:00、17:00–22:30（週末到 23:00）；buffet 約 249k–399k；19:00 後常客滿，電話 +84 903 559 447；11/6 晚餐三選一",
-          "url": "",
-          "mapsUrl": "https://maps.app.goo.gl/Y8VFG25iQNo3EXtw5"
+          "note": "191 Nguyễn Văn Thoại，近Royal Lotus；週日11:00–15:30／17:00–23:00；11/8 18:00 1人暫排、未訂位。官網buffet299k/349k/399k/499k限2人起，單人例外待確認，可改單點。電話+84 903 559 447按1",
+          "url": "https://yenyakiniku.vn/en/reservations/",
+          "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Yen+Yakiniku+191+Nguyen+Van+Thoai+Da+Nang"
         },
         {
           "id": "pl_sushimaru",
@@ -2607,9 +2616,9 @@
         },
         {
           "id": "ex_baggage",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
-          "date": "出發前",
+          "date": "2026-11-10",
           "item": "回程託運 15kg",
           "merchant": "台灣虎航",
           "amount": 1000,
@@ -2617,7 +2626,7 @@
           "twd": 0,
           "status": "expected",
           "card": "未定（建議滙豐旅人卡）",
-          "note": "待加購",
+          "note": "尚在猶豫，未加購；出發前總行李約6.8kg，購物後秤重再決定；線上截止11/10 15:50越南時間",
           "estimateTwd": 1000,
           "excludeFromEstimate": false
         },
@@ -2655,18 +2664,18 @@
         },
         {
           "id": "ex_seafood",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
           "date": "2026-11-05",
           "item": "海鮮晚餐",
           "merchant": "Năm Đảnh／Bé Mặn",
-          "amount": 400000,
+          "amount": 0,
           "currency": "VND",
           "twd": 0,
-          "status": "expected",
+          "status": "cancelled",
           "card": "現金或刷卡",
-          "note": "估算",
-          "estimateTwd": 502,
+          "note": "11/5 沒吃晚餐",
+          "estimateTwd": 0,
           "excludeFromEstimate": false
         },
         {
@@ -2815,39 +2824,39 @@
         },
         {
           "id": "ex_dinner_1108",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
           "date": "2026-11-08",
           "item": "晚餐 omakase",
           "merchant": "Sushi-Bê",
-          "amount": 1400000,
+          "amount": 0,
           "currency": "VND",
           "twd": 0,
-          "status": "expected",
+          "status": "cancelled",
           "card": "刷卡",
-          "note": "",
-          "estimateTwd": 1757,
+          "note": "不去",
+          "estimateTwd": 0,
           "excludeFromEstimate": false
         },
         {
           "id": "ex_buffet",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
-          "date": "2026-11-09",
+          "date": "2026-11-07",
           "item": "All Seasons buffet",
           "merchant": "All Seasons",
           "amount": 700000,
           "currency": "VND",
           "twd": 0,
           "status": "expected",
-          "card": "刷卡",
-          "note": "",
+          "card": "未確認（原規劃刷卡）",
+          "note": "11/7 已吃，金額待確認；已查兩個 Gmail，未找到可確認本餐的收據／刷卡通知；700,000 僅保留原預算，不代表實付",
           "estimateTwd": 878,
           "excludeFromEstimate": false
         },
         {
           "id": "ex_souvenirs",
-          "updatedAt": "2026-11-07T15:31:51+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
           "date": "2026-11-08",
           "item": "伴手禮",
@@ -2857,7 +2866,7 @@
           "twd": 0,
           "status": "expected",
           "card": "現金",
-          "note": "11/8 早上韓市場；估算：G7 100 包約 VND 219,000（頁面）＋零食約 280k",
+          "note": "11/8 健身後韓市場；估算：G7 100 包約 VND 219,000（頁面）＋零食約 280k",
           "estimateTwd": 627,
           "excludeFromEstimate": false
         },
@@ -2991,17 +3000,17 @@
         },
         {
           "id": "ex_grab_1108",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
           "date": "2026-11-08",
-          "item": "交通：Luxury Barber、晚餐來回（Grab）",
+          "item": "交通：健身房→韓市場→飯店／做臉（Grab）",
           "merchant": "Grab",
           "amount": 250000,
           "currency": "VND",
           "twd": 0,
           "status": "expected",
           "card": "Grab 綁卡",
-          "note": "估算",
+          "note": "行程更新，仍保留原交通預算250k；Yen近飯店可步行",
           "estimateTwd": 314,
           "excludeFromEstimate": false
         },
@@ -3039,17 +3048,17 @@
         },
         {
           "id": "ex_lounge_khh",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-07T22:00:34+07:00",
           "userEdited": true,
           "date": "2026-11-05",
-          "item": "貴賓室：小港機場 南苑（U.First）",
-          "merchant": "國泰長榮極致無限卡權益",
+          "item": "貴賓室：小港南苑＋Home Kitchen（已使用）",
+          "merchant": "南苑／Home Kitchen",
           "amount": 0,
           "currency": "TWD",
           "twd": 0,
-          "status": "expected",
-          "card": "國泰長榮極致無限卡權益",
-          "note": "卡片權益免費",
+          "status": "paid",
+          "card": "不同信用卡權益（國泰長榮／滙豐旅人，對應待確認）",
+          "note": "11/5 兩處均已使用，各用不同信用卡權益；不推定哪張對應哪間",
           "estimateTwd": 0,
           "excludeFromEstimate": false
         },
@@ -3084,13 +3093,45 @@
           "note": "選配，不計入合計；沒打折就不買",
           "estimateTwd": 0,
           "excludeFromEstimate": true
+        },
+        {
+          "id": "ex_gym_1108",
+          "date": "2026-11-08",
+          "item": "Mobifit360 健身單次（10:00）",
+          "merchant": "Mobifit360 Gym & Fitness",
+          "amount": 160000,
+          "currency": "VND",
+          "twd": 0,
+          "estimateTwd": 201,
+          "status": "expected",
+          "card": "現金或刷卡",
+          "note": "官網05:00–16:00單次160k，含毛巾／置物櫃／淋浴，不含桑拿冰浴；https://gym.mobifit360.com/en/product/gym-daily-pass-price-from-100k/",
+          "excludeFromEstimate": false,
+          "userEdited": true,
+          "updatedAt": "2026-11-07T22:00:34+07:00"
+        },
+        {
+          "id": "ex_yen_1108",
+          "date": "2026-11-08",
+          "item": "Yen Yakiniku 晚餐（1人，待確認）",
+          "merchant": "Yen Yakiniku 191 Nguyễn Văn Thoại",
+          "amount": 399000,
+          "currency": "VND",
+          "twd": 0,
+          "estimateTwd": 501,
+          "status": "expected",
+          "card": "現金或刷卡",
+          "note": "18:00行程暫排，未訂位；官網buffet299k/349k/399k/499k且限2人起，1人能否例外未確認；399k僅暫估餐費，可改單點，非已選套餐／報價；https://yenyakiniku.vn/menu/",
+          "excludeFromEstimate": false,
+          "userEdited": true,
+          "updatedAt": "2026-11-07T22:00:34+07:00"
         }
       ],
-      "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$20,126；預期尚未付款約 NT$10,998；全程預估約 NT$31,124（含選配高筒靴約 34,696）。匯率參考：1 TWD ≈ 797 VND。11/6–11/7 更新：除疤膏已付 NT$389、樂福鞋已付 NT$3,099、11/6 Grab 6 趟約 NT$425、McDonald's 約 NT$189；Vibram 五指鞋取消不買；會安古城 11/6 沒收門票（未花費）；五行山門票 11/7 現金已付 VND 75,000（約 NT$94）。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- 🚨 天氣（11/7 查）：今天 11/7 零星小雨，約 24–32°C（降雨機率 75–82%）；11/8 中雨、傍晚起強冷空氣南下。越南國家水文氣象中心（11/6 發布）：11/9–11/11 晚峴港／順化「大雨到特大雨」累積 250–450 mm、局部超過 700 mm（冷空氣＋東北季風，非颱風）。會安目前沒淹，但 11/9 起淹水風險高。樂福鞋 11/8 14:00 試穿盡量當天取鞋；11/9 不去會安、以室內為主；11/10 15:30–16:00 就出發去機場，出發前查 IT552。\n- 行程已改（Notion 11/6 晚）：11/7 五行山 → Vincom Plaza（午餐／Guardian／Miniso／WinMart）→（選配）漢市場買包 → 按摩 → live bar；換錢已在 11/6 完成。\n- 11/8 行程更新：早上韓市場買伴手禮（07:30–09:30）→ 做臉 → 14:00 飯店試鞋（已保留網站手動編輯）。\n- 11/6 完成：帝王洗頭、會安樂福鞋下單、Flow Store 試穿（不買）、Dermatix Ultra 15g。識別證皮套鞋店不做 → 回台 Pinkoi。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/7 大雨則五行山改 11/8；11/8 試鞋時段固定 14:00；11/10 大雨提早 15:30–16:00 出發。\n\nNotion 來源頁最後更新：2026-11-07 17:12（台北；page_last_edited_at 08:31Z）。\n\n換匯備註（2026/11/5）：現金兌換 USD 200 → 實拿 VND 5,150,000（現場匯率 25,750 VND/USD；當日 Google／Morningstar 中間價約 5,136,503 VND／約 25,682.5 VND/USD，實拿約多 13,497 VND）。此為換匯備忘，不是旅遊花費。\n\n換匯備註（2026/11/6 下午）：金行 USD 200 → VND 5,160,000（1 USD = 25,800；Google 中間匯率 25,583，多換到約 43,500 越盾，約 +0.85%／NT$55）。金行匯率較好，之後換匯找金行，帶平整 100 美元鈔。\n\n11/6 下午：樂福鞋已下單（牛皮 cowhide，全粒面與皮料照片待確認）；11/8 14:00 Royal Lotus 大廳試鞋。",
+      "notes": "峴港短假期（Notion 同步）：鞋、五行山、放鬆為主。11 月雨季，每件事都有雨天備案。\n\n已付款合計約 NT$20,126；預期尚未付款約 NT$9,441；全程預估約 NT$29,567（含選配高筒靴約 33,139）。匯率參考：1 TWD ≈ 797 VND。11/6–11/7 更新：除疤膏已付 NT$389、樂福鞋已付 NT$3,099、11/6 Grab 6 趟約 NT$425、McDonald's 約 NT$189；Vibram 五指鞋取消不買；會安古城 11/6 沒收門票（未花費）；五行山門票 11/7 現金已付 VND 75,000（約 NT$94）。\n\n提醒：\n- 敏感個資（護照號、完整地址、手機、驗證碼）不要貼在此 App。\n- 本機編輯優先於 Notion 同步；換裝置前請先「匯出 JSON」。\n- 越南線上入境申報已完成（11/3），QR 截圖存相簿。\n- 回程託運 15kg 還沒加購（虎航管理預訂約 NT$1,000，起飛前 4 小時截止）。\n- 🚨 天氣（11/7 查）：今天 11/7 零星小雨，約 24–32°C（降雨機率 75–82%）；11/8 中雨、傍晚起強冷空氣南下。越南國家水文氣象中心（11/6 發布）：11/9–11/11 晚峴港／順化「大雨到特大雨」累積 250–450 mm、局部超過 700 mm（冷空氣＋東北季風，非颱風）。會安目前沒淹，但 11/9 起淹水風險高。樂福鞋 11/8 14:00 試穿盡量當天取鞋；11/9 不去會安、以室內為主；11/10 15:30–16:00 就出發去機場，出發前查 IT552。\n- 行程已改（Notion 11/6 晚）：11/7 五行山 → Vincom Plaza（午餐／Guardian／Miniso／WinMart）→（選配）漢市場買包 → 按摩 → live bar；換錢已在 11/6 完成。\n- 11/8 行程更新：早餐後10:00 Mobifit360健身（160k）→ 11:50–13:00韓市場 → 14:00 飯店試鞋 → 15:30做臉（未約）→ 18:00 Yen 1人（未訂，buffet限2人起需確認）（已保留網站手動編輯）。\n- 11/6 完成：帝王洗頭、會安樂福鞋下單、Flow Store 試穿（不買）、Dermatix Ultra 15g。識別證皮套鞋店不做 → 回台 Pinkoi。\n- 回程 IT552；接送與託運記得出發前搞定。\n- 雨天：11/7 大雨則五行山改 11/8；11/8 試鞋時段固定 14:00；11/10 大雨提早 15:30–16:00 出發。\n\nNotion 來源頁最後更新：2026-11-07 17:12（台北；page_last_edited_at 08:31Z）。\n\n換匯備註（2026/11/5）：現金兌換 USD 200 → 實拿 VND 5,150,000（現場匯率 25,750 VND/USD；當日 Google／Morningstar 中間價約 5,136,503 VND／約 25,682.5 VND/USD，實拿約多 13,497 VND）。此為換匯備忘，不是旅遊花費。\n\n換匯備註（2026/11/6 下午）：金行 USD 200 → VND 5,160,000（1 USD = 25,800；Google 中間匯率 25,583，多換到約 43,500 越盾，約 +0.85%／NT$55）。金行匯率較好，之後換匯找金行，帶平整 100 美元鈔。\n\n11/6 下午：樂福鞋已下單（牛皮 cowhide，全粒面與皮料照片待確認）；11/8 14:00 Royal Lotus 大廳試鞋。\n11/7晚更新：All Seasons已吃，金額未在Gmail查得，保留原預算待確認；11/5未吃晚餐，Sushi-Bê不去；小港南苑及Home Kitchen已用不同信用卡權益。eSIM、印e-Visa、去程報到、打包已完成。11/9午餐留白。\n",
       "archived": false,
       "createdAt": "2026-10-28T00:00:00+08:00",
-      "updatedAt": "2026-11-07T17:12:46+08:00",
-      "userEdited": false,
+      "updatedAt": "2026-11-07T22:00:34+07:00",
+      "userEdited": true,
       "routeMap": {
         "title": "主要動線",
         "note": "Grab／自駕估算；實際視路況與尖峰而異",
@@ -3147,7 +3188,7 @@
       }
     }
   ],
-  "syncedAt": "2026-11-07T17:12:46+08:00",
+  "syncedAt": "2026-11-07T22:00:34+07:00",
   "remoteSource": "notion:3fda76cdb08781cd9707e487a58b018e",
-  "remoteSyncedAt": "2026-11-07T17:12:46+08:00"
+  "remoteSyncedAt": "2026-11-07T22:00:34+07:00"
 }
