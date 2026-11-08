@@ -1044,8 +1044,8 @@
         {
           "id": "day_20261108",
           "date": "2026-11-08",
-          "title": "早餐 → 10:00健身 → 韓市場 → 14:00試鞋 → 做臉 → 18:00Yen（待確認）",
-          "updatedAt": "2026-11-07T22:00:34+07:00",
+          "title": "早餐 → 10:00健身 → 韓市場 → 14:00試鞋 → 做臉 → 18:00晚餐未定",
+          "updatedAt": "2026-11-08T01:56:05.296014Z",
           "blocks": [
             {
               "id": "bl_1108_2",
@@ -1104,10 +1104,10 @@
             },
             {
               "id": "bl_1108_3",
-              "updatedAt": "2026-11-07T22:00:34+07:00",
+              "updatedAt": "2026-11-08T01:56:05.296014Z",
               "userEdited": true,
               "time": "18:00",
-              "text": "Yen Yakiniku Nguyễn Văn Thoại店（191 Nguyễn Văn Thoại），1人，未訂位；官網buffet299k–499k限2人起，需先確認單人例外或改單點，399k僅餐費暫估。訂位：https://yenyakiniku.vn/en/reservations/；+84 903 559 447按1。Sushi-Bê不去、CHAR替代取消。",
+              "text": "晚餐未定。Yen Yakiniku 訂位已請 Ryan 自行用 Zalo／電話取消（店家回覆待確認）。原：Yen Yakiniku Nguyễn Văn Thoại店（191 Nguyễn Văn Thoại），1人，未訂位；官網buffet299k–499k限2人起，需先確認單人例外或改單點，399k僅餐費暫估。訂位：https://yenyakiniku.vn/en/reservations/；+84 903 559 447按1。Sushi-Bê不去、CHAR替代取消。",
               "place": "Yen Yakiniku Nguyễn Văn Thoại"
             },
             {
@@ -2932,18 +2932,18 @@
         },
         {
           "id": "ex_boots_opt",
-          "updatedAt": "2026-11-07T13:20:00+07:00",
+          "updatedAt": "2026-11-08T01:55:48.593695Z",
           "userEdited": true,
           "date": "11/6–11/9",
           "item": "高筒靴（選配）",
           "merchant": "Friendly Shoe Shop",
-          "amount": 110,
+          "amount": 0,
           "currency": "USD",
           "twd": 0,
-          "status": "expected",
+          "status": "cancelled",
           "card": "未定",
-          "note": "不計入主合計；選配",
-          "estimateTwd": 3572,
+          "note": "不計入主合計；選配；已取消",
+          "estimateTwd": 0,
           "excludeFromEstimate": true
         },
         {
@@ -3191,16 +3191,16 @@
           "date": "2026-11-08",
           "item": "Yen Yakiniku 晚餐（1人，待確認）",
           "merchant": "Yen Yakiniku 191 Nguyễn Văn Thoại",
-          "amount": 399000,
+          "amount": 0,
           "currency": "VND",
           "twd": 0,
-          "estimateTwd": 501,
-          "status": "expected",
+          "estimateTwd": 0,
+          "status": "cancelled",
           "card": "現金或刷卡",
-          "note": "18:00行程暫排，未訂位；官網buffet299k/349k/399k/499k且限2人起，1人能否例外未確認；399k僅暫估餐費，可改單點，非已選套餐／報價；https://yenyakiniku.vn/menu/",
-          "excludeFromEstimate": false,
+          "note": "18:00行程暫排，未訂位；官網buffet299k/349k/399k/499k且限2人起，1人能否例外未確認；399k僅暫估餐費，可改單點，非已選套餐／報價；https://yenyakiniku.vn/menu/；已取消",
+          "excludeFromEstimate": true,
           "userEdited": true,
-          "updatedAt": "2026-11-07T22:00:34+07:00"
+          "updatedAt": "2026-11-08T01:55:48.593695Z"
         },
         {
           "id": "ex_grab_cash_1107",
