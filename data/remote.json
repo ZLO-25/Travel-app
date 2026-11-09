@@ -3028,18 +3028,18 @@
         {
           "excludeFromEstimate": false,
           "userEdited": true,
-          "updatedAt": "2026-11-07T22:18:25+07:00",
+          "updatedAt": "2026-11-09T17:50:00+07:00",
           "id": "ex_yamazaki_1106",
           "date": "2026-11-06",
           "item": "餐飲：Yamazaki 日本料理晚餐",
           "merchant": "Yamazaki（Sala Danang Beach Hotel 25 樓，CTY PHU KIM）",
-          "amount": 393,
-          "currency": "TWD",
+          "amount": 305000,
+          "currency": "VND",
           "twd": 393,
           "estimateTwd": 188,
           "status": "paid",
           "card": "國泰長榮極致無限卡（末4碼 9689）",
-          "note": "國泰世華消費彙整通知（11/7 寄出，授權時間為台灣時間）：CTY PHU KIM NT$393（台灣 18:51＝越南 17:51，類別飯店∕住宿）；Phú Kim 是 Sala 飯店集團公司，Grab 11/6 17:09 送達 Yamazaki；越盾金額通知沒寫，不含國外交易手續費；從日常餐費預算拆出"
+          "note": "國泰世華消費彙整通知（11/7 寄出，授權時間為台灣時間）：CTY PHU KIM NT$393（台灣 18:51＝越南 17:51，類別飯店∕住宿）；Phú Kim 是 Sala 飯店集團公司，Grab 11/6 17:09 送達 Yamazaki；越盾金額依 VietinBank 收據 VND 305,000（11/6 17:51），不含國外交易手續費；從日常餐費預算拆出"
         },
         {
           "excludeFromEstimate": false,
