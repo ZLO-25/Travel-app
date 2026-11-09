@@ -1178,48 +1178,56 @@
         {
           "id": "day_20261110",
           "date": "2026-11-10",
-          "title": "12:00 退房 → 午餐 → 按摩 → 15:30 去機場（預報大雨）",
-          "updatedAt": "2026-11-09T20:25:00+07:00",
+          "title": "跑步 → 12:00 退房 → 按摩 → 咖啡 → 15:30 去機場（不吃午餐）",
+          "updatedAt": "2026-11-09T20:30:00+07:00",
           "blocks": [
             {
-              "id": "bl_1110_pack",
-              "time": "09:00–11:30",
-              "text": "早餐後打包、秤重（手提＋個人物品上限 10 kg）→ 超重就線上加購 15kg 託運（虎航管理預訂約 NT$1,000，線上截止 15:50）。樂福鞋如果店家要送回（撐小趾），約在 15:30 前到大廳",
+              "id": "bl_1110_run",
+              "time": "07:30–10:00",
+              "text": "早餐（吃清淡、跑前 45 分吃完）→ 08:15 飯店健身房跑步機慢跑 80 分 → 洗澡",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
-              "userEdited": false
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
+            },
+            {
+              "id": "bl_1110_nap",
+              "time": "10:15–11:15",
+              "text": "😴 回房睡一下（設 11:15 鬧鐘）",
+              "place": "Royal Lotus",
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
+            },
+            {
+              "id": "bl_1110_pack",
+              "time": "11:15–11:55",
+              "text": "打包、秤重（手提＋個人物品上限 10 kg）→ 超重就線上加購 15kg 託運（約 NT$1,000，線上截止 15:50）。樂福鞋如果店家要送回，約 15:30 前到大廳",
+              "place": "Royal Lotus",
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
             },
             {
               "id": "bl_1110_checkout",
               "time": "12:00",
-              "text": "🏨 退房（沒有申請晚退房）→ 行李寄放櫃台到 15:30，並請櫃台 15:30 幫叫車去機場。英文：Can I leave my luggage here until 3:30pm? And could you book a car to the airport at 3:30?",
+              "text": "🏨 退房（沒有申請晚退房）→ 行李寄放櫃台到 15:30＋請櫃台 15:30 叫車。英文：Can I leave my luggage here until 3:30pm? And could you book a car to the airport at 3:30?",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
-              "userEdited": false
-            },
-            {
-              "id": "bl_1110_lunch",
-              "time": "12:15–13:00",
-              "text": "🍜 午餐 Mỳ Quảng 24/7（163 Hồ Nghinh，有冷氣，07:30–22:00），Grab 約 5 分｜https://www.google.com/maps/search/?api=1&query=M%E1%BB%B3%20Qu%E1%BA%A3ng%2024%2F7&query_place_id=ChIJY51Gr4YXQjERrDzL9TTCFHs",
-              "place": "Mỳ Quảng 24/7",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
-              "userEdited": false
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
             },
             {
               "id": "bl_1110_massage",
-              "time": "13:15–14:45",
-              "text": "💆 按摩 90 分：Luxury Herbal Spa（201 Dương Đình Nghệ，離午餐約 600 m，09:00–22:30，+84 901 825 789），今晚先傳訊息預約；14:45 前結束｜https://www.google.com/maps/search/?api=1&query=Luxury%20Herbal%20Spa&query_place_id=ChIJ6dOY7ykYQjER0aPtP-ONTzM。不按摩就改去 Login Coffee（飯店同門牌）看書",
+              "time": "12:15–13:45",
+              "text": "💆 按摩 90 分：Luxury Herbal Spa（201 Dương Đình Nghệ，Grab 約 5 分，+84 901 825 789），今晚先預約 12:15｜https://www.google.com/maps/search/?api=1&query=Luxury%20Herbal%20Spa&query_place_id=ChIJ6dOY7ykYQjER0aPtP-ONTzM",
               "place": "Luxury Herbal Spa",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
-              "userEdited": false
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
             },
             {
-              "id": "bl_1110_back",
-              "time": "15:00",
-              "text": "🚕 Grab 回飯店（5–8 分）→ 拿行李、換衣服；15:30 搭飯店叫的車",
-              "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
-              "userEdited": false
+              "id": "bl_1110_cafe",
+              "time": "14:00–15:20",
+              "text": "☕ Login Coffee（飯店同門牌 120A，07:00–22:30）看書；不吃午餐，可點杯飲料或小點心，正餐到機場貴賓室吃｜https://www.google.com/maps/search/?api=1&query=Login%20Coffee&query_place_id=ChIJ2UxFF9UXQjER31sI9273bcI",
+              "place": "Login Coffee",
+              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "userEdited": true
             },
             {
               "id": "bl_1110_2",
