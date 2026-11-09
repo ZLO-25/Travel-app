@@ -194,9 +194,9 @@
           "items": [
             {
               "id": "td_hotel_email",
-              "updatedAt": "2026-11-09T20:25:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": false,
-              "text": "11/10 12:00 退房（沒申請晚退房）→ 行李寄放櫃台到 15:30、請櫃台 15:30 叫車",
+              "text": "11/10 12:00 退房 → 行李寄放櫃台到 13:45（做臉完回來拿，之後從博物館直接去機場）",
               "done": false,
               "due": "11/10 12:00",
               "note": "",
@@ -1178,63 +1178,71 @@
         {
           "id": "day_20261110",
           "date": "2026-11-10",
-          "title": "跑步 → 12:00 退房 → 按摩 → 咖啡 → 15:30 去機場（不吃午餐）",
-          "updatedAt": "2026-11-09T20:30:00+07:00",
+          "title": "跑步 → 12:00 退房 → 做臉 → 拿行李 → 占婆博物館 → 直接去機場",
+          "updatedAt": "2026-11-09T21:05:00+07:00",
           "blocks": [
             {
               "id": "bl_1110_run",
-              "time": "07:30–10:00",
-              "text": "早餐（吃清淡、跑前 45 分吃完）→ 08:15 飯店健身房跑步機慢跑 80 分 → 洗澡",
+              "time": "07:30–09:45",
+              "text": "🍳 早餐（多吃碳水，跑前 45 分吃完）→ 08:15 飯店健身房跑步機慢跑 80 分 → 洗澡、刮鬍子",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
               "id": "bl_1110_nap",
-              "time": "10:15–11:15",
-              "text": "😴 回房睡一下（設 11:15 鬧鐘）",
+              "time": "10:00–11:00",
+              "text": "😴 回房睡一下（設 11:00 鬧鐘）",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
               "id": "bl_1110_pack",
-              "time": "11:15–11:55",
-              "text": "打包、秤重（手提＋個人物品上限 10 kg）→ 超重就線上加購 15kg 託運（約 NT$1,000，線上截止 15:50）。樂福鞋如果店家要送回，約 15:30 前到大廳",
+              "time": "11:00–11:55",
+              "text": "🧳 打包、秤重（手提＋個人物品上限 10 kg）→ 超重就線上加購 15kg（約 NT$1,000，線上截止 15:50）；順便試 IT552 線上報到",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
               "id": "bl_1110_checkout",
               "time": "12:00",
-              "text": "🏨 退房（沒有申請晚退房）→ 行李寄放櫃台到 15:30＋請櫃台 15:30 叫車。英文：Can I leave my luggage here until 3:30pm? And could you book a car to the airport at 3:30?",
+              "text": "🏨 退房 → 行李寄放櫃台到 13:45。英文：Can I leave my luggage here until 1:45pm?",
               "place": "Royal Lotus",
-              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
-              "id": "bl_1110_massage",
-              "time": "12:15–13:45",
-              "text": "💆 按摩 90 分（便宜版）：首選 JUNE SPA（20 Hoàng Kế Viêm，10:00–22:30，90 分全身＋熱石約 US$13／34 萬越盾，力道可以很強，+84 978 339 493）｜https://www.google.com/maps/search/?api=1&query=JUNE%20SPA&query_place_id=ChIJvWLgr6cXQjER3bVwhb1OVrs。備案 Chang Massage（41 An Thượng 30，熱石油壓約 30 萬）｜https://www.google.com/maps/search/?api=1&query=Chang%20Massage%20Nail&query_place_id=ChIJ90kp94kXQjER7MybCLErR9Q",
-              "place": "JUNE SPA",
-              "updatedAt": "2026-11-09T20:35:00+07:00",
+              "id": "bl_1110_facial",
+              "time": "12:15–13:30",
+              "text": "🧖 做臉：Oani Spa「Oily skin care」（含清黑頭，46 Phan Liêm，走路約 3 分，WhatsApp +84 899 888 600，今晚先確認價格和時間；一般做臉約 65 萬）；付現金（刷卡加 3%），冷氣強請師傅蓋毯子｜https://www.google.com/maps/search/?api=1&query=Oani%20Spa%20Da%20Nang&query_place_id=ChIJ98HsudQXQjERpViPqdVY3ko",
+              "place": "Oani Spa",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
-              "id": "bl_1110_cafe",
-              "time": "14:00–15:20",
-              "text": "☕ Login Coffee（飯店同門牌 120A，07:00–22:30）看書；不吃午餐，可點杯飲料或小點心，正餐到機場貴賓室吃｜https://www.google.com/maps/search/?api=1&query=Login%20Coffee&query_place_id=ChIJ2UxFF9UXQjER31sI9273bcI",
-              "place": "Login Coffee",
-              "updatedAt": "2026-11-09T20:30:00+07:00",
+              "id": "bl_1110_bag",
+              "time": "13:40",
+              "text": "🏨 回飯店拿行李 → 叫 GrabCar 去占婆雕刻博物館（約 15 分）",
+              "place": "Royal Lotus",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
+              "userEdited": true
+            },
+            {
+              "id": "bl_1110_museum",
+              "time": "14:00–15:25",
+              "text": "🏛️ 占婆雕刻博物館（02 Đường 2 Tháng 9，07:00–17:00，門票 6 萬，只收現金較保險）；行李問售票處能不能寄放｜https://www.google.com/maps/search/?api=1&query=Da%20Nang%20Museum%20of%20Cham%20Sculpture&query_place_id=ChIJLWoAs80ZQjERLKHDYD-ZymI",
+              "place": "占婆雕刻博物館",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": true
             },
             {
               "id": "bl_1110_2",
-              "updatedAt": "2026-11-08T00:20:00+07:00",
+              "updatedAt": "2026-11-09T21:05:00+07:00",
               "userEdited": false,
               "time": "15:30",
-              "text": "出發去機場（大雨建議 15:30–16:00；最晚 17:00 前到；豪雨時 Grab 難叫，請飯店幫叫車）：退稅先找海關 → 託運 → 貴賓室（Vanda／CIP Orchid）→ IT552 19:50；出發前查航班動態",
+              "text": "🚕 從博物館叫 GrabCar 直接去峴港機場（約 3–4 km、10–15 分；豪雨叫不到就在 2 Tháng 9 大路攔綠色 Xanh SM 計程車）→ 16:00 前到 → 櫃台報到（不能線上報到就排隊）→ 託運 → 貴賓室吃晚餐（Vanda／CIP Orchid）→ 19:50 IT552；出發前查航班動態",
               "place": "峴港機場",
               "details": {
                 "title": "LoungeKey 貴賓室 QR（滙豐旅人無限卡）",
