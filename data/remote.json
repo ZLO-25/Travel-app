@@ -1096,10 +1096,10 @@
             },
             {
               "id": "bl_1108_1",
-              "updatedAt": "2026-11-08T11:10:00+07:00",
+              "updatedAt": "2026-11-09T13:58:00+07:00",
               "userEdited": true,
               "time": "15:30–17:00",
-              "text": "💆 按摩（考慮中）：首選飯店同條街 Charm Spa Grand（31 Nguyễn Văn Thoại），未預約，去之前先請櫃台或傳訊息問有沒有位子；17:30前結束。做臉／除黑頭這次先不排（想做可11/9室內補）",
+              "text": "✅ 💆 已去 Charm Spa Grand 按摩（31 Nguyễn Văn Thoại），刷卡 VND 1,208,000（帳單商家名 YOKO LOUNGE 99）",
               "place": "Charm Spa Grand"
             },
             {
@@ -1741,11 +1741,11 @@
         },
         {
           "id": "pl_charm_spa",
-          "updatedAt": "2026-10-28T10:04:05+08:00",
+          "updatedAt": "2026-11-09T13:58:00+07:00",
           "userEdited": false,
           "name": "Charm Spa Grand",
           "category": "體驗",
-          "note": "31 Nguyễn Văn Thoại；跟飯店同街",
+          "note": "✅ 11/8 已去按摩（刷卡商家名顯示 YOKO LOUNGE 99，VND 1,208,000）。31 Nguyễn Văn Thoại；跟飯店同街",
           "url": "",
           "mapsUrl": ""
         },
@@ -1811,11 +1811,11 @@
         },
         {
           "id": "pl_vincom",
-          "updatedAt": "2026-11-06T19:40:00+07:00",
+          "updatedAt": "2026-11-09T13:58:00+07:00",
           "userEdited": false,
           "name": "Vincom Plaza Da Nang",
           "category": "購物",
-          "note": "910A Ngô Quyền；週六日 09:30–22:00、平日 10:00–22:00；Guardian、Miniso、WinMart 超市、頂樓美食街；11/7 中午",
+          "note": "✅ 11/7 已去。910A Ngô Quyền；週六日 09:30–22:00、平日 10:00–22:00；Guardian、Miniso、WinMart 超市、頂樓美食街；11/7 中午",
           "url": "",
           "mapsUrl": "https://maps.app.goo.gl/XzRFzLpHtgyEogkF7"
         }
@@ -3299,11 +3299,11 @@
         },
         {
           "id": "ex_yoko_1108",
-          "updatedAt": "2026-11-09T12:05:00+07:00",
+          "updatedAt": "2026-11-09T13:58:00+07:00",
           "userEdited": false,
           "date": "2026-11-08",
-          "item": "活動：按摩（11/8）",
-          "merchant": "YOKO LOUNGE 99",
+          "item": "活動：按摩 Charm Spa Grand（11/8）",
+          "merchant": "Charm Spa Grand（刷卡顯示 YOKO LOUNGE 99）",
           "amount": 1208000,
           "currency": "VND",
           "twd": 1516,
