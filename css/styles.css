@@ -1417,3 +1417,7 @@ details.fold[open] > summary::before { content: '▾ '; }
 .mini-block { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line, rgba(0,0,0,.08)); font-size: .95em; }
 .mini-block:first-of-type { border-top: 0; }
 .mini-block .time { font-weight: 600; color: var(--accent, #e76f51); }
+
+/* Long URLs / unbroken text must wrap so mobile pages don't overflow and zoom out */
+.card, .block-body, .check-item, .booking, .expense-table td, .detail-sheet { overflow-wrap: anywhere; word-break: break-word; }
+html, body { overflow-x: clip; }
